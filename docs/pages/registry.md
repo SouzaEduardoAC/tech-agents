@@ -10,4 +10,4 @@
 - # Active Features
 	- ## Core Infrastructure
 		- status:: [SYNC]
-		- nodes:: [[TECHNICAL_SPECS]], [[BUSINESS_FLOW]], [[code-dna]], [[resilience-policies]], [[AI Interaction Standard]]
+		- nodes:: [[TECHNICAL_SPECS]], [[BUSINESS_FLOW]], [[code-dna]], [[resilience-policies]], [[AI Interaction Standard]], [[Business Synthesizer]]

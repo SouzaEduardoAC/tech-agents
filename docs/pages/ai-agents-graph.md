@@ -21,6 +21,7 @@
 	- [[Compliance]] - Privacy Auditor.
 	- [[Researcher]] - Strategic Analyst.
 	- [[n8n]] - Automation Architect.
+	- [[Business Synthesizer]] - Technical specification-to-business translator.
 - # Use Cases
 	- [[Standardized Pipeline]] - Engineering lifecycle.
 	- [[PRD Generation]] - Requirements.
