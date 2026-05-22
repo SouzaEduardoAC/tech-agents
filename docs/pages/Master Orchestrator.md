@@ -14,6 +14,8 @@
 		- 3. **Compliance Phase (Optional)**: Call `get_agent_prompt(agent="compliance")` for regulatory/privacy gating.
 			- **Trigger Conditions**: Required if the feature handles **PII**, **Financial Data**, **Account/Auth Logic**, or targets **GDPR/LGPD** regions.
 		- 4. **Execution Phase**: Call `get_agent_prompt(agent="backend|frontend|mobile|n8n")`. Execute plan and run tests.
+		- 5. **Synthesis & Export Phase (Optional)**: Call `get_agent_prompt(agent="synthesizer")` for stakeholder reporting.
+			- **Trigger Conditions**: Requested by Product Owners, BAs, or non-technical business stakeholders to translate technical Logseq graph nodes into high-fidelity business specification matrices.
 	- ## Guardrails
 		- **Gate Enforcement**: Never skip a "Human Approval" point.
 		- **No Context Dilution**: Persona swapping must be absolute to prevent instruction drift.

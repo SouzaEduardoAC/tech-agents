@@ -75,3 +75,4 @@ We maintain a "Zero Trust" model for code and documentation integrity.
 - **[[Compliance]]**: Regulatory & Risk Auditor.
 - **[[Researcher]]**: Strategic Analyst.
 - **[[n8n]]**: Automation Architect.
+- **[[Business Synthesizer]]**: Technical specification-to-business translator.
