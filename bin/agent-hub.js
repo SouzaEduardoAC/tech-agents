@@ -2,6 +2,7 @@
 import { Command } from "commander";
 import path from "path";
 import fs from "fs-extra";
+import os from "os";
 import { spawn } from "child_process";
 import { fileURLToPath } from "url";
 
@@ -41,10 +42,17 @@ program
     await fs.ensureDir(path.dirname(absoluteTarget));
     try {
       if (await fs.pathExists(absoluteTarget)) await fs.remove(absoluteTarget);
-      await fs.symlink(personaPath, absoluteTarget);
-      console.log(`Success: Linked ${agent} persona to ${target}`);
+      
+      try {
+        await fs.symlink(personaPath, absoluteTarget);
+        console.log(`Success: Symlinked ${agent} persona to ${target}`);
+      } catch (symlinkErr) {
+        // Fall back to physical copy if symlink fails (e.g. on Windows without Developer Mode)
+        await fs.copy(personaPath, absoluteTarget);
+        console.log(`Success: Copied ${agent} persona to ${target} (fallback due to symlink restrictions)`);
+      }
     } catch (err) {
-      console.error(`Error creating symlink: ${err.message}`);
+      console.error(`Error linking persona: ${err.message}`);
       process.exit(1);
     }
   });
@@ -53,8 +61,8 @@ program
   .command("bootstrap")
   .description("Install all agent personas and slash commands into local LLM environments")
   .action(async () => {
-    const GEMINI_COMMANDS_ROOT = path.join(process.env.HOME, ".gemini", "commands");
-    const ANTIGRAVITY_BRAIN_ROOT = path.join(process.env.HOME, ".gemini", "antigravity", "brain");
+    const GEMINI_COMMANDS_ROOT = path.join(os.homedir(), ".gemini", "commands");
+    const ANTIGRAVITY_BRAIN_ROOT = path.join(os.homedir(), ".gemini", "antigravity", "brain");
 
     await fs.ensureDir(GEMINI_COMMANDS_ROOT);
     await fs.ensureDir(ANTIGRAVITY_BRAIN_ROOT);
@@ -66,7 +74,7 @@ program
     console.log("\n🚀 Bootstrapping Universal Agent Hub...");
 
     // 0. Configure MCP Settings
-    const SETTINGS_PATH = path.join(process.env.HOME, ".gemini", "settings.json");
+    const SETTINGS_PATH = path.join(os.homedir(), ".gemini", "settings.json");
     if (await fs.pathExists(SETTINGS_PATH)) {
       try {
         const settings = await fs.readJson(SETTINGS_PATH);
@@ -76,9 +84,9 @@ program
         if (!settings.mcpServers.filesystem) {
           settings.mcpServers.filesystem = {
             command: "npx",
-            args: ["-y", "@modelcontextprotocol/server-filesystem", path.join(process.cwd(), "docs")]
+            args: ["-y", "@modelcontextprotocol/server-filesystem", os.homedir()]
           };
-          console.log("   ✅ [MCP] Configured filesystem server for /docs");
+          console.log("   ✅ [MCP] Configured filesystem server for home directory");
         }
 
         // Add Playwright MCP if missing
@@ -88,6 +96,40 @@ program
             args: ["-y", "@playwright/mcp@latest", "--browser", "chrome"]
           };
           console.log("   ✅ [MCP] Configured playwright-mcp server");
+        }
+
+        // Add Agent Hub MCP if missing
+        if (!settings.mcpServers["agent-hub"]) {
+          settings.mcpServers["agent-hub"] = {
+            command: "node",
+            args: [path.join(ROOT, "bin", "agent-hub.js"), "serve"]
+          };
+          console.log("   ✅ [MCP] Configured agent-hub server");
+        }
+
+        // Add Stitch MCP if missing
+        if (!settings.mcpServers.stitch) {
+          settings.mcpServers.stitch = {
+            command: "npx",
+            args: ["-y", "@_davideast/stitch-mcp", "proxy"],
+            env: {
+              STITCH_API_KEY: ""
+            }
+          };
+          console.log("   ✅ [MCP] Configured Google Stitch MCP server (STITCH_API_KEY placeholder added)");
+        }
+
+        // Add SonarQube MCP if missing
+        if (!settings.mcpServers.sonarqube) {
+          settings.mcpServers.sonarqube = {
+            command: "npx",
+            args: ["-y", "sonarqube-mcp-server"],
+            env: {
+              SONARQUBE_URL: "http://localhost:9000",
+              SONARQUBE_TOKEN: ""
+            }
+          };
+          console.log("   ✅ [MCP] Configured SonarQube MCP server (SONARQUBE_URL/TOKEN placeholders added)");
         }
 
         await fs.writeJson(SETTINGS_PATH, settings, { spaces: 2 });

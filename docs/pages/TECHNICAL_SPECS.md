@@ -25,9 +25,11 @@
 		- **Command: `link <agent> <target>`**: 
 			- Function:: Creates a hard filesystem symlink between the agent's core `persona.md` and a project-specific instruction file (e.g., `.cursorrules`).
 	- ## The Orchestration Engine (The Bridge)
-		- **Logic Mixing (AMD Core)**: 
-			- The Hub server performs a multi-stage prompt assembly before delivering to the LLM.
-			- Formula:: `Prompt = Common Standards + Common Skills + Dynamic Stack Skills + Agent Persona + Agent Skills + Agent Knowledge + Command Prompt`.
+		- **Logic Mixing & Prompt Optimization (AMD Core)**: 
+			- The Hub server performs a multi-stage optimized prompt assembly.
+			- Formula:: `Prompt = Deduplicated/Relevant Common Standards + Deduplicated/Relevant Common Skills + Dynamic Stack Skills + Agent Persona + Agent Skills + Agent Knowledge + Command Prompt`.
+			- **Late-Binding Deduplication**: Scanning TOML prompts for explicit `!{cat}` directives and dynamically filtering those files from prepended common sections to eliminate duplicate token injection (ref: `index.js -> compileCommonSection`).
+			- **Heuristic Relevance Filtering**: Dynamically prepending only the subset of common files matching the active command keywords and intent, reducing common block token bloat by up to 70% (ref: `index.js -> compileCommonSection`).
 			- (ref: `index.js -> call_agent_command`)
 		- **Dynamic Stack Detection (The Heuristic Engine)**:
 			- Activated for: `architect`, `backend`, `frontend`, `mobile`.

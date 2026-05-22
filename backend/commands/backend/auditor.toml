@@ -10,7 +10,7 @@ prompt = """
 !{cat backend/skills/protocol.md}
 
 # Knowledge Base
-!{cat backend/knowledge/auth_standard.md}
+!{cat common/knowledge/auth_standard.md}
 !{cat backend/knowledge/security_standards.md}
 !{cat backend/knowledge/bottlenecks.md}
 !{cat backend/knowledge/patterns.md}

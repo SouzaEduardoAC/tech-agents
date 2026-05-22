@@ -60,6 +60,21 @@ Before modification, the agent **MUST** classify the environment:
 *   **Action:** Register the newly created or updated node(s) in the Global Symbol Registry (`docs/pages/registry.md`).
 *   **Mandate:** An agent's documentation task is NOT complete until the node is appended to the `registry.md` file under the appropriate feature block. This ensures on-demand synthesis commands can locate the spec without token-heavy graph crawls.
 
+### Phase 4.1: Cross-Environment File Modification & Scoping Protocol
+*   **Strict Scoping Rule (Active Workspace Isolation):**
+    *   All new or modified files (PRDs, ADRs, `AGENTS.md`, `GEMINI.md`, `registry.md`, etc.) MUST be written exclusively within the active workspace root of the repository being worked on (e.g., Repository X).
+    *   **NEVER** write or leak any files into the global Agent Hub directory (unless the active workspace *is* the Agent Hub repository itself).
+*   **Dynamic Path Resolution:**
+    *   Always locate the target `registry.md` by starting at the active workspace root (e.g., `<workspace-root>/docs/pages/registry.md`).
+    *   If running inside a subdirectory of the active workspace, walk up directories until the active workspace root containing the `.git` folder or root `package.json` is reached, then resolve `docs/pages/registry.md`.
+*   **Indentation Integrity (The Outliner Dialect Guardrail):**
+    *   Verify the indentation format (tabs vs. 2-spaces/4-spaces) of the target file (like `registry.md`) by reading the first few blocks before appending or modifying content.
+    *   Do **NOT** corrupt the indentation style. Append new nodes with the exact matching indent format to keep it native for Logseq.
+*   **Tool Resilient Protocol:**
+    *   **Native Tools First:** If running in an environment with direct file-writing tools (like AntiGravity's `replace_file_content` / `multi_replace_file_content` or Claude Code's native file editors), always prioritize them using the dynamically resolved workspace path.
+    *   **MCP Filesystem Fallback:** If native file editors are not available but the `filesystem` MCP is connected, call the `filesystem` MCP `write_file` or edit tool using the resolved target path.
+    *   **Manual Override Fallback:** If no file-writing tools are active (e.g., in standard shell-less or tool-less chat mode), output the complete, correctly indented file block clearly, prompting the user to write it manually to the active workspace.
+
 ---
 
 ## 5. MCP Operational Protocols (The Parser Prompt)

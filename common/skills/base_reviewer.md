@@ -19,3 +19,12 @@
 - **Regression:** For bug fixes, confirm a test case exists that specifically targets the fixed vulnerability or error.
 - **Test Integrity:** Ensure tests are deterministic, independent, and readable.
 - **Pass Rate:** Verify that 100% of the test suite passes before implementation approval.
+
+## 5. Cross-Client Resilient Execution Rules
+- **Shell-less Environment Fallback:**
+  - If running in a client that does not support direct command execution (e.g., Gemini CLI without command-running tools), do **NOT** fail.
+  - Instead, write out the exact command you wanted to run (e.g., `npm test`, `npm run lint`) and prompt the user to execute it and provide the console output.
+  - If static equivalent checks are possible (using file-reading or grep tools), run them proactively to assist the review.
+- **MCP Tool Degraded Mode:**
+  - If Playwright or SonarQube MCP tools are missing, unavailable, or fail to connect, gracefully fall back to thorough static analysis of the source code.
+  - Use available search and file-reading tools to inspect directory layouts, index configurations, or routing flows manually.

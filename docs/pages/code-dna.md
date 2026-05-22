@@ -15,4 +15,14 @@
 		- **Graph Integrity**: "No Ghost Pages." All linked nodes must be initialized. (ref: `common/skills/logseq_knowledge.md`)
 	- ## Testing DNA
 		- **"Unverified Code is Debt"**: 100% logic coverage requirement. (ref: `common/knowledge/testing_standard.md`)
+	- ## Cross-Platform Path DNA
+		- **Platform-Agnostic Separators**: Always construct dynamic file/directory paths using the native `path` module (`path.join()`, `path.resolve()`, `path.normalize()`).
+		- **Safe Home Resolving**: Never use `process.env.HOME` directly as it crashes on Windows. Use Node's built-in `os.homedir()` for robust cross-platform home directory discovery.
+		- **Glob Forward-Slash Standard**: Glob libraries require forward slashes (`/`), even on Windows where standard paths use backslashes (`\`). Sanitise backslashes in glob patterns using `.replace(/\\/g, "/")` before execution.
+		- **Resilient Symbolic Links**: File linking operations must catch EPERM/privilege failures and gracefully fall back to physical copying, ensuring seamless developer experience on constrained operating systems.
+		- **Active Workspace Isolation**: All planning, documentation, and code changes MUST be written exclusively within the active workspace root of the repository being worked on (Repository X), preventing file leakage into the global Agent Hub directory.
+	- ## Prompt & Execution Optimization DNA
+		- **Late-Binding Deduplication**: Scanning TOML prompts for explicit `!{cat}` directives and dynamically filtering those files from prepended common sections to eliminate duplicate token injection.
+		- **Heuristic Relevance Filtering**: Dynamically prepending only the subset of common files matching the active command keywords and intent, reducing common block token bloat by up to 70%.
+		- **Degraded/Shell-less Resilience**: All reviewer/auditor actions must define strict manual fallbacks (requesting user CLI input) and gracefully degrade to static manual equivalents if restrictive clients or offline specialized MCP servers are encountered.
 

@@ -34,9 +34,10 @@ async function resolveProbes(content) {
   
   while ((match = catRegex.exec(content)) !== null) {
     const rawPath = match[1].trim();
-    // Resolve relative or home-dir paths to the Hub's root
-    const absolutePath = rawPath.startsWith("~/.gemini/agents") 
-      ? path.join(AGENTS_ROOT, rawPath.replace("~/.gemini/agents/", ""))
+    // Normalize slashes to forward slashes for matching, but keep native for resolving
+    const normalizedRaw = rawPath.replace(/\\/g, "/");
+    const absolutePath = normalizedRaw.startsWith("~/.gemini/agents") 
+      ? path.join(AGENTS_ROOT, normalizedRaw.replace("~/.gemini/agents/", ""))
       : path.resolve(AGENTS_ROOT, rawPath);
 
     try {
@@ -56,13 +57,63 @@ async function resolveProbes(content) {
 
 async function readMarkdownDir(dirPath) {
   if (!(await fs.pathExists(dirPath))) return "";
-  const files = await glob(path.join(dirPath, "*.md"));
+  // Glob requires forward slashes, even on Windows where path.join uses backslashes
+  const globPattern = path.join(dirPath, "*.md").replace(/\\/g, "/");
+  const files = await glob(globPattern);
   let content = "";
   for (const file of files) {
     const fileContent = await fs.readFile(file, "utf-8");
     const fileName = path.basename(file);
     content += `\n### File: ${fileName}\n${fileContent}\n`;
   }
+  return content;
+}
+
+/**
+ * Combines deduplication and heuristic relevance filtering to optimize injected common files.
+ */
+async function compileCommonSection(dirPath, searchTarget, cattedBasenames, category) {
+  if (!(await fs.pathExists(dirPath))) return "";
+  const files = await fs.readdir(dirPath);
+  let content = "";
+
+  for (const file of files) {
+    if (!file.endsWith(".md") && !file.endsWith(".toml")) continue;
+    const basename = path.basename(file);
+
+    // 1. Deduplication: Skip if already explicitly catted in the prompt
+    if (cattedBasenames.has(basename)) {
+      continue;
+    }
+
+    // 2. Heuristic Relevance Filtering
+    let isRelevant = false;
+    if (category === "knowledge") {
+      if (basename === "auth_standard.md") {
+        isRelevant = /auth|security|login|session|token|secret|jwt/.test(searchTarget);
+      } else if (basename === "git_standard.md" || basename === "licensing.md" || basename === "testing_standard.md") {
+        isRelevant = /create|implement|fix|refactor|audit|reviewer|test|dependency|npm|install/.test(searchTarget);
+      } else {
+        // Fallback: default to true for other standards
+        isRelevant = true;
+      }
+    } else if (category === "skills") {
+      if (basename === "logseq_knowledge.md" || basename === "doc_maintainer.md") {
+        isRelevant = /docs|document|logseq|prd|adr|registry|create|discovery|plan|report|investigate/.test(searchTarget);
+      } else if (basename === "base_reviewer.md" || basename === "base_security_auditor.md") {
+        isRelevant = /audit|review|create|implement|security|test|bottleneck|perf|fix|refactor/.test(searchTarget);
+      } else {
+        // Fallback: default to true for other skills
+        isRelevant = true;
+      }
+    }
+
+    if (isRelevant) {
+      const fileContent = await fs.readFile(path.join(dirPath, file), "utf-8");
+      content += `\n### File: ${basename}\n${fileContent}\n`;
+    }
+  }
+
   return content;
 }
 
@@ -249,9 +300,18 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const tomlData = toml.parse(await fs.readFile(tomlPath, "utf-8"));
       let prompt = tomlData.prompt || "";
       
-      // Inject Common Knowledge & Skills
-      const commonKnowledge = await readMarkdownDir(path.join(AGENTS_ROOT, "common", "knowledge")).catch(() => "");
-      const commonSkills = await readMarkdownDir(path.join(AGENTS_ROOT, "common", "skills")).catch(() => "");
+      // Extract all catted basenames in the prompt to prevent double injection
+      const cattedBasenames = new Set();
+      const catMatches = prompt.matchAll(/!\{cat\s+([^\}]+)\}/g);
+      for (const match of catMatches) {
+        cattedBasenames.add(path.basename(match[1].trim()));
+      }
+
+      const searchTarget = `${command} ${tomlData.description || ""} ${taskArgs || ""}`.toLowerCase();
+
+      // Inject Common Knowledge & Skills (Deduplicated and filtered by relevance)
+      const commonKnowledge = await compileCommonSection(path.join(AGENTS_ROOT, "common", "knowledge"), searchTarget, cattedBasenames, "knowledge").catch(() => "");
+      const commonSkills = await compileCommonSection(path.join(AGENTS_ROOT, "common", "skills"), searchTarget, cattedBasenames, "skills").catch(() => "");
       
       // Inject Dynamic Knowledge for Architect/Backend/Frontend/Mobile
       let dynamicKnowledge = "";
@@ -276,8 +336,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const persona = await fs.readFile(path.join(agentPath, "brain", "persona.md"), "utf-8").catch(() => "");
       const skills = await readMarkdownDir(path.join(agentPath, "skills")).catch(() => "");
       const knowledge = await readMarkdownDir(path.join(agentPath, "knowledge")).catch(() => "");
-      const commonKnowledge = await readMarkdownDir(path.join(AGENTS_ROOT, "common", "knowledge")).catch(() => "");
-      const commonSkills = await readMarkdownDir(path.join(AGENTS_ROOT, "common", "skills")).catch(() => "");
+      const cattedBasenames = new Set();
+      const searchTarget = `${agent} ${persona}`.toLowerCase();
+      const commonKnowledge = await compileCommonSection(path.join(AGENTS_ROOT, "common", "knowledge"), searchTarget, cattedBasenames, "knowledge").catch(() => "");
+      const commonSkills = await compileCommonSection(path.join(AGENTS_ROOT, "common", "skills"), searchTarget, cattedBasenames, "skills").catch(() => "");
 
       // Inject Dynamic Knowledge for Architect/Backend/Frontend/Mobile
       let dynamicKnowledge = "";

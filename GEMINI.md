@@ -24,9 +24,10 @@ The following namespaces are registered via `/bin/agent-hub bootstrap`:
 - [[Compliance]]: Regulatory audits (#GDPR, #HIPAA, #SOC2).
 - [[Researcher]]: Deep information synthesis.
 - [[n8n]]: Workflow #Automation architect.
-
 ## 🛠 Active Work & Tasks
-- TODO: Verify path normalization across all agents.
+- DONE: Verify path normalization across all agents. (ref: [[code-dna]])
+- DONE: Implement prompt late-binding deduplication and heuristic relevance filtering (#AMD compiler optimization). (ref: [[TECHNICAL_SPECS]])
+- DONE: Formulate resilient cross-client execution fallbacks and degraded tools protocols. (ref: [[code-dna]])
 - TODO: Mature [[compliance/skills/audit_protocol.md|Compliance Audit Protocol]].
 - TODO: Implement automated AST-sync for [[Mobile]] widget trees.
 
