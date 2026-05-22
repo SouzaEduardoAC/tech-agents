@@ -1,9 +1,10 @@
 # Agentic AI Framework (Universal Agent Hub) v1.1.0
 **Standardized orchestration for specialized AI Agents across Gemini, Claude, AntiGravity, and Codex.**
 
-## 🧠 Cognitive Anchor (AI Optimized)
-The primary entry point for AI agents is the **[[GEMINI.md]]** file.
+## 🧠 Cognitive Anchors (AI Optimized)
+The primary entry points for AI agents are the **[[AGENTS.md]]** (Universal) and **[[GEMINI.md]]** (Tool-Specific) files.
 - **Efficiency**: Optimized for AI consumption to minimize token overhead.
+- **Standardization**: `AGENTS.md` follows the open standard for cross-tool compatibility (AntiGravity, Cursor, Claude).
 - **Graph-First**: Direct links to the Logseq-powered knowledge graph in `docs/pages/`.
 
 ---

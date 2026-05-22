@@ -98,8 +98,11 @@ Every technical deep-dive must conclude with this structured critique:
 
 ## 6. AI Context & Graph Protocol (The Cognitive Anchor)
 
-1. **Mandatory Entry Point:** The agent **MUST** create or update a root-level `GEMINI.md` file. This serves as the "Cognitive Anchor" for all AI interactions.
-2. **Graph Integration:** `GEMINI.md` must link to the Logseq graph pages located in `docs/pages/` (e.g., `[[ai-agents-graph]]`, `[[TECHNICAL_SPECS]]`).
+1. **Mandatory Entry Points:** The agent **MUST** maintain two root-level context files:
+    - **`AGENTS.md`**: The primary universal entry point. Contains tech stack, coding standards, and project-agnostic rules.
+    - **`GEMINI.md`**: The tool-specific anchor for Gemini/AntiGravity CLI. Contains slash command behaviors and specific model overrides.
+    - *Note:* In the AntiGravity ecosystem, `GEMINI.md` takes precedence over `AGENTS.md`.
+2. **Graph Integration:** Both files must link to the Logseq graph pages located in `docs/pages/` (e.g., `[[ai-agents-graph]]`, `[[TECHNICAL_SPECS]]`).
 3. **Syntax Mandate:** 
     - Use Logseq-style `[[links]]` for all internal page references.
     - Use `#tags` for categorizing technical domains (e.g., `#security`, `#backend`).

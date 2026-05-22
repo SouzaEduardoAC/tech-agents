@@ -36,13 +36,18 @@ Target: {{args}}
     - **Technical Visualization:** Generate Mermaid Sequence or Flowcharts in `docs/pages/visuals.md`.
 
 6. **Phase 2.5: AI Context & Graph Synchronization.**
-    - **GEMINI.md Update:** Create or update the root-level `GEMINI.md`.
-    - **Cognitive Anchor:** Ensure `GEMINI.md` links to all relevant specialized agents and the `docs/pages/` graph nodes using `[[links]]`.
-    - **Logseq Style:** Rigorously use `[[links]]`, `#tags`, and `TODO/DONE` markers throughout `GEMINI.md` and `docs/pages/`.
+    - **Dual-Anchor Update:** Create or update BOTH the root-level `AGENTS.md` (Universal) and `GEMINI.md` (Tool-Specific).
+    - **Cognitive Anchors:** `AGENTS.md` is the primary universal anchor, while `GEMINI.md` is the override for Gemini/AntiGravity CLI.
+    - **Graph Linking:** Ensure both files link to all relevant specialized agents and the `docs/pages/` graph nodes using `[[links]]`.
+    - **Logseq Style:** Rigorously use `[[links]]`, `#tags`, and `TODO/DONE` markers throughout `AGENTS.md`, `GEMINI.md`, and `docs/pages/`.
 
 7. **Phase 3: Verification.** 
     - Apply Yellow/Black Hat analysis and 'Blind Spot' notes. 
     - Every technical claim MUST include an AST citation: `(ref: function_name)`.
 
-8. **Closure.** Summarize the updates made to the Logseq graph.
+8. **Output:**
+    - `AGENTS.md` (Universal AI Context)
+    - `GEMINI.md` (Tool-Specific AI Context)
+
+9. **Closure.** Summarize the updates made to the Logseq graph.
 """
