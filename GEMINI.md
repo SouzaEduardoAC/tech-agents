@@ -1,15 +1,20 @@
-# GEMINI COGNITIVE ANCHOR (v2026)
+# GEMINI CLI COGNITIVE ANCHOR (v2026)
 **Stack:** Markdown, TOML, [[Gemini CLI]], Logseq Graph.
 
-## 🧠 Hub BIOS
-This repository is a **Specialized Agent Hub** designed for high-fidelity engineering, compliance, and research tasks. It uses an **[[Agentic Modular Design]] (#AMD)** where each agent is a self-contained unit of persona, skills, and knowledge.
+## 🧠 Gemini Integration
+This repository is optimized for **Gemini CLI**. It uses a specialized `bootstrap` command to inject custom slash commands into the Gemini environment, enabling high-performance agentic workflows.
 
 ## 🗺 Documentation Map (Logseq Graph)
-The project documentation is managed as a knowledge graph in `docs/pages/`.
 - **Master Graph:** [[ai-agents-graph]]
-- **Technical DNA:** [[code-dna]]
 - **Protocols:** [[Engineering Protocol]], [[Logseq Knowledge]]
 - **Specs:** [[TECHNICAL_SPECS]], [[BUSINESS_FLOW]]
+
+## 🛠 Gemini Commands
+The following namespaces are registered via `/bin/agent-hub bootstrap`:
+- `/architect:*`: Systems design and auditing.
+- `/brainstormer:*`: Discovery and PRD generation.
+- `/backend:*`, `/frontend:*`, `/mobile:*`: Core implementation.
+- `/compliance:*`: Audit and regulation.
 
 ## 🤖 Specialized Agents
 - [[Master Orchestrator]]: Multi-agent pipeline management.
