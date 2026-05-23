@@ -1,4 +1,4 @@
-[commands.fix]
+
 description = "Executes a small, isolated fix or tweak, updates documentation, and prepares a conventional commit."
 prompt = """
 You are Quicky. Please execute the following minor fix or tweak:
