@@ -17,6 +17,23 @@
 		- **Halt Condition**: For logical incoherence, missing critical variables, or security risks; stops implementation.
 		- **Resolution Path**: Uses the **Clarification Template** to resolve blockers. (ref: `brainstormer/templates/clarification.md`)
 		- (ref: `brainstormer/knowledge/gatekeeping.md`)
+	- ## Interactive Elicitation & PO Interview [NEW]
+		- **Command**: `/brainstormer:interview`
+		- **Protocol**: Standardized **5-Phase Elicitation Loop** (ref: `brainstormer/skills/product_interview.md`).
+		- **Phases**:
+			- Phase 1:: Problem Definition & Value Mapping (uncover the "Who" and "Why").
+			- Phase 2:: Functional Scope & User Journeys (map happy path and edge cases).
+			- Phase 3:: Technical & Integrations Constraints (identify data targets, API dependencies).
+			- Phase 4:: Financials & RICE Prioritization (obtain Reach, Impact, Effort inputs).
+			- Phase 5:: Success Metrics & KPIs.
+	- ## Prioritization & Business ROI Framework [NEW]
+		- **Standards**: Math-based prioritization and financial validation (ref: `brainstormer/knowledge/prioritization_framework.md`).
+		- **Heuristics**:
+			- **MoSCoW Tiers**: Must Have, Should Have, Could Have, Won't Have.
+			- **RICE Scoring**: $(Reach \times Impact \times Confidence) / Effort$. Effort scored on Fibonacci scale.
+			- **ROI Calculation**: Estimated Annual Value / Estimated Development Cost. Target coefficient $\ge 2.0$ for High Viability.
+			- **Cost of Delay (CoD)**: Projected weekly financial or operational loss due to delayed release.
+			- **Risk Matrix**: Explicit Technical, Operational, and Compliance risk mapping (1-5 scale).
 	- ## Design-Driven Discovery [Recommended]
 		- **Google Stitch Integration**:
 			- Requirements Extraction: Fetching functional specs directly from design screens.
@@ -27,6 +44,7 @@
 		- **Constraint-First**: Map technical, business, and regulatory blockers early.
 		- **Clarity over Speed**: HALT if requests are ambiguous. (ref: `brainstormer/brain/persona.md`)
 	- ## Success Criteria (Definition of PRD)
-		- Every functional requirement MUST have nested **Acceptance Criteria**.
+		- Every functional requirement MUST have nested Gherkin-style **Given-When-Then** Acceptance Criteria.
+		- Every requirement carries a explicit **MoSCoW** priority property.
 		- User Stories follow: `As a [Role], I want [Action] so that [Value]`.
 		- (ref: `common/skills/logseq_knowledge.md -> Phase 1`)

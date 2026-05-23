@@ -11,3 +11,6 @@
 	- ## Core Infrastructure
 		- status:: [SYNC]
 		- nodes:: [[TECHNICAL_SPECS]], [[BUSINESS_FLOW]], [[code-dna]], [[resilience-policies]], [[AI Interaction Standard]], [[Business Synthesizer]]
+	- ## Product Elicitation & PO Framework
+		- status:: [ACTIVE]
+		- nodes:: [[Brainstormer]], [[prioritization-framework]], [[product-interview]]

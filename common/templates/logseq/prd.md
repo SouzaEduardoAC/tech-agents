@@ -6,29 +6,44 @@
 - # Overview
 	- **Goal:** [Primary Objective]
 	- **Problem Statement:** [What are we solving?]
-	- **Success Metrics:**
-		- [Metric 1]
-		- [Metric 2]
-- # Target Audience
-	- [User Persona 1]
-	- [User Persona 2]
+	- **Success Metrics (KPIs):**
+		- [[KPI-01]]: [Target and metric]
+		- [[KPI-02]]: [Target and metric]
+- # Target Audience & Personas
+	- **Primary Persona:** [Role, Technical Aptitude, Key Goals]
 - # User Stories
-	- TODO AS A [role], I WANT [action], SO THAT [value].
-- # Functional Requirements
-	- [[FR-01]]: [Description]
-		- priority:: high
-	- [[FR-02]]: [Description]
-		- priority:: medium
+	- TODO AS A [Role], I WANT [Action], SO THAT [Value].
+	- TODO AS A [Role], I WANT [Action], SO THAT [Value].
+- # Functional Requirements & MoSCoW
+	- [[FR-01]]: [Feature Title - Description]
+		- MoSCoW:: must
+		- stories:: [[User Story Reference]]
+	- [[FR-02]]: [Feature Title - Description]
+		- MoSCoW:: should
+		- stories:: [[User Story Reference]]
 - # Non-Functional Requirements
 	- **Performance:** [Target]
 	- **Security:** [Target]
 	- **Compliance:** [Target]
+- # Prioritization & ROI Analysis
+	- **RICE Scores:**
+		- [[FR-01]]:: Reach: [Users] | Impact: [0.5-3] | Confidence: [0.5-1] | Effort: [Fibonacci] | RICE: [Score]
+		- [[FR-02]]:: Reach: [Users] | Impact: [0.5-3] | Confidence: [0.5-1] | Effort: [Fibonacci] | RICE: [Score]
+	- **Financial Feasibility:**
+		- ROI:: [Value / Cost Coefficient]
+		- CoD:: [Cost of Delay per week/month]
 - # Constraints & Edge Cases
-	- [Constraint 1]
-	- [Edge Case 1]
-- # Acceptance Criteria
-	- [ ] [Criterion 1]
-	- [ ] [Criterion 2]
+	- [[EC-01]]: [Scenario - System Fallback]
+	- [[C-01]]: [Technical Constraint Description]
+- # Acceptance Criteria (Gherkin Rules)
+	- **Tests for [[FR-01]]:**
+		- Given [Initial system state]
+		- When [User performs the action]
+		- Then [Expected system outcome]
+	- **Tests for [[FR-02]]:**
+		- Given [Initial system state]
+		- When [User performs the action]
+		- Then [Expected system outcome]
 - # Metadata
 	- created-at:: <% today %>
 	- tags:: #prd #draft
