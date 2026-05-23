@@ -9,6 +9,9 @@ This repository is optimized for **Gemini CLI**. It uses a specialized `bootstra
 - **Protocols:** [[Engineering Protocol]], [[Logseq Knowledge]]
 - **Specs:** [[TECHNICAL_SPECS]], [[BUSINESS_FLOW]]
 
+## 📜 Documentation Protocol Integrity
+**CRITICAL MANDATE:** You MUST always respect and update the entire documentation protocol of all agents (such as journals, registry, and graphs) when modifying the repository, EVEN if you are not currently operating as the specific agent responsible for that domain. Code changes without corresponding protocol updates are strictly prohibited.
+
 ## 🛠 Gemini Commands
 The following namespaces are registered via `/bin/agent-hub bootstrap`:
 - `/architect:*`: Systems design and auditing.

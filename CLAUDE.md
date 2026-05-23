@@ -36,6 +36,9 @@ The project documentation is managed as a knowledge graph in `docs/pages/`.
 - **Protocols:** [[Engineering Protocol]], [[Logseq Knowledge]]
 - **Specs:** [[TECHNICAL_SPECS]], [[BUSINESS_FLOW]]
 
+## 📜 Documentation Protocol Integrity
+**CRITICAL MANDATE:** You MUST always respect and update the entire documentation protocol of all agents (such as journals, registry, and graphs) when modifying the repository, EVEN if you are not currently operating as the specific agent responsible for that domain. Code changes without corresponding protocol updates are strictly prohibited.
+
 ## 🤖 Specialized Agents
 - [[Master Orchestrator]]: Multi-agent pipeline management.
 - [[Brainstormer]]: Requirements gathering and #PRD generation.
