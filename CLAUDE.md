@@ -49,6 +49,7 @@ The project documentation is managed as a knowledge graph in `docs/pages/`.
 - [[n8n]]: Workflow #Automation architect.
 - [[Business Synthesizer]]: Technical documentation-to-business translator.
 - [[Forge]]: Specialized meta-agent to design, scaffold, audit, and upgrade other agents.
+- [[Quicky]]: Specialist for quick fixes, small tweaks, and isolated tasks maintaining documentation integrity.
 
 ## 🛠 Active Work & Tasks
 - DONE: Verify path normalization across all agents. (ref: [[code-dna]])

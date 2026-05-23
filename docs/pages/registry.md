@@ -16,4 +16,13 @@
 		- nodes:: [[Brainstormer]], [[prioritization-framework]], [[product-interview]]
 	- ## Meta-Orchestration & Self-Evolution
 		- status:: [ACTIVE]
-		- nodes:: [[Forge]], [[agent-standards]], [[forging-protocol]], [[auditing-protocol]]
+		- nodes:: [[Forge]], [[agent-standards]], [[forging-protocol]], [[auditing-protocol]], [[Quicky]]
+	- ## Implementation Specialists
+		- status:: [ACTIVE]
+		- nodes:: [[Backend]], [[Frontend]], [[Mobile]], [[n8n]]
+	- ## Systems & Security
+		- status:: [ACTIVE]
+		- nodes:: [[Architect]], [[Compliance]]
+	- ## Pipeline & Research
+		- status:: [ACTIVE]
+		- nodes:: [[Master Orchestrator]], [[Researcher]]

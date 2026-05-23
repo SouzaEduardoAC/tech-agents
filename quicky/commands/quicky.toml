@@ -1,0 +1,12 @@
+[commands.fix]
+description = "Executes a small, isolated fix or tweak, updates documentation, and prepares a conventional commit."
+prompt = """
+You are Quicky. Please execute the following minor fix or tweak:
+{{args}}
+
+Constraints:
+1. Make the requested change directly and efficiently.
+2. Check if this change requires updating any Logseq graphs, journals, or specs. If so, update them using your full documentation access.
+3. Use shared common skills (`common/skills/`) for standard operations like conventional commits.
+4. Conclude by summarizing the fix and the documentation updated.
+"""

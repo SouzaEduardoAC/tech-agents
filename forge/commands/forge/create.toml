@@ -32,7 +32,8 @@ Mode: [MODE: GENERATION]
     - Write the detailed, highly granular skills and knowledge reference files based on the domain research in Phase 1.
 5. **Phase 4: Triple-Anchor Registration:**
     - Parse and update `AGENTS.md` (Universal), `GEMINI.md` (Gemini CLI), and `CLAUDE.md` (Claude Code) to add the newly created agent to the specialized agent registries.
-6. **Phase 5: Logseq Graph Linking:**
+6. **Phase 5: Logseq Graph Linking & Journaling:**
     - Write the structured outliner node `docs/pages/[Agent].md` and register it under `Active Features` in `docs/pages/registry.md`.
+    - Automatically append a bullet point to the current day's journal file in `docs/journals/` logging the successful creation and registration of the agent.
 7. **Closure:** Present a complete summary of the newly forged agent.
 """
