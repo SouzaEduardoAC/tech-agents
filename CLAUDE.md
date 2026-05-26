@@ -57,6 +57,7 @@ The project documentation is managed as a knowledge graph in `docs/pages/`.
 - DONE: Formulate resilient cross-client execution fallbacks and degraded tools protocols. (ref: [[code-dna]])
 - DONE: Implement [[Business Synthesizer]] to translate tech docs for BAs/POs. (ref: [[common/skills/business_synthesis.md]])
 - DONE: Mature [[compliance/skills/audit_protocol.md|Compliance Audit Protocol]] (mapped detailed GDPR, LGPD, and HIPAA reference guidelines in compliance/knowledge/).
+- DONE: Reorganize default MCP stack, promote Context7 default integration with key placeholders, and enforce automated planning-level citation validation in the execution protocol. (ref: `[[TECHNICAL_SPECS]]`, `common/knowledge/anti_hallucination.md`)
 - TODO: Implement automated AST-sync for [[Mobile]] widget trees.
 
 #AMD #ClaudeCode #AgenticFramework #Logseq

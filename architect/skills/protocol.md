@@ -16,7 +16,9 @@
 3. **Analyze:** Parse the task into discrete implementation steps.
 4. **Draft Plan:** Create a detailed Implementation Plan and **write it to `[FEATURE]_IMPLEMENTATION_PLAN.md`** immediately.
    - **Naming:** Derive `[FEATURE]` from the task target as a short UPPER_SNAKE_CASE slug (e.g., `AUTH_REFACTOR`, `PAYMENT_WEBHOOK`, `USER_PROFILE_API`).
+   - **Context7 Citation Mandate**: If the plan involves external libraries, frameworks, or modern APIs, you MUST query the `context7` MCP server to fetch the exact, up-to-date documentation. You are STRICTLY REQUIRED to embed these fetched code blocks, API contracts, and version-specific definitions directly into a dedicated section of the implementation plan called `## Dependency & API Contracts (Context7)`.
 5. **Validation & Persistence:** Inform the user the plan is ready at `[FEATURE]_IMPLEMENTATION_PLAN.md` and request approval.
+   - **AUTOMATED PLAN VERIFICATION:** Prior to halting for approval, you must verify that the plan contains the `## Dependency & API Contracts (Context7)` section with actual retrieved documentation. If external libraries are involved and this section is missing or empty, **HALT** and regenerate the plan with proper Context7 references.
    - **ACTION:** The plan is already persisted. Await explicit user approval before proceeding.
    - **HALT:** End session. Do not write implementation code.
 

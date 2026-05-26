@@ -89,13 +89,16 @@ program
           console.log("   ✅ [MCP] Configured filesystem server for home directory");
         }
 
-        // Add Playwright MCP if missing
-        if (!settings.mcpServers.playwright) {
-          settings.mcpServers.playwright = {
+        // Add Context7 MCP if missing
+        if (!settings.mcpServers.context7) {
+          settings.mcpServers.context7 = {
             command: "npx",
-            args: ["-y", "@playwright/mcp@latest", "--browser", "chrome"]
+            args: ["-y", "@upstash/context7-mcp"],
+            env: {
+              CONTEXT7_API_KEY: ""
+            }
           };
-          console.log("   ✅ [MCP] Configured playwright-mcp server");
+          console.log("   ✅ [MCP] Configured Context7 MCP server (CONTEXT7_API_KEY placeholder added)");
         }
 
         // Add Agent Hub MCP if missing

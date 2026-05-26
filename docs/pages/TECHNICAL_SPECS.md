@@ -14,7 +14,7 @@
 			- Function:: One-time local environment setup for Gemini CLI, AntiGravity, and Claude Code.
 			- **Step 0: Gemini MCP Configuration**:
 				- Path:: `~/.gemini/settings.json`
-				- Logic:: Dynamically injects `filesystem` and `playwright` MCP server configurations if missing.
+				- Logic:: Dynamically injects `filesystem`, `context7`, and `agent-hub` MCP server configurations if missing.
 			- **Step 1: Gemini Slash Commands**:
 				- Source:: `[agent]/commands/[agent]/*.toml`
 				- Target:: `~/.gemini/commands/[agent]/`
@@ -71,13 +71,18 @@
 				- Interaction:: Used by ALL agents to read/write documentation, ADRs, and PRDs.
 				- Server:: `@modelcontextprotocol/server-filesystem`
 				- Link:: [GitHub](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem)
-			- **Playwright MCP**:
-				- Description:: Browser automation for verification, accessibility audits, and performance testing.
-				- Interaction:: Essential for `:auditor` commands and `frontend`/`mobile` verification phases.
-				- Server:: `@playwright/mcp`
-				- Link:: [GitHub](https://github.com/microsoft/playwright-mcp)
+			- **Context7 MCP**:
+				- Description:: Real-time, version-specific technical documentation retriever for thousands of libraries and frameworks to eliminate hallucinations. Works keyless or with an optional API key for higher rate limits.
+				- Interaction:: Used by ALL agents to pull highly accurate, up-to-date syntax and API definitions for modern packages.
+				- Server:: `@upstash/context7-mcp`
+				- Link:: [GitHub](https://github.com/upstash/context7) | [Upstash](https://upstash.com/)
 		- ### Recommended (External)
-			- These MCPs are recommended for high-precision engineering but require manual environment configuration (e.g., API Tokens).
+			- These MCPs are recommended for high-precision engineering but require manual environment or tool configuration (e.g., API Tokens, global CLI installation).
+			- **Playwright MCP and Playwright CLI**:
+				- Description:: Browser automation for visual verification, accessibility audits, and performance testing, running either as an MCP server or directly via the CLI.
+				- Interaction:: Essential for `:auditor` commands and `frontend`/`mobile` verification phases.
+				- Server/Package:: `@playwright/mcp` and `@playwright/cli`
+				- Link:: [GitHub (MCP)](https://github.com/microsoft/playwright-mcp) | [Playwright CLI](https://playwright.dev/docs/cli)
 			- **Google Stitch MCP**:
 				- Description:: Design-to-code bridge for fetching UI/UX artifacts and Design DNA.
 				- Interaction:: Used by `frontend`, `mobile`, and `brainstormer` for design-grounded discovery and creation.
