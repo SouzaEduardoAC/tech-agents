@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.0.0...v1.1.0) (2026-05-29)
+
+
+### Features
+
+* **protocol:** convert execution protocols to Logseq outliner graph … ([a615e79](https://github.com/SouzaEduardoAC/ai-agents/commit/a615e79d3325be8ce3b77065c2991bf9a283022d))
+* **protocol:** convert execution protocols to Logseq outliner graph nodes ([8ff1a6d](https://github.com/SouzaEduardoAC/ai-agents/commit/8ff1a6d0fc1ac087435ef9c98a3c91396f5049fd))
+
 ## 1.0.0 (2026-05-29)
 
 
