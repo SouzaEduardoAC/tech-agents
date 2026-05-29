@@ -1,5 +1,5 @@
 {
-  "name": "@your-org/agent-hub",
+  "name": "@souzaeduardoac/ai-agents",
   "version": "1.1.0",
   "description": "Universal bridge for AI Agents (Gemini, Claude, Codex)",
   "type": "module",
