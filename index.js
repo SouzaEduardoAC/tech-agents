@@ -391,7 +391,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         dynamicKnowledge = await getDynamicKnowledge(taskArgs, agent);
       }
 
-      prompt = `# Common Standards\n${commonKnowledge}\n\n# Common Skills\n${commonSkills}\n\n# Dynamic Knowledge\n${dynamicKnowledge}\n\n${prompt}`;
+      const identityMeta = `### ACTIVE PERSONA CONTEXT
+You are currently executing the command '${command}' as the **${agent.toUpperCase()}** agent.
+To maintain transparency and multi-agent coordination, you MUST prefix your very first response line with a clean, prominent identity tag in the format:
+\`[Agent: ${agent.toUpperCase()} | Command: ${command.toUpperCase()}]\`
+
+--------------------------------------------------------------------------------\n\n`;
+
+      prompt = `${identityMeta}# Common Standards\n${commonKnowledge}\n\n# Common Skills\n${commonSkills}\n\n# Dynamic Knowledge\n${dynamicKnowledge}\n\n${prompt}`;
       
       // Resolve {{args}}
       prompt = prompt.replace(/\{\{args\}\}/g, taskArgs);
