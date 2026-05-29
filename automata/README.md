@@ -15,8 +15,8 @@ The Automata Specialist Agent is designed to architect, implement, and optimize 
     - `automata_core.md`: Reference to Automata core concepts and the official GitHub repository.
     - `best_practices.md`: Industry standards for Automata workflow design and error handling.
 - **Commands:**
-    - `/automata:brainstorm`: Deep-dive research into APIs, auth, and data structures to generate `[WORKFLOW]_DISCOVERY.md`.
-    - `/automata:plan`: Research and generate a validated `[WORKFLOW]_DESIGN_PLAN.md` based on discovery.
+    - `/automata:plan`: Deep-dive research, workflow design, and planning to generate `docs/pages/[workflow]-discovery.md` and `docs/pages/[workflow]-plan.md`.
+    - `/automata:create`: Implement and generate final validated JSON workflow for import.
 
 ## Installation
 
@@ -34,28 +34,27 @@ ln -s ~/.gemini/agents/automata/commands/automata ~/.gemini/commands/automata
 
 ## Usage (The Automata Lifecycle)
 
-The agent operates in three distinct phases to ensure reliability and architectural integrity:
+The agent operates in distinct phases to ensure reliability and architectural integrity:
 
-### Step 1: `/automata:brainstorm` (Deep Brainstorm & Discovery)
+### Step 1: `/automata:plan` (Phase 1: Discovery)
 Before any building, the agent validates your request, researches APIs, identifies edge cases, and checks for "garbage" inputs.
 - **Goal:** Validate feasibility and research technical requirements.
-- **Output:** `[WORKFLOW]_DISCOVERY.md`
+- **Output:** `docs/pages/[workflow]-discovery.md` (which starts with standard Logseq properties and follows the outliner format).
 ```text
-/automata:brainstorm "Sync HubSpot CRM contacts with a Google Sheets spreadsheet."
+/automata:plan "Sync HubSpot CRM contacts with a Google Sheets spreadsheet."
 ```
 
-### Step 2: `/automata:plan` (Architecture Planning)
-The agent takes the discovery report and builds a technical blueprint, mapping exactly which nodes and logic are needed.
+### Step 2: `/automata:plan` (Phase 2: Architecture Planning)
+Upon approval of the discovery phase, the agent builds a technical blueprint, mapping exactly which nodes and logic are needed.
 - **Goal:** Create a detailed design plan.
-- **Output:** `[WORKFLOW]_DESIGN_PLAN.md`
+- **Output:** `docs/pages/[workflow]-plan.md` (which starts with standard Logseq properties and follows the outliner format).
 ```text
 /automata:plan "HubSpot Sync"
 ```
 
-### Step 3: `/automata:create` (Implementation & JSON)
+### Step 3: `/automata:create` (Phase 3: Implementation & JSON)
 The agent transforms the approved design plan into the actual Automata workflow JSON structure.
-- **Goal:** Generate a ready-to-import JSON workflow.
-- **Output:** `[WORKFLOW]_IMPLEMENTATION.json`
+- **Goal:** Generate a ready-to-import JSON workflow inside `docs/pages/[workflow]-workflow.json`.
 ```text
 /automata:create "HubSpot Sync"
 ```

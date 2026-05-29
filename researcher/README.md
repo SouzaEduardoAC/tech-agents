@@ -16,7 +16,7 @@ The Researcher agent operates with a clinical, objective, and intellectually hon
     - **Data Hierarchy:** Prioritizing primary documentation and official statistics.
 - **Templates (`templates/report.md`):** Standardized markdown format for research outputs.
 - **Commands:**
-    - `/researcher:investigate`: Deep-dive research into topics, sources, and scope to generate `[RESEARCH]_DISCOVERY.md`.
+    - `/researcher:investigate`: Deep-dive research into topics, sources, and scope to generate `docs/pages/[research]-discovery.md`.
     - `/researcher:report`: Execute a data-driven research task based on an approved discovery artifact.
 
 ## Installation
@@ -36,7 +36,7 @@ ln -s ~/.gemini/agents/researcher/commands/researcher ~/.gemini/commands/researc
 ## Usage
 
 ### Phase 0: Discovery (Deep Dive)
-Before full research, map the landscape and clarify requirements. The agent writes to `[RESEARCH]_DISCOVERY.md`:
+Before full research, map the landscape and clarify requirements. The agent writes to `docs/pages/[research]-discovery.md` (which starts with standard Logseq properties and follows the outliner format):
 ```text
 /researcher:investigate "the current state of the Rust-to-WebAssembly ecosystem"
 ```

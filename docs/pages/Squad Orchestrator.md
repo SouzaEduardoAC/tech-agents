@@ -9,8 +9,8 @@
 		- **Quality Control**: Enforces mandatory user sign-off for Discovery, Plans, and Implementation.
 		- **Context Integrity**: Ensures prompt assembly includes all relevant Common Knowledge and Dynamic Stack Skills.
 	- ## Squad Protocol (The 4-Phase Squad Loop)
-		- 1. **Elicitation Phase**: Call `get_agent_prompt(agent="brainstormer")`. Write `[FEATURE]_PRD.md`.
-		- 2. **Analysis Phase**: Call `get_agent_prompt(agent="architect")`. Write `[FEATURE]_IMPLEMENTATION_PLAN.md`.
+		- 1. **Elicitation Phase**: Call `get_agent_prompt(agent="brainstormer")`. Write `docs/pages/[feature]-prd.md`.
+		- 2. **Analysis Phase**: Call `get_agent_prompt(agent="architect")`. Write `docs/pages/[feature]-plan.md` (which MUST start with standard Logseq properties and follow the outliner format).
 		- 3. **Compliance Phase (Optional)**: Call `get_agent_prompt(agent="compliance")` for regulatory/privacy gating.
 			- **Trigger Conditions**: Required if the feature handles **PII**, **Financial Data**, **Account/Auth Logic**, or targets **GDPR/LGPD** regions.
 		- 4. **Execution Phase**: Call `get_agent_prompt(agent="backend|frontend|mobile|Automata")`. Execute plan and run tests.

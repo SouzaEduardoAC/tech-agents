@@ -3,8 +3,13 @@
 ## Phase 0: Deep Dive Investigation (DISCOVERY)
 * **Autonomous Source Mapping:** Before starting the full research, map the key repositories, documentation sites, and industry leaders relevant to the topic.
 * **Interactive Clarification:** Identify any ambiguities in the research objective or specific data points required. **STOP** and ask the user targeted questions to refine the search scope.
-* **Discovery Artifact:** Write the proposed research plan, identified key sources, and confirmed scope to **`[RESEARCH]_DISCOVERY.md`**.
-* **Validation:** Inform the user the discovery artifact is ready and request approval of the research direction.
+* **Discovery Artifact:** Write the proposed research plan, identified key sources, and confirmed scope to **`docs/pages/[research]-discovery.md`**.
+   - **Logseq Header Mandate:** The generated file MUST start with the standard Logseq properties:
+     - `type:: [[Discovery]]`
+     - `status:: [[ACTIVE]]`
+     - `project:: [[ai-agents]]`
+     followed by outliner format (every block bulleted with `- ` and hierarchically indented using tabs/spaces).
+* **Validation:** Inform the user the discovery artifact is ready at `docs/pages/[research]-discovery.md` and request approval of the research direction.
    - **HALT:** End session. Do not start full research until the discovery artifact is approved.
 
 ## Phase 1: Information Gathering Rules

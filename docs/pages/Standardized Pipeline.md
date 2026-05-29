@@ -7,15 +7,15 @@
 		- 1. **Grounding**: Read `AI Context` or `GEMINI.md`.
 		- 2. **Deep Research**: Autonomously map data flows, dependencies, and side-effects across the codebase.
 		- 3. **Interactive Clarification**: Identify ambiguities in business logic, edge cases, or constraints. **STOP** and ask targeted questions if needed.
-		- 4. **Discovery Artifact**: Write findings and confirmed understanding to `[FEATURE]_DISCOVERY.md`.
+		- 4. **Discovery Artifact**: Write findings and confirmed understanding to `docs/pages/[feature]-discovery.md` (which MUST start with `type:: [[Discovery]]`, `status:: [[ACTIVE]]`, and `project:: [[ai-agents]]` Logseq properties).
 		- 5. **Gate 0 (Human Approval)**: Await explicit user approval of the discovery artifact before drafting the plan.
 	- ## Phase 2: Architectural Planning (Mode: PLAN)
-		- 1. **Load Context**: Read `[FEATURE]_DISCOVERY.md` to align with approved understanding.
+		- 1. **Load Context**: Read `docs/pages/[feature]-discovery.md` to align with approved understanding.
 		- 2. **Contextualize**: Trace specific logic/dependencies based on the discovery.
-		- 3. **Draft Plan**: Create a detailed Implementation Plan and write to `[FEATURE]_IMPLEMENTATION_PLAN.md`.
+		- 3. **Draft Plan**: Create a detailed Implementation Plan and write to `docs/pages/[feature]-plan.md` (which MUST start with `type:: [[Plan]]`, `status:: [[ACTIVE]]`, and `project:: [[ai-agents]]` Logseq properties).
 		- 4. **Gate 1 (Human Approval)**: Await explicit user approval of the plan before proceeding to implementation.
 	- ## Phase 3: Implementation (Mode: IMPLEMENT)
-		- 1. **Load Contract**: Read `[FEATURE]_IMPLEMENTATION_PLAN.md`.
+		- 1. **Load Contract**: Read `docs/pages/[feature]-plan.md`.
 		- 2. **Sync**: Verify current codebase still matches the plan's assumptions.
 		- 3. **Tasking**: Create a `TODO.md` based on the plan.
 		- 4. **Pre-Test Guard (Private Feed Check)**:
@@ -25,5 +25,5 @@
 		- 6. **Verification**: 100% pass rate required. (ref: `common/knowledge/testing_standard.md`)
 		- 7. **Gate 2 (Human Approval)**: Present final diff and review report.
 	- ## Phase 4: Reconciliation & Sync
-		- 1. **Plan Reconciliation**: Update `[FEATURE]_IMPLEMENTATION_PLAN.md` with final status (`[DONE]` or `[PARTIAL]`).
+		- 1. **Plan Reconciliation**: Update `docs/pages/[feature]-plan.md` with final status (`[DONE]` or `[PARTIAL]`).
 		- 2. **Post-Sync**: Update Logseq graph to reflect the final code state. (ref: `architect/commands/architect/docs.toml`)

@@ -24,10 +24,9 @@ The Architect Agent is designed for rigorous, design-driven development. It oper
     - `bottlenecks.md`: 8-vector Performance Audit checklist.
     - `security_standards.md`: OWASP Top 10, severity levels, and compliance references.
 - **Commands:**
-    - `/architect:create`: Execute a complete, end-to-end engineering lifecycle (Investigation -> Plan -> Implementation -> Review).
-    - `/architect:discovery`: Perform a deep-dive research into a request and generate a validated `[FEATURE]_IMPLEMENTATION_PLAN.md`.
+    - `/architect:create`: Execute a complete, end-to-end engineering lifecycle (Investigation -> Plan -> Implementation -> Review) using Logseq pages under `docs/pages/`.
     - `/architect:auditor`: Audit code for patterns, security, and performance.
-    - `/architect:docs`: Synchronize the current codebase logic with the technical documentation suite.
+    - `/architect:docs`: Synchronize the current codebase logic with the technical documentation suite under `docs/pages/`.
 
 ## Installation
 

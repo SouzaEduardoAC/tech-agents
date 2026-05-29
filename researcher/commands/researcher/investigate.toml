@@ -27,9 +27,9 @@ Mode: [MODE: RESEARCH-DISCOVERY]
 3. Execute **Phase 0: Deep Dive Investigation (DISCOVERY)**.
     - Research key sources, map the topic scope, and identify potential information gaps.
     - Ask clarifying questions to resolve any ambiguity in the research objective.
-    - **Write findings and research plan to `[RESEARCH]_DISCOVERY.md`**.
+    - **Write findings and research plan to `docs/pages/{{args}}-discovery.md`**. Ensure the file starts with the standard Logseq properties and follows the outliner format.
     - Halt and request approval of the discovery artifact.
 
 **Constraint:** Do not perform full research yet. Your goal is mapping and research planning.
-The discovery artifact must be written before requesting approval.
+The discovery artifact must be written to docs/pages/{{args}}-discovery.md before requesting approval.
 """

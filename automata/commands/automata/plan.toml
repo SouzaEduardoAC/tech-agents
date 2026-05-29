@@ -33,14 +33,14 @@ Mode: [MODE: Automata-DISCOVERY] -> [MODE: Automata-PLAN]
     - **Initial Validation:** Analyze the target '{{args}}' for clarity. If the request is incomplete or vague ("garbage"), **STOP IMMEDIATELY** and ask the user for specific requirements.
     - **Brainstorming:** Identify edge cases, failure points, and data integrity concerns.
     - **Research:** Use available tools (MCP/Search) to map APIs and documentation.
-    - **Write Discovery Artifact:** Write all findings to **`[WORKFLOW]_DISCOVERY.md`** using the `automata/templates/discovery.md` structure.
+    - **Write Discovery Artifact:** Write all findings to **`docs/pages/{{args}}-discovery.md`** using the `automata/templates/discovery.md` structure. Ensure the file starts with the standard Logseq properties and follows the outliner format.
     - **Halt:** Request approval of the discovery artifact.
 3. **Phase 2: Architecture Design.** (Upon follow-up approval) Execute the **[MODE: Automata-PLAN]** protocol.
-    - Load the discovery artifact.
+    - Load the discovery artifact from `docs/pages/{{args}}-discovery.md`.
     - Map out the full architecture.
-    - **Write design plan to `[WORKFLOW]_DESIGN_PLAN.md`**.
+    - **Write design plan to `docs/pages/{{args}}-plan.md`**. Ensure the file starts with the standard Logseq properties and follows the outliner format.
     - Halt and request approval of the plan.
 
 **Constraint:** Focus on validating the logic and feasibility before any design plan.
-Each artifact must be written to its respective file before requesting approval.
+Each artifact must be written to its respective file under docs/pages/ before requesting approval.
 """
