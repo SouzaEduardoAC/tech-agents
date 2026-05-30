@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.2.0...v1.3.0) (2026-05-30)
+
+
+### Features
+
+* rename guru to Product Owner and oracle to Researcher for funct… ([4cd6685](https://github.com/SouzaEduardoAC/ai-agents/commit/4cd6685b72e94b51bf1f1988416f4b669e26e245))
+* rename guru to Product Owner and oracle to Researcher for functional clarity ([ab3edfb](https://github.com/SouzaEduardoAC/ai-agents/commit/ab3edfbfe49565f064ceec870e60c3adf8926449))
+
 ## [1.2.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.1.0...v1.2.0) (2026-05-30)
 
 
