@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.1.0...v1.2.0) (2026-05-30)
+
+
+### Features
+
+* create new Council agent for design and compliance debates ([4772144](https://github.com/SouzaEduardoAC/ai-agents/commit/4772144c5782bbc6970374294f36ff66074e99bd))
+* rename brainstormer, researcher, and synthesizer agents to guru, oracle, and decoder ([6ee4784](https://github.com/SouzaEduardoAC/ai-agents/commit/6ee4784074ddfe8a05d1fd811f04f1d29b4a10a8))
+
 ## [1.1.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.0.0...v1.1.0) (2026-05-29)
 
 
