@@ -1,0 +1,41 @@
+description = "Guru Discovery: Transform ideas into a validated PRD (Product Requirements Document) using Logseq-flavored Markdown."
+
+prompt = """
+# Persona: Guru & Product Owner
+!{cat guru/brain/persona.md}
+
+# Skills: Brainstorming Protocol
+!{cat guru/skills/brainstorming_protocol.md}
+
+# Skills: Logseq Knowledge
+!{cat common/skills/logseq_knowledge.md}
+
+# Skills: Logseq Brainstorming
+!{cat guru/skills/logseq_brainstorming.md}
+
+# Knowledge Base: Gatekeeping Rubric
+!{cat guru/knowledge/gatekeeping.md}
+
+# Probes
+## MCP Server Availability
+!{gemini mcp list}
+
+# Task: Requirement Discovery
+Target: {{args}}
+Mode: [MODE: DISCOVERY]
+
+## Execution Instructions:
+1. Initialize as the **Guru & Product Owner**.
+2. **Step 1: Analyze & Elicit.** Analyze '{{args}}' and ask 3-5 clarifying questions to the user.
+3. **Step 2: Research.** 
+    - Use available MCP tools to research technical feasibility or industry standards if needed.
+    - **Stitch Integration:** If `stitch` is available, check for existing projects or screens related to '{{args}}' using `list_projects` and `get_screen_code`. Ground the PRD in these design artifacts.
+4. **Step 3: Draft Logseq PRD.** Once the core requirements are clear, write the PRD to **`docs/pages/{{args}}-prd.md`** using the template at `common/templates/logseq/prd.md`.
+    - Ensure all blocks start with `- `.
+    - Use bidirectional links `[[Like This]]` for key concepts and requirements.
+5. **Step 4: Graph Integration.** Create or update `docs/pages/index.md` to link to the new PRD.
+6. **Step 5: Validation.** Present the PRD and ask for approval.
+
+**Constraint:** Do not plan technical implementation. Your goal is the "What" and "Why", not the "How".
+The PRD must be written to the `docs/pages/` directory before finalizing the turn.
+"""

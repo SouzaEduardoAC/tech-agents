@@ -44,7 +44,7 @@ ln -s ~/.gemini/agents/frontend/commands/frontend ~/.gemini/commands/frontend
 ## Usage
 
 ### 1. Full Frontend Lifecycle
-Execute a complete UI task starting from a PRD file created by the Brainstormer. This includes mandatory planning, implementation, and review gates:
+Execute a complete UI task starting from a PRD file created by the Guru. This includes mandatory planning, implementation, and review gates:
 ```text
 /frontend:create "Add a multi-step registration form as specified in docs/prds/registration_form.md"
 ```

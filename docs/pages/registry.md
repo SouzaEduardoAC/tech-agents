@@ -11,10 +11,10 @@
 - # Active Features
 	- ## Core Infrastructure
 		- status:: [SYNC]
-		- nodes:: [[TECHNICAL_SPECS]], [[BUSINESS_FLOW]], [[code-dna]], [[resilience-policies]], [[AI Interaction Standard]], [[Business Synthesizer]]
+		- nodes:: [[TECHNICAL_SPECS]], [[BUSINESS_FLOW]], [[code-dna]], [[resilience-policies]], [[AI Interaction Standard]], [[Decoder]]
 	- ## Product Elicitation & PO Framework
 		- status:: [ACTIVE]
-		- nodes:: [[Brainstormer]], [[prioritization-framework]], [[product-interview]]
+		- nodes:: [[Guru]], [[prioritization-framework]], [[product-interview]]
 	- ## Meta-Orchestration & Self-Evolution
 		- status:: [ACTIVE]
 		- nodes:: [[Forge]], [[agent-standards]], [[forging-protocol]], [[auditing-protocol]], [[Quicky]]
@@ -26,4 +26,4 @@
 		- nodes:: [[Architect]], [[Compliance]]
 	- ## Pipeline & Research
 		- status:: [ACTIVE]
-		- nodes:: [[Squad Orchestrator]], [[Researcher]]
+		- nodes:: [[Squad Orchestrator]], [[Oracle]], [[Council]]

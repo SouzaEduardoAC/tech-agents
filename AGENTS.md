@@ -16,21 +16,22 @@ The project documentation is managed as a knowledge graph in `docs/pages/`.
 
 ## 🤖 Specialized Agents
 - [[Squad Orchestrator]]: Multi-agent pipeline management.
-- [[Brainstormer]]: Requirements gathering and #PRD generation.
+- [[Guru]]: Requirements gathering and #PRD generation.
 - [[Architect]]: Systems architecture and security auditing.
 - [[Backend]] / [[Frontend]] / [[Mobile]]: Implementation specialists.
 - [[Compliance]]: Regulatory audits (#GDPR, #HIPAA, #SOC2).
-- [[Researcher]]: Deep information synthesis.
+- [[Oracle]]: Deep information synthesis.
 - [[Automata]]: Workflow #Automation architect.
-- [[Business Synthesizer]]: Technical documentation-to-business translator.
+- [[Decoder]]: Technical documentation-to-business translator.
 - [[Forge]]: Specialized meta-agent to design, scaffold, audit, and upgrade other agents (#MetaAgent).
 - [[Quicky]]: Specialist for quick fixes, small tweaks, and isolated tasks maintaining documentation integrity.
+- [[Council]]: Symmetrical multi-perspective debate and design synthesis engine.
 
 ## 🛠 Active Work & Tasks
 - DONE: Verify path normalization across all agents. (ref: [[code-dna]])
 - DONE: Implement prompt late-binding deduplication and heuristic relevance filtering (#AMD compiler optimization). (ref: [[TECHNICAL_SPECS]])
 - DONE: Formulate resilient cross-client execution fallbacks and degraded tools protocols. (ref: [[code-dna]])
-- DONE: Implement [[Business Synthesizer]] to translate tech docs for BAs/POs. (ref: [[common/skills/business_synthesis.md]])
+- DONE: Implement [[Decoder]] to translate tech docs for BAs/POs. (ref: [[common/skills/business_synthesis.md]])
 - DONE: Mature [[compliance/skills/audit_protocol.md|Compliance Audit Protocol]] (mapped detailed GDPR, LGPD, and HIPAA reference guidelines in compliance/knowledge/).
 - DONE: Reorganize default MCP stack, promote Context7 default integration with key placeholders, and enforce automated planning-level citation validation in the execution protocol. (ref: `[[TECHNICAL_SPECS]]`, `common/knowledge/anti_hallucination.md`)
 - TODO: Implement automated AST-sync for [[Mobile]] widget trees.

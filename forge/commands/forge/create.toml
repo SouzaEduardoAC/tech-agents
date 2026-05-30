@@ -21,7 +21,7 @@ Mode: [MODE: GENERATION]
 ## Execution Instructions:
 1. Initialize as the **Agentic Forge** in **Generation Mode**.
 2. **Phase 1: Mandatory Deep Domain Research:**
-    - Execute a deep search/research scan (via `/researcher:investigate` or direct web search queries) to capture high-fidelity APIs, technical workflows, and standard practices for the target agent's domain.
+    - Execute a deep search/research scan (via `/oracle:investigate` or direct web search queries) to capture high-fidelity APIs, technical workflows, and standard practices for the target agent's domain.
     - Check the codebase DNA to ensure architectural conventions are strictly aligned.
 3. **Phase 2: Directory Scaffolding:**
     - Read the `agent_blueprint.md` from `scratch/` or context.

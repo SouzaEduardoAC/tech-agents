@@ -85,7 +85,7 @@
 				- Link:: [GitHub (MCP)](https://github.com/microsoft/playwright-mcp) | [Playwright CLI](https://playwright.dev/docs/cli)
 			- **Google Stitch MCP**:
 				- Description:: Design-to-code bridge for fetching UI/UX artifacts and Design DNA.
-				- Interaction:: Used by `frontend`, `mobile`, and `brainstormer` for design-grounded discovery and creation.
+				- Interaction:: Used by `frontend`, `mobile`, and `guru` for design-grounded discovery and creation.
 				- Server:: `@_davideast/stitch-mcp`
 				- Link:: [GitHub](https://github.com/davideast/stitch-mcp)
 			- **SonarQube MCP**:

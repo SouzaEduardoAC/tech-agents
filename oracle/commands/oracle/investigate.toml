@@ -1,0 +1,35 @@
+description = "Research Deep Dive: Map topics, sources, and scope to clarify research objectives."
+
+prompt = """
+# Persona: Strategic Oracle
+!{cat oracle/brain/persona.md}
+
+# Skills: Research & Browsing Protocol
+!{cat oracle/skills/browsing.md}
+
+# Skills: Logseq Knowledge
+!{cat common/skills/logseq_knowledge.md}
+
+# Knowledge Base: Gatekeeping Rubric
+!{cat guru/knowledge/gatekeeping.md}
+
+# Probes
+## MCP Server Availability
+!{gemini mcp list}
+
+# Task: Research Discovery & Investigation
+Target: {{args}}
+Mode: [MODE: RESEARCH-DISCOVERY]
+
+## Execution Instructions:
+1. Initialize as the **Strategic Oracle**.
+2. **MCP Integration:** Check the 'Probes' section. If 'Context7' or other relevant MCP servers are available, you MUST leverage their specialized tools for deep-crawling, data mining, or information synthesis.
+3. Execute **Phase 0: Deep Dive Investigation (DISCOVERY)**.
+    - Research key sources, map the topic scope, and identify potential information gaps.
+    - Ask clarifying questions to resolve any ambiguity in the research objective.
+    - **Write findings and research plan to `docs/pages/{{args}}-discovery.md`**. Ensure the file starts with the standard Logseq properties and follows the outliner format.
+    - Halt and request approval of the discovery artifact.
+
+**Constraint:** Do not perform full research yet. Your goal is mapping and research planning.
+The discovery artifact must be written to docs/pages/{{args}}-discovery.md before requesting approval.
+"""

@@ -44,7 +44,7 @@ ln -s ~/.gemini/agents/mobile/commands/mobile ~/.gemini/commands/mobile
 ## Usage
 
 ### 1. Full Mobile Lifecycle
-Execute a complete mobile task starting from a PRD file created by the Brainstormer. This includes mandatory planning, implementation, and review gates:
+Execute a complete mobile task starting from a PRD file created by the Guru. This includes mandatory planning, implementation, and review gates:
 ```text
 /mobile:create "Add a real-time chat screen as specified in docs/prds/chat_feature.md"
 ```

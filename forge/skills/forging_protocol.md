@@ -10,7 +10,7 @@ Before any code is generated, the Forge must compile an **Agent Blueprint** usin
 
 1.  **Define Core Identity:** Role, primary mandate, and technical scope.
 2.  **Map Command Library:** Define the exact commands the agent must support.
-3.  **Confirm Extended Team:** Identify what sub-agents the new agent will collaborate with (e.g., Strategic Researcher, Automata Automation).
+3.  **Confirm Extended Team:** Identify what sub-agents the new agent will collaborate with (e.g., Strategic Oracle, Automata Automation).
 
 ---
 

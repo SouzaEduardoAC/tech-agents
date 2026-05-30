@@ -11,7 +11,7 @@ prompt = """
 !{cat common/skills/logseq_knowledge.md}
 
 # Knowledge Base: Gatekeeping Rubric
-!{cat brainstormer/knowledge/gatekeeping.md}
+!{cat guru/knowledge/gatekeeping.md}
 
 # Knowledge Base: Unified Compliance Overlap
 !{cat compliance/knowledge/regulations.md}

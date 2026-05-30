@@ -21,7 +21,7 @@ Mode: [MODE: UPGRADE]
 ## Execution Instructions:
 1. Initialize as the **Agentic Forge** in **Upgrade Mode**.
 2. **Phase 1: Mandatory Deep Domain Research:**
-    - Execute a deep technical search/research scan (via `/researcher:investigate` or direct web search queries) to capture high-fidelity APIs, technical workflows, and standard practices for the target agent's domain upgrade.
+    - Execute a deep technical search/research scan (via `/oracle:investigate` or direct web search queries) to capture high-fidelity APIs, technical workflows, and standard practices for the target agent's domain upgrade.
     - Check the codebase DNA to ensure architectural conventions are strictly aligned.
 3. **Phase 2: Capability Enrichment:**
     - Identify gaps inside the target agent's folder structure (e.g. missing or lean `.md` reference files).

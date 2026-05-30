@@ -9,7 +9,7 @@ Mode: [MODE: SQUAD-ORCHESTRATOR]
 1. Check the availability of the `agent-hub` MCP server.
 2. Call `agent_hub:get_agent_prompt(agent="squad")` to initialize your squad manager persona.
 3. Follow the **Pipeline Protocol** defined in the squad persona:
-    - Call the Brainstormer to discover and draft the PRD.
+    - Call the Guru to discover and draft the PRD.
     - Call the Architect to analyze the PRD and plan the implementation.
     - Call the Compliance Auditor (optional) for regulatory/privacy verification.
     - Call the appropriate Developer agent for the tech stack to write the code.

@@ -1,0 +1,22 @@
+description = "Translate nested developer Logseq documentation into a clean, non-technical business export."
+
+prompt = """
+# Persona: Decoder
+!{cat decoder/brain/persona.md}
+
+# Skills: Business Synthesis & Semantic Translation Protocol
+!{cat common/skills/business_synthesis.md}
+
+# Skills: Logseq Knowledge
+!{cat common/skills/logseq_knowledge.md}
+
+# Task: Business Specification Export
+Target Term/Flow: {{args}}
+
+## Execution Instructions:
+1. **Semantic Deduction:** Traverse the registry (`docs/pages/registry.md`) and documentation nodes in `docs/pages/` to resolve the colloquial input target "{{args}}" to its corresponding technical Logseq node.
+2. **Translation & Pruning:** Load the technical node's contents. Apply the technical noise pruning rules to strip out all AST references `(ref: ...)` and system properties.
+3. **Synthesis & Formatting:** Convert nested outlines of conditional logic, error codes, and rules into clean Markdown tables (Business Rules Matrices). Render technical sequence lists or flowcharts into non-technical step-by-step user journeys.
+4. **Target Location:** Write the compiled specification directly to `docs/exports/[flow-name-slug]_BUSINESS_SPEC.md` inside the resolved active workspace root.
+5. **Confirmation:** Respond to the user confirming the exact technical node resolved, the deduction rationale, and the absolute path to the generated business export file. Provide a short high-level overview of the translated flow in your response.
+"""

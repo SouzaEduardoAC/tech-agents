@@ -45,7 +45,7 @@ ln -s ~/.gemini/agents/backend/commands/backend ~/.gemini/commands/backend
 ## Usage
 
 ### 1. Full Backend Lifecycle
-Execute a complete task starting from a PRD file created by the Brainstormer. This includes mandatory planning, implementation, and review gates:
+Execute a complete task starting from a PRD file created by the Guru. This includes mandatory planning, implementation, and review gates:
 ```text
 /backend:create "Add a rate-limiter middleware as specified in docs/prds/rate_limiter.md"
 ```

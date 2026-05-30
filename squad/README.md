@@ -11,7 +11,7 @@ The Squad is compatible with:
 
 ## The Squad Protocol
 When initialized, the Squad agent follows this 3-step loop:
-1.  **Requirement Capture:** Calls the `brainstormer` to finalize the PRD.
+1.  **Requirement Capture:** Calls the `guru` to finalize the PRD.
 2.  **Technical Design:** Calls the `architect` to finalize the Implementation Plan.
 3.  **Production:** Calls the appropriate `developer` (Backend/Frontend/Mobile) to execute the code.
 
