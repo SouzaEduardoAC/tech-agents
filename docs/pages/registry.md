@@ -26,4 +26,4 @@
 		- nodes:: [[Architect]], [[Compliance]]
 	- ## Pipeline & Research
 		- status:: [ACTIVE]
-		- nodes:: [[Squad Orchestrator]], [[Oracle]]
+		- nodes:: [[Squad Orchestrator]], [[Oracle]], [[Council]]

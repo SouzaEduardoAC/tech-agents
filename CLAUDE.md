@@ -25,6 +25,7 @@ The following tools are available via the `agent-hub` MCP server:
 ```
 call_agent_command(agent="architect", command="create", args="Your goal here")
 call_agent_command(agent="guru", command="discovery", args="Feature name")
+call_agent_command(agent="council", command="debate", args="User request here")
 call_agent_command(agent="forge", command="create", args="New Agent Spec")
 call_agent_command(agent="squad", command="run", args="High-level project goal")
 ```
@@ -50,6 +51,7 @@ The project documentation is managed as a knowledge graph in `docs/pages/`.
 - [[Decoder]]: Technical documentation-to-business translator.
 - [[Forge]]: Specialized meta-agent to design, scaffold, audit, and upgrade other agents.
 - [[Quicky]]: Specialist for quick fixes, small tweaks, and isolated tasks maintaining documentation integrity.
+- [[Council]]: Symmetrical multi-perspective debate and design synthesis engine.
 
 ## 🛠 Active Work & Tasks
 - DONE: Verify path normalization across all agents. (ref: [[code-dna]])

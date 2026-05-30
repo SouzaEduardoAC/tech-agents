@@ -58,6 +58,7 @@ After running the `bootstrap` command, all agents register custom **slash comman
     *   **Quicky (Quick Fixes)**: `/quicky:fix "Fix the type mismatch on line 42 in api.ts"`
     *   **Architect (Design/Docs)**: `/architect:create "Design a resilient connection pool"` or `/architect:docs "Sync the Logseq graph with recent migrations"`
     *   **Guru (Discovery/PO Interview)**: `/guru:interview "A new service to parse PDFs"`
+    *   **Council (Design Debate & Synthesis)**: `/council:debate "Implement real-time location and telemetry-based pricing"`
 
 ### 2. Claude Code (Model Context Protocol / MCP)
 Claude Code communicates with the Hub using **MCP tool calls**. Since Claude is an agentic assistant, you do **not** need to write raw code or command syntax in the chat. You simply speak to Claude in natural language, and Claude will autonomously invoke the correct Hub tool.
@@ -112,3 +113,4 @@ We maintain a "Zero Trust" model for code and documentation integrity.
 - **[[Decoder]]**: Technical specification-to-business translator.
 - **[[Forge]]**: Specialized meta-agent to design, scaffold, audit, and upgrade other agents (#MetaAgent).
 - **[[Quicky]]**: Specialist for quick fixes, small tweaks, and isolated tasks maintaining documentation integrity.
+- **[[Council]]**: Symmetrical multi-perspective debate and design synthesis engine.
