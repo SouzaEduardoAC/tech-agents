@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.3.1...v1.4.0) (2026-06-03)
+
+
+### Features
+
+* **mcp:** implement command aliasing and agent discovery ([5c022cd](https://github.com/SouzaEduardoAC/ai-agents/commit/5c022cd43a2cfbdf400ff7418c2fc6914fdcfa58))
+* **mcp:** update tool schema descriptions to guide agentic clients ([834f69a](https://github.com/SouzaEduardoAC/ai-agents/commit/834f69a446930e0440cc3db2bc7f45c8bd06393c))
+
 ## [1.3.1](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.3.0...v1.3.1) (2026-06-03)
 
 
