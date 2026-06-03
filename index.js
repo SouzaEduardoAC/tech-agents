@@ -320,17 +320,17 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     tools: [
       {
         name: "list_agents",
-        description: "List all available specialized agents.",
+        description: "List all available specialized agents and their supported commands.",
         inputSchema: { type: "object", properties: {} },
       },
       {
         name: "call_agent_command",
-        description: "Run a specific command (e.g., 'create', 'auditor') from an agent's library.",
+        description: "Run a specific command from an agent's library. Call 'list_agents' first to discover available commands.",
         inputSchema: {
           type: "object",
           properties: {
-            agent: { type: "string", description: "The agent name (e.g., architect, backend)." },
-            command: { type: "string", description: "The command name (e.g., create, docs, discovery)." },
+            agent: { type: "string", description: "The agent name (e.g., architect, backend, squad, po)." },
+            command: { type: "string", description: "The command name (e.g., 'run' for squad, 'create' for architect, 'discovery' for po)." },
             args: { type: "string", description: "The goal or arguments for the task." },
           },
           required: ["agent", "command", "args"],
@@ -358,17 +358,62 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     if (name === "list_agents") {
       const dirs = await fs.readdir(AGENTS_ROOT, { withFileTypes: true });
       const agents = dirs
-        .filter((d) => d.isDirectory() && !d.name.startsWith(".") && !["node_modules", "bin", "docs"].includes(d.name))
+        .filter((d) => d.isDirectory() && !d.name.startsWith(".") && !["node_modules", "bin", "docs", "common"].includes(d.name))
         .map((d) => d.name);
-      return { content: [{ type: "text", text: agents.join(", ") }] };
+
+      const agentDetails = [];
+      for (const agent of agents) {
+        const cmdDir = path.join(AGENTS_ROOT, agent, "commands", agent);
+        let commands = [];
+        if (await fs.pathExists(cmdDir)) {
+          const files = await fs.readdir(cmdDir);
+          commands = files
+            .filter((f) => f.endsWith(".toml"))
+            .map((f) => path.basename(f, ".toml"));
+        }
+        agentDetails.push(`${agent} (${commands.join(", ") || "no commands"})`);
+      }
+      return { content: [{ type: "text", text: `Available agents and their commands:\n` + agentDetails.map(ad => `- ${ad}`).join("\n") }] };
     }
 
     if (name === "call_agent_command") {
       const { agent, command, args: taskArgs } = args;
-      const tomlPath = path.join(AGENTS_ROOT, agent, "commands", agent, `${command}.toml`);
+
+      // Resolve aliases for command names that commonly map to standard agent entrypoints
+      const aliases = {
+        squad: { create: "run", discovery: "run", plan: "run" },
+        architect: { discovery: "create", plan: "create", run: "create" },
+        backend: { discovery: "create", plan: "create", run: "create" },
+        frontend: { discovery: "create", plan: "create", run: "create" },
+        mobile: { discovery: "create", plan: "create", run: "create" },
+        po: { create: "discovery", run: "discovery" },
+        automata: { discovery: "plan", run: "plan" },
+        forge: { run: "create" },
+        quicky: { run: "fix", create: "fix" },
+        researcher: { run: "report", create: "report", discovery: "investigate" },
+        compliance: { run: "master", create: "master" },
+        council: { run: "debate", create: "debate" },
+        decoder: { run: "export", create: "export", synthesize: "export" }
+      };
+
+      let commandName = command;
+      if (aliases[agent] && aliases[agent][command]) {
+        commandName = aliases[agent][command];
+      }
+
+      const tomlPath = path.join(AGENTS_ROOT, agent, "commands", agent, `${commandName}.toml`);
 
       if (!(await fs.pathExists(tomlPath))) {
-        throw new Error(`Command '${command}' for agent '${agent}' not found at ${tomlPath}`);
+        const cmdDir = path.join(AGENTS_ROOT, agent, "commands", agent);
+        let available = [];
+        if (await fs.pathExists(cmdDir)) {
+          const files = await fs.readdir(cmdDir);
+          available = files.filter(f => f.endsWith(".toml")).map(f => path.basename(f, ".toml"));
+        }
+        throw new Error(
+          `Command '${command}' for agent '${agent}' not found. ` +
+          `Available commands for '${agent}': ${available.join(", ") || "none"}`
+        );
       }
 
       const tomlData = toml.parse(await fs.readFile(tomlPath, "utf-8"));
@@ -381,7 +426,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         cattedBasenames.add(path.basename(match[1].trim()));
       }
 
-      const searchTarget = `${command} ${tomlData.description || ""} ${taskArgs || ""}`.toLowerCase();
+      const searchTarget = `${commandName} ${tomlData.description || ""} ${taskArgs || ""}`.toLowerCase();
 
       // Inject Common Knowledge & Skills (Deduplicated and filtered by relevance)
       const commonKnowledge = await compileCommonSection(path.join(AGENTS_ROOT, "common", "knowledge"), searchTarget, cattedBasenames, "knowledge").catch(() => "");
@@ -394,9 +439,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       const identityMeta = `### ACTIVE PERSONA CONTEXT
-You are currently executing the command '${command}' as the **${agent.toUpperCase()}** agent.
+You are currently executing the command '${commandName}' as the **${agent.toUpperCase()}** agent.
 To maintain transparency and multi-agent coordination, you MUST prefix your very first response line with a clean, prominent identity tag in the format:
-\`[Agent: ${agent.toUpperCase()} | Command: ${command.toUpperCase()}]\`
+\`[Agent: ${agent.toUpperCase()} | Command: ${commandName.toUpperCase()}]\`
 
 --------------------------------------------------------------------------------\n\n`;
 
