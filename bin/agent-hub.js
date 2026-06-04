@@ -23,10 +23,22 @@ program
   .description("Start the MCP server")
   .action(() => {
     const serverPath = path.join(ROOT, "index.js");
+    // Use 'pipe' so the MCP JSON-RPC framing is correctly forwarded.
+    // 'inherit' would attach the child's stdio to the wrapper's fd directly,
+    // but the MCP client is already bound to the wrapper process — messages
+    // never reach index.js. Explicit piping fixes this.
     const child = spawn("node", [serverPath], {
-      stdio: "inherit",
+      stdio: "pipe",
+      env: process.env,
     });
-    child.on("exit", (code) => process.exit(code));
+    process.stdin.pipe(child.stdin);
+    child.stdout.pipe(process.stdout);
+    child.stderr.pipe(process.stderr);
+    child.on("exit", (code) => process.exit(code ?? 0));
+    child.on("error", (err) => {
+      process.stderr.write(`[agent-hub] Failed to start MCP server: ${err.message}\n`);
+      process.exit(1);
+    });
   });
 
 program
@@ -63,83 +75,151 @@ program
   .command("bootstrap")
   .description("Install all agent personas and slash commands into local LLM environments")
   .action(async () => {
-    const GEMINI_COMMANDS_ROOT = path.join(os.homedir(), ".gemini", "commands");
-    const ANTIGRAVITY_BRAIN_ROOT = path.join(os.homedir(), ".gemini", "antigravity", "brain");
+    const ANTIGRAVITY_COMMANDS_ROOTS = [
+      path.join(os.homedir(), ".gemini", "commands"),
+      path.join(os.homedir(), ".gemini", "antigravity", "commands"),
+      path.join(os.homedir(), ".gemini", "antigravity-cli", "commands"),
+      path.join(os.homedir(), ".gemini", "antigravity-ide", "commands")
+    ];
 
-    await fs.ensureDir(GEMINI_COMMANDS_ROOT);
-    await fs.ensureDir(ANTIGRAVITY_BRAIN_ROOT);
+    const ANTIGRAVITY_AGENTS_ROOTS = [
+      path.join(os.homedir(), ".gemini", "agents"),
+      path.join(os.homedir(), ".gemini", "antigravity", "agents"),
+      path.join(os.homedir(), ".gemini", "antigravity-cli", "agents"),
+      path.join(os.homedir(), ".gemini", "antigravity-ide", "agents")
+    ];
+
+    const ANTIGRAVITY_BRAIN_ROOTS = [
+      path.join(os.homedir(), ".gemini", "antigravity", "brain"),
+      path.join(os.homedir(), ".gemini", "antigravity-cli", "brain"),
+      path.join(os.homedir(), ".gemini", "antigravity-ide", "brain")
+    ];
+
+    for (const root of ANTIGRAVITY_COMMANDS_ROOTS) {
+      try {
+        await fs.ensureDir(root);
+      } catch (err) {
+        // ignore errors for secure directories if they aren't used
+      }
+    }
+    for (const root of ANTIGRAVITY_AGENTS_ROOTS) {
+      try {
+        await fs.ensureDir(root);
+      } catch (err) {
+        // ignore errors
+      }
+    }
+    for (const root of ANTIGRAVITY_BRAIN_ROOTS) {
+      try {
+        await fs.ensureDir(root);
+      } catch (err) {
+        // ignore errors
+      }
+    }
 
     const agents = (await fs.readdir(ROOT, { withFileTypes: true }))
-      .filter((d) => d.isDirectory() && !d.name.startsWith(".") && !["node_modules", "bin", "docs"].includes(d.name))
+      .filter((d) => d.isDirectory() && !d.name.startsWith(".") && !["node_modules", "bin", "docs", "common"].includes(d.name))
       .map((d) => d.name);
 
     console.log("\n🚀 Bootstrapping Universal Agent Hub...");
 
     // 0. Configure MCP Settings
     const SETTINGS_PATH = path.join(os.homedir(), ".gemini", "settings.json");
+    const ANTIGRAVITY_MCP_CONFIG_PATHS = [
+      path.join(os.homedir(), ".gemini", "antigravity", "mcp_config.json"),
+      path.join(os.homedir(), ".gemini", "antigravity-cli", "mcp_config.json"),
+      path.join(os.homedir(), ".gemini", "antigravity-ide", "mcp_config.json")
+    ];
+
+    const updateMcpServers = (mcpServers) => {
+      let updated = false;
+      // Add Filesystem MCP if missing
+      if (!mcpServers.filesystem) {
+        mcpServers.filesystem = {
+          command: "npx",
+          args: ["-y", "@modelcontextprotocol/server-filesystem", os.homedir()]
+        };
+        updated = true;
+      }
+
+      // Add Context7 MCP if missing
+      if (!mcpServers.context7) {
+        mcpServers.context7 = {
+          command: "npx",
+          args: ["-y", "@upstash/context7-mcp"],
+          env: {
+            CONTEXT7_API_KEY: ""
+          }
+        };
+        updated = true;
+      }
+
+      // Add Agent Hub MCP if missing
+      // Point directly to index.js — bypasses the Commander.js wrapper so the
+      // MCP client's stdio connects straight to the StdioServerTransport.
+      if (!mcpServers["agent-hub"]) {
+        mcpServers["agent-hub"] = {
+          command: "node",
+          args: [path.join(ROOT, "index.js")]
+        };
+        updated = true;
+      }
+
+      // Add Stitch MCP if missing
+      if (!mcpServers.stitch) {
+        mcpServers.stitch = {
+          command: "npx",
+          args: ["-y", "@_davideast/stitch-mcp", "proxy"],
+          env: {
+            STITCH_API_KEY: ""
+          }
+        };
+        updated = true;
+      }
+
+      // Add SonarQube MCP if missing
+      if (!mcpServers.sonarqube) {
+        mcpServers.sonarqube = {
+          command: "npx",
+          args: ["-y", "sonarqube-mcp-server"],
+          env: {
+            SONARQUBE_URL: "http://localhost:9000",
+            SONARQUBE_TOKEN: ""
+          }
+        };
+        updated = true;
+      }
+      return updated;
+    };
+
     if (await fs.pathExists(SETTINGS_PATH)) {
       try {
         const settings = await fs.readJson(SETTINGS_PATH);
         if (!settings.mcpServers) settings.mcpServers = {};
-        
-        // Add Filesystem MCP if missing
-        if (!settings.mcpServers.filesystem) {
-          settings.mcpServers.filesystem = {
-            command: "npx",
-            args: ["-y", "@modelcontextprotocol/server-filesystem", os.homedir()]
-          };
-          console.log("   ✅ [MCP] Configured filesystem server for home directory");
+        if (updateMcpServers(settings.mcpServers)) {
+          await fs.writeJson(SETTINGS_PATH, settings, { spaces: 2 });
+          console.log("   ✅ [MCP] Configured MCP servers in global settings.json");
         }
-
-        // Add Context7 MCP if missing
-        if (!settings.mcpServers.context7) {
-          settings.mcpServers.context7 = {
-            command: "npx",
-            args: ["-y", "@upstash/context7-mcp"],
-            env: {
-              CONTEXT7_API_KEY: ""
-            }
-          };
-          console.log("   ✅ [MCP] Configured Context7 MCP server (CONTEXT7_API_KEY placeholder added)");
-        }
-
-        // Add Agent Hub MCP if missing
-        if (!settings.mcpServers["agent-hub"]) {
-          settings.mcpServers["agent-hub"] = {
-            command: "node",
-            args: [path.join(ROOT, "bin", "agent-hub.js"), "serve"]
-          };
-          console.log("   ✅ [MCP] Configured agent-hub server");
-        }
-
-        // Add Stitch MCP if missing
-        if (!settings.mcpServers.stitch) {
-          settings.mcpServers.stitch = {
-            command: "npx",
-            args: ["-y", "@_davideast/stitch-mcp", "proxy"],
-            env: {
-              STITCH_API_KEY: ""
-            }
-          };
-          console.log("   ✅ [MCP] Configured Google Stitch MCP server (STITCH_API_KEY placeholder added)");
-        }
-
-        // Add SonarQube MCP if missing
-        if (!settings.mcpServers.sonarqube) {
-          settings.mcpServers.sonarqube = {
-            command: "npx",
-            args: ["-y", "sonarqube-mcp-server"],
-            env: {
-              SONARQUBE_URL: "http://localhost:9000",
-              SONARQUBE_TOKEN: ""
-            }
-          };
-          console.log("   ✅ [MCP] Configured SonarQube MCP server (SONARQUBE_URL/TOKEN placeholders added)");
-        }
-
-        await fs.writeJson(SETTINGS_PATH, settings, { spaces: 2 });
       } catch (e) {
         console.warn(`   ⚠️ [MCP] Could not update settings.json: ${e.message}`);
+      }
+    }
+
+    for (const mcpPath of ANTIGRAVITY_MCP_CONFIG_PATHS) {
+      try {
+        let config = { mcpServers: {} };
+        if (await fs.pathExists(mcpPath)) {
+          config = await fs.readJson(mcpPath);
+        } else {
+          await fs.ensureDir(path.dirname(mcpPath));
+        }
+        if (!config.mcpServers) config.mcpServers = {};
+        if (updateMcpServers(config.mcpServers)) {
+          await fs.writeJson(mcpPath, config, { spaces: 2 });
+          console.log(`   ✅ [MCP] Configured MCP servers in ${mcpPath}`);
+        }
+      } catch (e) {
+        console.warn(`   ⚠️ [MCP] Could not update ${mcpPath}: ${e.message}`);
       }
     }
 
@@ -184,17 +264,24 @@ program
     for (const agent of agents) {
       console.log(`\n📦 Processing Agent: [${agent.toUpperCase()}]`);
 
-      // 1. Install Gemini Slash Commands
+      // 1. Install Gemini/AntiGravity Slash Commands
       const cmdSource = path.join(ROOT, agent, "commands", agent);
       if (await fs.pathExists(cmdSource)) {
-        const cmdTarget = path.join(GEMINI_COMMANDS_ROOT, agent);
-        await fs.ensureDir(cmdTarget);
         const tomlFiles = await fs.readdir(cmdSource);
         for (const file of tomlFiles) {
           if (file.endsWith(".toml")) {
             const content = await fs.readFile(path.join(cmdSource, file), "utf-8");
             const updatedContent = content.replace(/~\/\.gemini\/agents/g, ROOT).replace(/\.\.\/\.\.\/\.\./g, ROOT);
-            await fs.writeFile(path.join(cmdTarget, file), updatedContent);
+            
+            for (const root of ANTIGRAVITY_COMMANDS_ROOTS) {
+              const cmdTarget = path.join(root, agent);
+              try {
+                await fs.ensureDir(cmdTarget);
+                await fs.writeFile(path.join(cmdTarget, file), updatedContent);
+              } catch (err) {
+                // ignore permission or path errors for individual clients
+              }
+            }
             console.log(`   ✅ [AntiGravity] Installed /${agent}:${path.basename(file, ".toml")}`);
           }
         }
@@ -203,9 +290,37 @@ program
       // 2. Install AntiGravity Personas
       const personaSource = path.join(ROOT, agent, "brain", "persona.md");
       if (await fs.pathExists(personaSource)) {
-        const personaTarget = path.join(ANTIGRAVITY_BRAIN_ROOT, `${agent}.md`);
-        await fs.copy(personaSource, personaTarget);
+        for (const root of ANTIGRAVITY_BRAIN_ROOTS) {
+          const personaTarget = path.join(root, `${agent}.md`);
+          try {
+            await fs.copy(personaSource, personaTarget);
+          } catch (err) {
+            // ignore errors
+          }
+        }
         console.log(`   ✅ [AntiGravity] Installed persona: ${agent}.md`);
+      }
+
+      // 3. Link Agent directories to ~/.gemini/agents/
+      const agentDirSource = path.join(ROOT, agent);
+      const symlinkType = process.platform === "win32" ? "junction" : "dir";
+      for (const root of ANTIGRAVITY_AGENTS_ROOTS) {
+        const agentDirTarget = path.join(root, agent);
+        try {
+          if (await fs.pathExists(agentDirTarget)) {
+            await fs.remove(agentDirTarget);
+          }
+          try {
+            await fs.symlink(agentDirSource, agentDirTarget, symlinkType);
+            console.log(`   ✅ [AntiGravity] Symlinked agent folder to ${root}`);
+          } catch (symlinkErr) {
+            // Fall back to physical copy if symlink fails
+            await fs.copy(agentDirSource, agentDirTarget);
+            console.log(`   ✅ [AntiGravity] Copied agent folder to ${root} (fallback)`);
+          }
+        } catch (err) {
+          // ignore folder linking errors (e.g. if a root matches system protection boundary)
+        }
       }
     }
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## [Unreleased]
+
+### Bug Fixes
+
+* **mcp:** fix MCP tools not surfacing to AI clients — point `mcp_config.json` directly to `index.js`, eliminating the Commander.js wrapper from the stdio chain (fixes `stdio: "inherit"` MCP framing bug)
+* **mcp/serve:** replace `stdio: "inherit"` with explicit `stdio: "pipe"` + stream forwarding in `bin/agent-hub.js serve` so wrapper-based invocations also work correctly
+* **mcp/bootstrap:** update `bootstrap` command to register `index.js` directly instead of `bin/agent-hub.js serve` in all generated MCP config files
+* **mcp:** add try/catch with explicit `process.stderr` logging and `process.exit(1)` around `server.connect()` in `index.js` for visible startup failure diagnostics
+
 ## [1.4.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.3.1...v1.4.0) (2026-06-03)
 
 

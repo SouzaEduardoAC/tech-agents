@@ -25,4 +25,8 @@
 		- **Late-Binding Deduplication**: Scanning TOML prompts for explicit `!{cat}` directives and dynamically filtering those files from prepended common sections to eliminate duplicate token injection.
 		- **Heuristic Relevance Filtering**: Dynamically prepending only the subset of common files matching the active command keywords and intent, reducing common block token bloat by up to 70%.
 		- **Degraded/Shell-less Resilience**: All reviewer/auditor actions must define strict manual fallbacks (requesting user CLI input) and gracefully degrade to static manual equivalents if restrictive clients or offline specialized MCP servers are encountered.
+	- ## MCP Transport DNA
+		- **stdio Anti-Pattern — `inherit` vs `pipe`**: When a CLI wrapper spawns an MCP server as a child process, `stdio: "inherit"` attaches the child's file descriptors to the wrapper's already-open fds. The MCP client — which is bound to the wrapper process — never receives the child's JSON-RPC responses. **Always use `stdio: "pipe"` + explicit stream forwarding** for wrapper-spawned MCP servers.
+		- **Direct Entry Point (Preferred)**: For MCP clients (Antigravity, Claude, Gemini CLI), always configure `mcp_config.json` to point directly to the MCP server entry (`index.js`), not the CLI wrapper (`bin/agent-hub.js serve`). This eliminates one process hop and the risk of Commander.js consuming or delaying the stdio stream.
+		- **Startup Diagnostics Mandate**: MCP server entry files MUST wrap `server.connect(transport)` in a `try/catch` that writes to `process.stderr` and calls `process.exit(1)` on failure. Silent crashes are undetectable by MCP host processes. (ref: `index.js → transport connect`)
 

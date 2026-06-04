@@ -501,6 +501,11 @@ ${knowledge}
   }
 });
 
-const transport = new StdioServerTransport();
-await server.connect(transport);
-console.error(`Agent Hub MCP Server (v${pkg.version}) running on stdio`);
+try {
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
+  process.stderr.write(`[agent-hub] MCP Server v${pkg.version} running on stdio\n`);
+} catch (e) {
+  process.stderr.write(`[agent-hub] FATAL: ${e.message}\n${e.stack}\n`);
+  process.exit(1);
+}

@@ -1,6 +1,6 @@
 - type:: [[Technical Specification]]
 - status:: [SYNC]
-- version:: 1.3.0
+- version:: 1.4.1
 - project:: [[ai-agents]]
 
 - # Core Infrastructure: Universal Agent Hub (Deep Specification)
@@ -8,13 +8,15 @@
 		- Binary:: `bin/agent-hub.js` (ref: `package.json -> bin`)
 		- Entry Point:: `index.js` at the root, acting as the MCP Server (ref: `package.json -> main`)
 		- **Command: `serve`**: 
-			- Function:: Spawns the Hub server (ref: `index.js`).
-			- Transport:: Uses `StdioServerTransport` for direct CLI-to-Hub communication.
+			- Function:: Spawns the Hub server (ref: `index.js`) as a child process.
+			- Transport:: Uses `StdioServerTransport` on `index.js`. The wrapper uses `stdio: "pipe"` + explicit stream forwarding (`process.stdin → child.stdin`, `child.stdout → process.stdout`) to preserve MCP JSON-RPC framing. Using `stdio: "inherit"` is a **known anti-pattern** here — it attaches child fds to the wrapper's already-open descriptors, causing the MCP client to never reach the `StdioServerTransport`. (ref: `bin/agent-hub.js → serve`)
+			- **Direct Invocation (Preferred for MCP clients):** Configure `mcp_config.json` to point directly to `index.js`, bypassing the wrapper entirely.
 		- **Command: `bootstrap` (Environment Initialization)**: 
 			- Function:: One-time local environment setup for Gemini CLI, AntiGravity, and Claude Code.
 			- **Step 0: Gemini MCP Configuration**:
-				- Path:: `~/.gemini/settings.json`
+				- Path:: `~/.gemini/settings.json` and `~/.gemini/antigravity/mcp_config.json`
 				- Logic:: Dynamically injects `filesystem`, `context7`, and `agent-hub` MCP server configurations if missing.
+				- **agent-hub MCP Entry:** Registered as `{ command: "node", args: ["<ROOT>/index.js"] }` — points directly to the MCP server, not the CLI wrapper, to ensure correct stdio handshake.
 			- **Step 1: Gemini Slash Commands**:
 				- Source:: `[agent]/commands/[agent]/*.toml`
 				- Target:: `~/.gemini/commands/[agent]/`
@@ -66,6 +68,8 @@
 				- Description:: The core orchestration server developed in this repository.
 				- Interaction:: Provides the `call_agent_command` tool, mapping high-level goals to specialized agent personas and skillsets.
 				- Link:: [[Internal]] (ref: `index.js`)
+				- **MCP Config Entry (Correct):** `{ "command": "node", "args": ["<ABSOLUTE_PATH>/index.js"] }` — do NOT point to `bin/agent-hub.js serve`.
+				- **Startup Diagnostics:** `index.js` wraps `server.connect(transport)` in a `try/catch`, writing fatal errors to `process.stderr` and calling `process.exit(1)` for visibility to MCP host processes. (ref: `index.js → transport connect`)
 			- **Filesystem MCP**:
 				- Description:: Secure access to the project's `/docs` directory for Logseq graph manipulation.
 				- Interaction:: Used by ALL agents to read/write documentation, ADRs, and PRDs.

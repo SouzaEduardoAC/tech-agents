@@ -12,6 +12,10 @@
 	- ## Core Infrastructure
 		- status:: [SYNC]
 		- nodes:: [[TECHNICAL_SPECS]], [[BUSINESS_FLOW]], [[code-dna]], [[resilience-policies]], [[AI Interaction Standard]], [[Decoder]]
+		- ## Bug Fix: MCP stdio Transport (2026-06-04)
+			- status:: [DONE]
+			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]
+			- summary:: Fixed `stdio: "inherit"` anti-pattern in `bin/agent-hub.js serve` that prevented MCP tools from surfacing in AI clients. `mcp_config.json` now points directly to `index.js`. `bootstrap` generates correct direct entries. `index.js` has startup diagnostics. (ref: `ISSUES.md`)
 	- ## Product Elicitation & PO Framework
 		- status:: [ACTIVE]
 		- nodes:: [[Product Owner]], [[prioritization-framework]], [[product-interview]]
