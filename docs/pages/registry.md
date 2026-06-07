@@ -20,6 +20,10 @@
 			- status:: [DONE]
 			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]
 			- summary:: `bootstrap` previously skipped environments already configured with the old `bin/agent-hub.js serve` entry (guard was `if (!mcpServers["agent-hub"])`). Added stale-entry detection — if the existing args include `bin/agent-hub.js`, the entry is overwritten with the correct `index.js` direct path. Makes `bootstrap` idempotent and self-healing for pre-fix installs. (ref: `bin/agent-hub.js → updateMcpServers`)
+		- ## Feature: Prompt Completeness & LLM Discoverability (2026-06-07)
+			- status:: [DONE]
+			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]
+			- summary:: Three fixes: (1) Tool descriptions enriched with agent-role hints and natural-language trigger examples for LLM intent routing. (2) `call_agent_command` now auto-injects `[agent]/skills/` and `[agent]/knowledge/` with dedup-aware filtering — agent full identity loads regardless of TOML !{cat} completeness. (3) `business_synthesis.md` gated behind keyword filter to prevent noise in debate-oriented prompts. Integration test suite upgraded to 35 assertions including content fingerprints, noise guards, and auto-injection proof. (ref: `index.js → call_agent_command`, `compileCommonSection`, `readAgentDirDeduped`)
 	- ## Product Elicitation & PO Framework
 		- status:: [ACTIVE]
 		- nodes:: [[Product Owner]], [[prioritization-framework]], [[product-interview]]

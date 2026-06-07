@@ -34,9 +34,10 @@
 	- ## The Orchestration Engine (The Bridge)
 		- **Logic Mixing & Prompt Optimization (AMD Core)**: 
 			- The Hub server performs a multi-stage optimized prompt assembly.
-			- Formula:: `Prompt = Deduplicated/Relevant Common Standards + Deduplicated/Relevant Common Skills + Dynamic Stack Skills + Agent Persona + Agent Skills + Agent Knowledge + Command Prompt`.
-			- **Late-Binding Deduplication**: Scanning TOML prompts for explicit `!{cat}` directives and dynamically filtering those files from prepended common sections to eliminate duplicate token injection (ref: `index.js -> compileCommonSection`).
-			- **Heuristic Relevance Filtering**: Dynamically prepending only the subset of common files matching the active command keywords and intent, reducing common block token bloat by up to 70% (ref: `index.js -> compileCommonSection`).
+			- Formula:: `Prompt = identityMeta + Deduplicated/Relevant Common Standards + Deduplicated/Relevant Common Skills + Dynamic Stack Skills + Auto-Injected Agent Skills + Auto-Injected Agent Knowledge + Command Prompt (TOML)`.
+			- **Late-Binding Deduplication**: Scanning TOML prompts for explicit `!{cat}` directives and dynamically filtering those files from prepended common sections to eliminate duplicate token injection (ref: `index.js -> compileCommonSection`, `index.js -> readAgentDirDeduped`).
+			- **Heuristic Relevance Filtering**: Dynamically prepending only the subset of common files matching the active command keywords and intent, reducing common block token bloat by up to 70%. `business_synthesis.md` is gated behind `synthesize|translate|export|stakeholder|business|report|decoder` keywords — prevents it from polluting debate-oriented prompts (e.g. `council:debate`). (ref: `index.js -> compileCommonSection`)
+			- **Agent Skills/Knowledge Auto-Injection**: `call_agent_command` now automatically loads `[agent]/skills/*.md` and `[agent]/knowledge/*.md` with dedup-aware filtering (`readAgentDirDeduped`) — files already explicitly `!{cat}`'d in the TOML are skipped. This makes every agent's full identity available regardless of TOML authoring completeness, mirroring `get_agent_prompt` layout. (ref: `index.js -> call_agent_command`)
 			- (ref: `index.js -> call_agent_command`)
 		- **Dynamic Stack Detection (The Heuristic Engine)**:
 			- Activated for: `architect`, `backend`, `frontend`, `mobile`.
