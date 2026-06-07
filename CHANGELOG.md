@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.5.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.4.0...v1.5.0) (2026-06-07)
+
+
+### Features
+
+* **mcp:** prompt completeness — enrich tool descriptions, auto-inject agent skills/knowledge, gate business_synthesis noise ([0ab6e11](https://github.com/SouzaEduardoAC/ai-agents/commit/0ab6e115eef2fb78d55cf943c2174aa856d82567))
+
+
+### Bug Fixes
+
+* add 'test' to directory exclusion lists in index.js and bin/agent-hub.js ([93ecd8b](https://github.com/SouzaEduardoAC/ai-agents/commit/93ecd8b7caa4b144340aa9fe96ac3be56c2c1c3f))
+* **bootstrap:** auto-migrate stale bin/agent-hub.js MCP entry to index.js ([7b27fb8](https://github.com/SouzaEduardoAC/ai-agents/commit/7b27fb8350614038b5c35b268c761188f1443c96))
+* **mcp:** detect technology stacks in monorepo layouts (depth-1 CWD scan) ([c6ba97c](https://github.com/SouzaEduardoAC/ai-agents/commit/c6ba97cc37ed99c4b3b812d2d0e5741abd78fbd6))
+* **mcp:** fix stdio transport preventing tools from surfacing in AI clients ([d75eaeb](https://github.com/SouzaEduardoAC/ai-agents/commit/d75eaeb29d991a6bbbe1ecf4ab7e72598b102fb6))
+
 ## [Unreleased]
 
 ### Bug Fixes
