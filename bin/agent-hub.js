@@ -118,7 +118,7 @@ program
     }
 
     const agents = (await fs.readdir(ROOT, { withFileTypes: true }))
-      .filter((d) => d.isDirectory() && !d.name.startsWith(".") && !["node_modules", "bin", "docs", "common"].includes(d.name))
+      .filter((d) => d.isDirectory() && !d.name.startsWith(".") && !["node_modules", "bin", "docs", "common", "test"].includes(d.name))
       .map((d) => d.name);
 
     console.log("\n🚀 Bootstrapping Universal Agent Hub...");

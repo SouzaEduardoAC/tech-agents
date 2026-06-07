@@ -358,7 +358,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     if (name === "list_agents") {
       const dirs = await fs.readdir(AGENTS_ROOT, { withFileTypes: true });
       const agents = dirs
-        .filter((d) => d.isDirectory() && !d.name.startsWith(".") && !["node_modules", "bin", "docs", "common"].includes(d.name))
+        .filter((d) => d.isDirectory() && !d.name.startsWith(".") && !["node_modules", "bin", "docs", "common", "test"].includes(d.name))
         .map((d) => d.name);
 
       const agentDetails = [];
