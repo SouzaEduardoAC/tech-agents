@@ -126,6 +126,11 @@ async function compileCommonSection(dirPath, searchTarget, cattedBasenames, cate
         // security_auditor is already present.
         isRelevant = !hasAgentSecurityAuditor &&
           /audit|review|create|implement|security|test|bottleneck|perf|fix|refactor/.test(searchTarget);
+      } else if (basename === "business_synthesis.md") {
+        // Only inject business synthesis for commands that explicitly deal with
+        // translating tech specs to business language. Council's debate protocol
+        // supersedes this; injecting it there creates competing output formats.
+        isRelevant = /synthesize|translate|export|stakeholder|business|report|decoder/.test(searchTarget);
       } else {
         // Fallback: default to true for other skills
         isRelevant = true;
@@ -141,13 +146,58 @@ async function compileCommonSection(dirPath, searchTarget, cattedBasenames, cate
   return content;
 }
 
+// Directories that are never user modules — skip them during depth-1 scan.
+const SKIP_DIRS = new Set([
+  "node_modules", ".git", ".cache", ".idea", ".vscode",
+  "dist", "build", "out", "target", ".next", ".nuxt", "coverage",
+  "__pycache__", ".gradle", ".m2",
+]);
+
+/**
+ * Scans the workspace for technology stack marker files.
+ * Handles two layouts:
+ *   A) Single-module: marker files (pom.xml, package.json, etc.) sit directly in CWD.
+ *   B) Monorepo / multi-module: CWD is a project root whose children are module dirs,
+ *      each containing their own marker files one level deeper.
+ *
+ * Returns:
+ *   rootFiles    — file names found directly in CWD (Layout A)
+ *   moduleFiles  — flat array of { file, module } pairs from immediate subdirs (Layout B)
+ */
+async function scanWorkspace() {
+  const rootEntries = await fs.readdir(process.cwd(), { withFileTypes: true }).catch(() => []);
+  const rootFiles = rootEntries.filter(e => e.isFile()).map(e => e.name);
+
+  const moduleFiles = [];
+  for (const entry of rootEntries) {
+    if (!entry.isDirectory()) continue;
+    if (entry.name.startsWith(".") || SKIP_DIRS.has(entry.name)) continue;
+    const subFiles = await fs.readdir(path.join(process.cwd(), entry.name)).catch(() => []);
+    for (const f of subFiles) {
+      moduleFiles.push({ file: f, module: entry.name });
+    }
+  }
+
+  return { rootFiles, moduleFiles };
+}
+
 /**
  * Detects if a specific stack knowledge should be loaded based on the environment or task arguments.
  */
 async function getDynamicKnowledge(taskArgs = "", agent = "") {
   const detectedStacks = [];
-  const files = await fs.readdir(process.cwd()).catch(() => []);
+  const { rootFiles, moduleFiles } = await scanWorkspace();
+  // files = rootFiles for backward-compat with single checks; moduleFiles used for depth-1 monorepo detection
+  const files = rootFiles;
   const taskArgsLower = taskArgs.toLowerCase();
+
+  // Helper: check if a marker filename exists at root OR in any immediate submodule.
+  // Returns the module name if found in a submodule, "" if found at root, null if not found.
+  const findMarker = (predicate) => {
+    if (files.some(predicate)) return "";  // found at root
+    const hit = moduleFiles.find(({ file }) => predicate(file));
+    return hit ? hit.module : null;        // found in module, or null
+  };
 
   const isBackendAgent = agent === "backend";
   const isFrontendAgent = agent === "frontend";
@@ -157,44 +207,32 @@ async function getDynamicKnowledge(taskArgs = "", agent = "") {
   // --- BACKEND STACKS ---
   if (isBackendAgent || isArchitect) {
     // Detection Logic for .NET
-    const hasDotnetFiles = files.some(f => f.endsWith('.csproj') || f.endsWith('.sln') || f === 'global.json');
+    const dotnetModule = findMarker(f => f.endsWith('.csproj') || f.endsWith('.sln') || f === 'global.json');
     const hasDotnetMention = taskArgsLower.includes('dotnet') || taskArgsLower.includes('c#');
-    if (hasDotnetFiles || hasDotnetMention) {
+    if (dotnetModule !== null || hasDotnetMention) {
       const dotnetPath = path.join(AGENTS_ROOT, "common", "stacks", "dotnet.md");
       if (await fs.pathExists(dotnetPath)) {
-        detectedStacks.push({
-          name: ".NET",
-          file: "dotnet.md",
-          path: dotnetPath
-        });
+        detectedStacks.push({ name: ".NET", file: "dotnet.md", path: dotnetPath, module: dotnetModule ?? "" });
       }
     }
 
     // Detection Logic for Java
-    const hasJavaFiles = files.some(f => f === 'pom.xml' || f === 'build.gradle' || f === 'build.gradle.kts' || f.endsWith('.java'));
+    const javaModule = findMarker(f => f === 'pom.xml' || f === 'build.gradle' || f === 'build.gradle.kts' || f.endsWith('.java'));
     const hasJavaMention = taskArgsLower.includes('java') || taskArgsLower.includes('spring boot');
-    if (hasJavaFiles || hasJavaMention) {
+    if (javaModule !== null || hasJavaMention) {
       const javaPath = path.join(AGENTS_ROOT, "common", "stacks", "java.md");
       if (await fs.pathExists(javaPath)) {
-        detectedStacks.push({
-          name: "Java / Spring Boot",
-          file: "java.md",
-          path: javaPath
-        });
+        detectedStacks.push({ name: "Java / Spring Boot", file: "java.md", path: javaPath, module: javaModule ?? "" });
       }
     }
 
     // Detection Logic for Go
-    const hasGoFiles = files.some(f => f === 'go.mod' || f === 'go.sum' || f.endsWith('.go'));
+    const goModule = findMarker(f => f === 'go.mod' || f === 'go.sum' || f.endsWith('.go'));
     const hasGoMention = taskArgsLower.includes('golang') || (taskArgsLower.includes('go ') && !taskArgsLower.includes('google')) || taskArgsLower === 'go';
-    if (hasGoFiles || hasGoMention) {
+    if (goModule !== null || hasGoMention) {
       const goPath = path.join(AGENTS_ROOT, "common", "stacks", "go.md");
       if (await fs.pathExists(goPath)) {
-        detectedStacks.push({
-          name: "Go (Golang)",
-          file: "go.md",
-          path: goPath
-        });
+        detectedStacks.push({ name: "Go (Golang)", file: "go.md", path: goPath, module: goModule ?? "" });
       }
     }
   }
@@ -202,72 +240,70 @@ async function getDynamicKnowledge(taskArgs = "", agent = "") {
   // --- FRONTEND STACKS ---
   if (isFrontendAgent || isArchitect) {
     // Detection Logic for React
-    const hasReactFiles = files.some(f => f === 'package.json') && (files.includes('App.js') || files.includes('App.tsx') || files.includes('src')); 
+    // Root: package.json + (App.js | App.tsx | src/) present
+    // Module: package.json inside a subdir that contains "react" — read the file to confirm
     const hasReactMention = taskArgsLower.includes('react');
-    if (hasReactMention || (hasReactFiles && (await fs.readFile(path.join(process.cwd(), 'package.json'), 'utf8').catch(() => "")).includes('"react"'))) {
+    let reactModule = null;
+    if (!hasReactMention) {
+      // Root check
+      if (files.includes('package.json') && (files.includes('App.js') || files.includes('App.tsx') || files.includes('src'))) {
+        const pkgContent = await fs.readFile(path.join(process.cwd(), 'package.json'), 'utf8').catch(() => "");
+        if (pkgContent.includes('"react"')) reactModule = "";
+      }
+      // Depth-1 check: find any module with a package.json containing "react"
+      if (reactModule === null) {
+        for (const { file, module } of moduleFiles) {
+          if (file === 'package.json') {
+            const pkgContent = await fs.readFile(path.join(process.cwd(), module, 'package.json'), 'utf8').catch(() => "");
+            if (pkgContent.includes('"react"')) { reactModule = module; break; }
+          }
+        }
+      }
+    }
+    if (hasReactMention || reactModule !== null) {
       const reactPath = path.join(AGENTS_ROOT, "common", "stacks", "react.md");
       if (await fs.pathExists(reactPath)) {
-        detectedStacks.push({
-          name: "React",
-          file: "react.md",
-          path: reactPath
-        });
+        detectedStacks.push({ name: "React", file: "react.md", path: reactPath, module: reactModule ?? "" });
       }
     }
 
     // Detection Logic for Angular
-    const hasAngularFiles = files.some(f => f === 'angular.json' || f === 'nx.json');
+    const angularModule = findMarker(f => f === 'angular.json' || f === 'nx.json');
     const hasAngularMention = taskArgsLower.includes('angular');
-    if (hasAngularFiles || hasAngularMention) {
+    if (angularModule !== null || hasAngularMention) {
       const angularPath = path.join(AGENTS_ROOT, "common", "stacks", "angular.md");
       if (await fs.pathExists(angularPath)) {
-        detectedStacks.push({
-          name: "Angular",
-          file: "angular.md",
-          path: angularPath
-        });
+        detectedStacks.push({ name: "Angular", file: "angular.md", path: angularPath, module: angularModule ?? "" });
       }
     }
 
     // Detection Logic for Vue
-    const hasVueFiles = files.some(f => f.endsWith('.vue') || f === 'vue.config.js');
+    const vueModule = findMarker(f => f.endsWith('.vue') || f === 'vue.config.js');
     const hasVueMention = taskArgsLower.includes('vue');
-    if (hasVueFiles || hasVueMention) {
+    if (vueModule !== null || hasVueMention) {
       const vuePath = path.join(AGENTS_ROOT, "common", "stacks", "vue.md");
       if (await fs.pathExists(vuePath)) {
-        detectedStacks.push({
-          name: "Vue",
-          file: "vue.md",
-          path: vuePath
-        });
+        detectedStacks.push({ name: "Vue", file: "vue.md", path: vuePath, module: vueModule ?? "" });
       }
     }
 
     // Detection Logic for TypeScript
-    const hasTsFiles = files.some(f => f === 'tsconfig.json' || f.endsWith('.ts') || f.endsWith('.tsx'));
+    const tsModule = findMarker(f => f === 'tsconfig.json' || f.endsWith('.ts') || f.endsWith('.tsx'));
     const hasTsMention = taskArgsLower.includes('typescript') || taskArgsLower.includes(' ts ');
-    if (hasTsFiles || hasTsMention) {
+    if (tsModule !== null || hasTsMention) {
       const tsPath = path.join(AGENTS_ROOT, "common", "stacks", "typescript.md");
       if (await fs.pathExists(tsPath)) {
-        detectedStacks.push({
-          name: "TypeScript",
-          file: "typescript.md",
-          path: tsPath
-        });
+        detectedStacks.push({ name: "TypeScript", file: "typescript.md", path: tsPath, module: tsModule ?? "" });
       }
     }
 
     // Detection Logic for JavaScript
-    const hasJsFiles = files.some(f => f.endsWith('.js') || f.endsWith('.mjs') || f.endsWith('.cjs'));
+    const jsModule = findMarker(f => f.endsWith('.js') || f.endsWith('.mjs') || f.endsWith('.cjs'));
     const hasJsMention = taskArgsLower.includes('javascript') || taskArgsLower.includes(' js ');
-    if (hasJsFiles || hasJsMention) {
+    if (jsModule !== null || hasJsMention) {
       const jsPath = path.join(AGENTS_ROOT, "common", "stacks", "javascript.md");
       if (await fs.pathExists(jsPath)) {
-        detectedStacks.push({
-          name: "JavaScript",
-          file: "javascript.md",
-          path: jsPath
-        });
+        detectedStacks.push({ name: "JavaScript", file: "javascript.md", path: jsPath, module: jsModule ?? "" });
       }
     }
   }
@@ -275,16 +311,12 @@ async function getDynamicKnowledge(taskArgs = "", agent = "") {
   // --- MOBILE STACKS ---
   if (isMobileAgent || isArchitect) {
     // Detection Logic for Flutter/Dart
-    const hasFlutterFiles = files.some(f => f === 'pubspec.yaml' || f.endsWith('.dart'));
+    const flutterModule = findMarker(f => f === 'pubspec.yaml' || f.endsWith('.dart'));
     const hasFlutterMention = taskArgsLower.includes('flutter') || taskArgsLower.includes('dart');
-    if (hasFlutterFiles || hasFlutterMention) {
+    if (flutterModule !== null || hasFlutterMention) {
       const flutterPath = path.join(AGENTS_ROOT, "common", "stacks", "flutter.md");
       if (await fs.pathExists(flutterPath)) {
-        detectedStacks.push({
-          name: "Flutter / Dart",
-          file: "flutter.md",
-          path: flutterPath
-        });
+        detectedStacks.push({ name: "Flutter / Dart", file: "flutter.md", path: flutterPath, module: flutterModule ?? "" });
       }
     }
   }
@@ -293,15 +325,21 @@ async function getDynamicKnowledge(taskArgs = "", agent = "") {
   const primaryStacks = ["dotnet.md", "java.md", "go.md", "react.md", "angular.md", "vue.md", "flutter.md"];
   const primaryDetected = detectedStacks.filter(s => primaryStacks.includes(s.file));
 
-  // If multiple primary stacks are detected, use Option B (On-Demand Manifest)
+  // If multiple primary stacks are detected, use On-Demand Manifest mode.
+  // Enriched with module attribution when stacks were found in subdirectories.
   if (primaryDetected.length > 1) {
+    const isMonorepo = detectedStacks.some(s => s.module);
     let manifest = `\n### MULTIPLE STACKS DETECTED (On-Demand Mode Active)\n`;
-    manifest += `The workspace contains multiple active technology stacks. To prevent prompt collision and token bloat, the reference guidelines have NOT been pre-injected.\n`;
-    manifest += `You MUST dynamically inspect and read the relevant reference files using your 'view_file' tool before planning or executing tasks in those subdirectories:\n\n`;
+    manifest += isMonorepo
+      ? `The workspace root is a multi-module project. Each module uses a different technology stack.\n`
+      : `The workspace contains multiple active technology stacks.\n`;
+    manifest += `To prevent prompt collision and token bloat, stack reference guidelines have NOT been pre-injected.\n`;
+    manifest += `You MUST read the relevant reference file before working in each module or stack area:\n\n`;
     for (const stack of detectedStacks) {
-      manifest += `- **Stack:** ${stack.name}\n  **Reference Path:** common/stacks/${stack.file}\n`;
+      const location = stack.module ? ` → module: \`${stack.module}/\`` : ` → workspace root`;
+      manifest += `- **Stack:** ${stack.name}${location}\n  **Reference:** \`common/stacks/${stack.file}\`\n`;
     }
-    manifest += `\nExample: If you are editing a Java file, call view_file on 'common/stacks/java.md' first to align with the project standard.\n`;
+    manifest += `\nBefore editing any file, call view_file on the matching reference to align with project standards.\n`;
     return manifest;
   }
 
@@ -315,34 +353,51 @@ async function getDynamicKnowledge(taskArgs = "", agent = "") {
   return content;
 }
 
+
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
       {
         name: "list_agents",
-        description: "List all available specialized agents and their supported commands.",
+        description: [
+          "List all available specialized agents and their supported commands.",
+          "Agents available: architect (systems design, security), backend (APIs, databases),",
+          "frontend (UI, React/Angular/Vue), mobile (Flutter/iOS/Android), squad (full-stack orchestration),",
+          "po (product discovery, PRDs), compliance (GDPR/HIPAA/SOC2 audits), council (multi-perspective debate & synthesis),",
+          "researcher (deep investigation, reports), forge (meta-agent design), automata (workflow automation),",
+          "decoder (tech-to-business translation), quicky (quick fixes).",
+          "Call this first to discover exact agent names and their commands before calling call_agent_command.",
+        ].join(" "),
         inputSchema: { type: "object", properties: {} },
       },
       {
         name: "call_agent_command",
-        description: "Run a specific command from an agent's library. Call 'list_agents' first to discover available commands.",
+        description: [
+          "Activate a specialized agent and run one of its commands with a task description.",
+          "Use this whenever the user asks to: 'call the council', 'have the architect design X',",
+          "'run the backend agent', 'ask the squad to build X', 'get compliance to audit Y',",
+          "'let the researcher investigate Z', 'use the PO for discovery', 'have forge create an agent',",
+          "'get quicky to fix this', 'have the decoder translate this spec', or any similar delegation to a named agent.",
+          "The assembled prompt returned by this tool IS the agent — adopt its persona and execute its instructions directly.",
+          "Call list_agents first if you are unsure of the exact agent name or available commands.",
+        ].join(" "),
         inputSchema: {
           type: "object",
           properties: {
-            agent: { type: "string", description: "The agent name (e.g., architect, backend, squad, po)." },
-            command: { type: "string", description: "The command name (e.g., 'run' for squad, 'create' for architect, 'discovery' for po)." },
-            args: { type: "string", description: "The goal or arguments for the task." },
+            agent: { type: "string", description: "The agent name (e.g., architect, backend, squad, council, po, compliance, researcher, forge, automata, decoder, quicky, frontend, mobile)." },
+            command: { type: "string", description: "The command name. Common defaults: 'run' (squad), 'create' (architect/backend/frontend/mobile), 'debate' (council), 'discovery' (po), 'master' (compliance), 'report' (researcher), 'fix' (quicky), 'export' (decoder). Call list_agents to see all available commands." },
+            args: { type: "string", description: "The full task description, goal, or user request to pass to the agent. Be specific — this becomes the agent's primary objective." },
           },
           required: ["agent", "command", "args"],
         },
       },
       {
         name: "get_agent_prompt",
-        description: "Get the full persona and knowledge for a specific agent.",
+        description: "Retrieve the full identity, persona, and knowledge base for a specific agent without executing a command. Use this to understand an agent's capabilities before calling call_agent_command, or to load an agent's persona into the current context.",
         inputSchema: {
           type: "object",
           properties: {
-            agent: { type: "string" },
+            agent: { type: "string", description: "The agent name (e.g., architect, backend, council)." },
           },
           required: ["agent"],
         },
@@ -358,7 +413,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     if (name === "list_agents") {
       const dirs = await fs.readdir(AGENTS_ROOT, { withFileTypes: true });
       const agents = dirs
-        .filter((d) => d.isDirectory() && !d.name.startsWith(".") && !["node_modules", "bin", "docs", "common"].includes(d.name))
+        .filter((d) => d.isDirectory() && !d.name.startsWith(".") && !["node_modules", "bin", "docs", "common", "test"].includes(d.name))
         .map((d) => d.name);
 
       const agentDetails = [];
@@ -432,11 +487,30 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       const commonKnowledge = await compileCommonSection(path.join(AGENTS_ROOT, "common", "knowledge"), searchTarget, cattedBasenames, "knowledge").catch(() => "");
       const commonSkills = await compileCommonSection(path.join(AGENTS_ROOT, "common", "skills"), searchTarget, cattedBasenames, "skills").catch(() => "");
       
-      // Inject Dynamic Knowledge for Architect/Backend/Frontend/Mobile
+      // Inject Dynamic Knowledge for Architect/Backend/Frontend/Mobile (language stack files, on-demand)
       let dynamicKnowledge = "";
       if (["architect", "backend", "frontend", "mobile"].includes(agent)) {
         dynamicKnowledge = await getDynamicKnowledge(taskArgs, agent);
       }
+
+      // Auto-inject agent-level skills/ and knowledge/ dirs.
+      // These are the agent's own identity files (protocols, reviewer skills, domain knowledge).
+      // Dedup guard: skip any file whose basename was already explicitly !{cat}'d in the TOML prompt.
+      const readAgentDirDeduped = async (dirPath) => {
+        if (!(await fs.pathExists(dirPath))) return "";
+        const globPattern = path.join(dirPath, "*.md").replace(/\\/g, "/");
+        const files = await glob(globPattern);
+        let content = "";
+        for (const file of files) {
+          const basename = path.basename(file);
+          if (cattedBasenames.has(basename)) continue; // already injected via !{cat}
+          const fileContent = await fs.readFile(file, "utf-8");
+          content += `\n### File: ${basename}\n${fileContent}\n`;
+        }
+        return content;
+      };
+      const agentSkills = await readAgentDirDeduped(path.join(AGENTS_ROOT, agent, "skills")).catch(() => "");
+      const agentKnowledge = await readAgentDirDeduped(path.join(AGENTS_ROOT, agent, "knowledge")).catch(() => "");
 
       const identityMeta = `### ACTIVE PERSONA CONTEXT
 You are currently executing the command '${commandName}' as the **${agent.toUpperCase()}** agent.
@@ -445,7 +519,7 @@ To maintain transparency and multi-agent coordination, you MUST prefix your very
 
 --------------------------------------------------------------------------------\n\n`;
 
-      prompt = `${identityMeta}# Common Standards\n${commonKnowledge}\n\n# Common Skills\n${commonSkills}\n\n# Dynamic Knowledge\n${dynamicKnowledge}\n\n${prompt}`;
+      prompt = `${identityMeta}# Common Standards\n${commonKnowledge}\n\n# Common Skills\n${commonSkills}\n\n# Dynamic Knowledge\n${dynamicKnowledge}\n\n# Agent Skills\n${agentSkills}\n\n# Agent Knowledge\n${agentKnowledge}\n\n${prompt}`;
       
       // Resolve {{args}}
       prompt = prompt.replace(/\{\{args\}\}/g, taskArgs);
@@ -501,6 +575,11 @@ ${knowledge}
   }
 });
 
-const transport = new StdioServerTransport();
-await server.connect(transport);
-console.error(`Agent Hub MCP Server (v${pkg.version}) running on stdio`);
+try {
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
+  process.stderr.write(`[agent-hub] MCP Server v${pkg.version} running on stdio\n`);
+} catch (e) {
+  process.stderr.write(`[agent-hub] FATAL: ${e.message}\n${e.stack}\n`);
+  process.exit(1);
+}

@@ -12,6 +12,22 @@
 	- ## Core Infrastructure
 		- status:: [SYNC]
 		- nodes:: [[TECHNICAL_SPECS]], [[BUSINESS_FLOW]], [[code-dna]], [[resilience-policies]], [[AI Interaction Standard]], [[Decoder]]
+		- ## Bug Fix: MCP stdio Transport (2026-06-04)
+			- status:: [DONE]
+			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]
+			- summary:: Fixed `stdio: "inherit"` anti-pattern in `bin/agent-hub.js serve` that prevented MCP tools from surfacing in AI clients. `mcp_config.json` now points directly to `index.js`. `bootstrap` generates correct direct entries. `index.js` has startup diagnostics. (ref: `bin/agent-hub.js → serve`, `index.js → transport connect`)
+		- ## Bug Fix: Bootstrap Migration Guard (2026-06-07)
+			- status:: [DONE]
+			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]
+			- summary:: `bootstrap` previously skipped environments already configured with the old `bin/agent-hub.js serve` entry (guard was `if (!mcpServers["agent-hub"])`). Added stale-entry detection — if the existing args include `bin/agent-hub.js`, the entry is overwritten with the correct `index.js` direct path. Makes `bootstrap` idempotent and self-healing for pre-fix installs. (ref: `bin/agent-hub.js → updateMcpServers`)
+		- ## Feature: Prompt Completeness & LLM Discoverability (2026-06-07)
+			- status:: [DONE]
+			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]
+			- summary:: Three fixes: (1) Tool descriptions enriched with agent-role hints and natural-language trigger examples for LLM intent routing. (2) `call_agent_command` now auto-injects `[agent]/skills/` and `[agent]/knowledge/` with dedup-aware filtering — agent full identity loads regardless of TOML !{cat} completeness. (3) `business_synthesis.md` gated behind keyword filter to prevent noise in debate-oriented prompts. Integration test suite upgraded to 35 assertions including content fingerprints, noise guards, and auto-injection proof. (ref: `index.js → call_agent_command`, `compileCommonSection`, `readAgentDirDeduped`)
+		- ## Bug Fix: Monorepo / Multi-module CWD Stack Detection (2026-06-07)
+			- status:: [DONE]
+			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]
+			- summary:: Fixed silent stack-detection failure in monorepo workspaces. The dynamic stack detection (`getDynamicKnowledge`) previously only checked `process.cwd()` (depth 0), missing module-level markers (`pom.xml`, `package.json`) hidden in subdirectories. Implemented `scanWorkspace()` depth-1 scan which checks the root AND immediate subdirectories (skipping `.git`, `node_modules`, etc.). When multiple stacks are detected across modules, the resulting multi-stack manifest now includes explicitly attributed module paths (e.g., `Java → module-auth/`, `React → module-frontend/`). (ref: `index.js → scanWorkspace`, `getDynamicKnowledge`)
 	- ## Product Elicitation & PO Framework
 		- status:: [ACTIVE]
 		- nodes:: [[Product Owner]], [[prioritization-framework]], [[product-interview]]

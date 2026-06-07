@@ -1,6 +1,6 @@
 - type:: [[Technical Specification]]
 - status:: [SYNC]
-- version:: 1.3.0
+- version:: 1.4.1
 - project:: [[ai-agents]]
 
 - # Core Infrastructure: Universal Agent Hub (Deep Specification)
@@ -8,13 +8,15 @@
 		- Binary:: `bin/agent-hub.js` (ref: `package.json -> bin`)
 		- Entry Point:: `index.js` at the root, acting as the MCP Server (ref: `package.json -> main`)
 		- **Command: `serve`**: 
-			- Function:: Spawns the Hub server (ref: `index.js`).
-			- Transport:: Uses `StdioServerTransport` for direct CLI-to-Hub communication.
+			- Function:: Spawns the Hub server (ref: `index.js`) as a child process.
+			- Transport:: Uses `StdioServerTransport` on `index.js`. The wrapper uses `stdio: "pipe"` + explicit stream forwarding (`process.stdin → child.stdin`, `child.stdout → process.stdout`) to preserve MCP JSON-RPC framing. Using `stdio: "inherit"` is a **known anti-pattern** here — it attaches child fds to the wrapper's already-open descriptors, causing the MCP client to never reach the `StdioServerTransport`. (ref: `bin/agent-hub.js → serve`)
+			- **Direct Invocation (Preferred for MCP clients):** Configure `mcp_config.json` to point directly to `index.js`, bypassing the wrapper entirely.
 		- **Command: `bootstrap` (Environment Initialization)**: 
 			- Function:: One-time local environment setup for Gemini CLI, AntiGravity, and Claude Code.
 			- **Step 0: Gemini MCP Configuration**:
-				- Path:: `~/.gemini/settings.json`
+				- Path:: `~/.gemini/settings.json` and `~/.gemini/antigravity/mcp_config.json`
 				- Logic:: Dynamically injects `filesystem`, `context7`, and `agent-hub` MCP server configurations if missing.
+				- **agent-hub MCP Entry:** Registered as `{ command: "node", args: ["<ROOT>/index.js"] }` — points directly to the MCP server, not the CLI wrapper, to ensure correct stdio handshake.
 			- **Step 1: Gemini Slash Commands**:
 				- Source:: `[agent]/commands/[agent]/*.toml`
 				- Target:: `~/.gemini/commands/[agent]/`
@@ -32,20 +34,15 @@
 	- ## The Orchestration Engine (The Bridge)
 		- **Logic Mixing & Prompt Optimization (AMD Core)**: 
 			- The Hub server performs a multi-stage optimized prompt assembly.
-			- Formula:: `Prompt = Deduplicated/Relevant Common Standards + Deduplicated/Relevant Common Skills + Dynamic Stack Skills + Agent Persona + Agent Skills + Agent Knowledge + Command Prompt`.
-			- **Late-Binding Deduplication**: Scanning TOML prompts for explicit `!{cat}` directives and dynamically filtering those files from prepended common sections to eliminate duplicate token injection (ref: `index.js -> compileCommonSection`).
-			- **Heuristic Relevance Filtering**: Dynamically prepending only the subset of common files matching the active command keywords and intent, reducing common block token bloat by up to 70% (ref: `index.js -> compileCommonSection`).
-			- (ref: `index.js -> call_agent_command`)
+			- Formula:: `Prompt = identityMeta + Deduplicated/Relevant Common Standards + Deduplicated/Relevant Common Skills + Dynamic Stack Skills + Auto-Injected Agent Skills + Auto-Injected Agent Knowledge + Command Prompt (TOML)`.
+			- **Late-Binding Deduplication**: Scanning TOML prompts for explicit `!{cat}` directives and dynamically filtering those files from prepended common sections to eliminate duplicate token injection (ref: `index.js -> compileCommonSection`, `index.js -> readAgentDirDeduped`).
+			- **Heuristic Relevance Filtering**: Dynamically prepending only the subset of common files matching the active command keywords and intent, reducing common block token bloat by up to 70%. `business_synthesis.md` is gated behind `synthesize|translate|export|stakeholder|business|report|decoder` keywords — prevents it from polluting debate-oriented prompts (e.g. `council:debate`). (ref: `index.js -> compileCommonSection`)
+			- **Agent Skills/Knowledge Auto-Injection**: `call_agent_command` now automatically loads `[agent]/skills/*.md` and `[agent]/knowledge/*.md` with dedup-aware filtering (`readAgentDirDeduped`) — files already explicitly `!{cat}`'d in the TOML are skipped. This makes every agent's full identity available regardless of TOML authoring completeness, mirroring `get_agent_prompt` layout. (ref: `index.js -> call_agent_command`)
 		- **Dynamic Stack Detection (The Heuristic Engine)**:
 			- Activated for: `architect`, `backend`, `frontend`, `mobile`.
-			- Detection Markers:
-				- **.NET**: `.csproj`, `.sln`, `global.json`.
-				- **Java**: `pom.xml`, `build.gradle`, `build.gradle.kts`.
-				- **Go**: `go.mod`, `go.sum`, `*.go`.
-				- **React**: `package.json` (containing "react") + `App.tsx` or `src/`.
-				- **Angular**: `angular.json`, `nx.json`.
-				- **Flutter**: `pubspec.yaml`.
-			- (ref: `index.js -> getDynamicKnowledge`)
+			- Sniffs the project directory (`process.cwd()`) and immediately nested subdirectories (Depth-1 monorepo scan) for marker files (e.g. `pom.xml`, `package.json`, `pubspec.yaml`, `go.mod`, `.csproj`) or keywords in `taskArgs`.
+			- Dynamically appends the relevant framework guides (e.g. `java.md`, `react.md`) to the context.
+			- **Multi-Stack Guard (On-Demand Mode)**: If multiple primary stacks are detected (e.g. Java in `module-auth/` + React in `module-frontend/`), the engine aborts pre-injection and outputs an `On-Demand Manifest` with module attribution. This forces the LLM to explicitly use `view_file` to read the correct stack context only when needed, avoiding cross-contamination and token bloat. (ref: `index.js -> getDynamicKnowledge`, `scanWorkspace`)
 		- **Probe Resolution Logic (The !{cat} Pattern)**:
 			- Pattern:: `/!\{cat\s+([^\}]+)\}/g`
 			- Behavior:: Resolves paths relative to `AGENTS_ROOT` or `~/.gemini/agents`.
@@ -66,6 +63,8 @@
 				- Description:: The core orchestration server developed in this repository.
 				- Interaction:: Provides the `call_agent_command` tool, mapping high-level goals to specialized agent personas and skillsets.
 				- Link:: [[Internal]] (ref: `index.js`)
+				- **MCP Config Entry (Correct):** `{ "command": "node", "args": ["<ABSOLUTE_PATH>/index.js"] }` — do NOT point to `bin/agent-hub.js serve`.
+				- **Startup Diagnostics:** `index.js` wraps `server.connect(transport)` in a `try/catch`, writing fatal errors to `process.stderr` and calling `process.exit(1)` for visibility to MCP host processes. (ref: `index.js → transport connect`)
 			- **Filesystem MCP**:
 				- Description:: Secure access to the project's `/docs` directory for Logseq graph manipulation.
 				- Interaction:: Used by ALL agents to read/write documentation, ADRs, and PRDs.
