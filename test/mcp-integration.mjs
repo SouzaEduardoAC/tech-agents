@@ -365,6 +365,56 @@ async function runTests() {
   proc.stdin.end();
   proc.kill();
 
+  // ── Phase 7: Monorepo CWD Stack Detection ───────────────────────────────
+  // Verifies that stack detection finds marker files one directory deep,
+  // and correctly emits the enriched multi-stack manifest with module names.
+  console.log(hdr("\n📦  Phase 7: Monorepo CWD Stack Detection (Depth-1)"));
+  try {
+    const fs = await import("fs/promises");
+    const os = await import("os");
+    
+    // Create a temporary monorepo structure
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'mcp-test-'));
+    await fs.mkdir(path.join(tmpDir, 'module-auth'));
+    await fs.writeFile(path.join(tmpDir, 'module-auth', 'pom.xml'), '<project></project>');
+    await fs.mkdir(path.join(tmpDir, 'module-frontend'));
+    await fs.writeFile(path.join(tmpDir, 'module-frontend', 'package.json'), '{"dependencies":{"react":"18"}}');
+    
+    const monoProc = spawn("node", [path.join(ROOT, "bin", "agent-hub.js"), "serve"], {
+      cwd: tmpDir,
+      stdio: "pipe",
+      env: process.env,
+    });
+    
+    await initialize(monoProc);
+    const resp = await callTool(monoProc, "call_agent_command", {
+      agent: "architect",
+      command: "create",
+      args: "Build the auth service",
+    });
+    
+    const text = resp?.result?.content?.[0]?.text ?? "";
+    monoProc.stdin.end();
+    monoProc.kill();
+    
+    // Cleanup
+    await fs.rm(tmpDir, { recursive: true, force: true });
+    
+    if (!text.includes("MULTIPLE STACKS DETECTED")) {
+      throw new Error("Multi-stack manifest not triggered for monorepo layout");
+    }
+    if (!text.includes("module-auth/") || !text.includes("module-frontend/")) {
+      throw new Error("Module attribution missing from manifest");
+    }
+    
+    console.log(ok(`Depth-1 Detection: Found Java in module-auth/ and React in module-frontend/ ✓`));
+    results.passed++;
+  } catch (e) {
+    console.log(fail(`Depth-1 Detection — ${e.message}`));
+    results.failed++;
+    results.errors.push({ phase: "monorepo-detection", error: e.message });
+  }
+
   // ── Summary ─────────────────────────────────────────────────────────────
   const total = results.passed + results.failed;
   const allPass = results.failed === 0;
