@@ -38,17 +38,11 @@
 			- **Late-Binding Deduplication**: Scanning TOML prompts for explicit `!{cat}` directives and dynamically filtering those files from prepended common sections to eliminate duplicate token injection (ref: `index.js -> compileCommonSection`, `index.js -> readAgentDirDeduped`).
 			- **Heuristic Relevance Filtering**: Dynamically prepending only the subset of common files matching the active command keywords and intent, reducing common block token bloat by up to 70%. `business_synthesis.md` is gated behind `synthesize|translate|export|stakeholder|business|report|decoder` keywords — prevents it from polluting debate-oriented prompts (e.g. `council:debate`). (ref: `index.js -> compileCommonSection`)
 			- **Agent Skills/Knowledge Auto-Injection**: `call_agent_command` now automatically loads `[agent]/skills/*.md` and `[agent]/knowledge/*.md` with dedup-aware filtering (`readAgentDirDeduped`) — files already explicitly `!{cat}`'d in the TOML are skipped. This makes every agent's full identity available regardless of TOML authoring completeness, mirroring `get_agent_prompt` layout. (ref: `index.js -> call_agent_command`)
-			- (ref: `index.js -> call_agent_command`)
 		- **Dynamic Stack Detection (The Heuristic Engine)**:
 			- Activated for: `architect`, `backend`, `frontend`, `mobile`.
-			- Detection Markers:
-				- **.NET**: `.csproj`, `.sln`, `global.json`.
-				- **Java**: `pom.xml`, `build.gradle`, `build.gradle.kts`.
-				- **Go**: `go.mod`, `go.sum`, `*.go`.
-				- **React**: `package.json` (containing "react") + `App.tsx` or `src/`.
-				- **Angular**: `angular.json`, `nx.json`.
-				- **Flutter**: `pubspec.yaml`.
-			- (ref: `index.js -> getDynamicKnowledge`)
+			- Sniffs the project directory (`process.cwd()`) and immediately nested subdirectories (Depth-1 monorepo scan) for marker files (e.g. `pom.xml`, `package.json`, `pubspec.yaml`, `go.mod`, `.csproj`) or keywords in `taskArgs`.
+			- Dynamically appends the relevant framework guides (e.g. `java.md`, `react.md`) to the context.
+			- **Multi-Stack Guard (On-Demand Mode)**: If multiple primary stacks are detected (e.g. Java in `module-auth/` + React in `module-frontend/`), the engine aborts pre-injection and outputs an `On-Demand Manifest` with module attribution. This forces the LLM to explicitly use `view_file` to read the correct stack context only when needed, avoiding cross-contamination and token bloat.
 		- **Probe Resolution Logic (The !{cat} Pattern)**:
 			- Pattern:: `/!\{cat\s+([^\}]+)\}/g`
 			- Behavior:: Resolves paths relative to `AGENTS_ROOT` or `~/.gemini/agents`.
