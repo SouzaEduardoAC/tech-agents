@@ -21,3 +21,8 @@
 		- **Zero Trust UI Logic**: Unverified logic is rejected.
 		- **Accessibility-First**: HALT if user request contradicts A11y best practices.
 		- (ref: `frontend/brain/persona.md`)
+	- ## Commands
+		- **`frontend:create`**: Full lifecycle — Investigation → Plan → Implementation → Review. (ref: `frontend/commands/frontend/create.toml`)
+		- **`frontend:auditor`**: Targeted audit for UI patterns, accessibility, and performance. (ref: `frontend/commands/frontend/auditor.toml`)
+		- **`frontend:docs`**: Sync UI logic with Logseq documentation. (ref: `frontend/commands/frontend/docs.toml`)
+		- **`frontend:analyze`**: Read-only behavioral simulation. Traces component rendering paths, state mutations, and conditional display logic against real or hypothetical data inputs. No artifacts, no implementation. (ref: `frontend/commands/frontend/analyze.toml`, `common/skills/investigation.md`)

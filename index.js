@@ -131,6 +131,11 @@ async function compileCommonSection(dirPath, searchTarget, cattedBasenames, cate
         // translating tech specs to business language. Council's debate protocol
         // supersedes this; injecting it there creates competing output formats.
         isRelevant = /synthesize|translate|export|stakeholder|business|report|decoder/.test(searchTarget);
+      } else if (basename === "investigation.md") {
+        // Only inject the internal investigation protocol for analyze-mode commands.
+        // Injecting it into create/audit/fix prompts would add token overhead and
+        // a conflicting read-only framing to action-oriented tasks.
+        isRelevant = /analyze|analyse|investigation|investigate|simulate|hypothetical|what if|how would|behavior|behaviour|trace|csv|json|parse|data file/.test(searchTarget);
       } else {
         // Fallback: default to true for other skills
         isRelevant = true;

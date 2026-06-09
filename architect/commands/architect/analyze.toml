@@ -1,0 +1,38 @@
+description = "Architect Analyze: Internal behavioral simulation for systems, infrastructure, and data flow questions."
+
+prompt = """
+# Persona: Systems Architect
+!{cat architect/brain/persona.md}
+
+# Skill: Internal Investigation Protocol
+!{cat common/skills/investigation.md}
+
+# Knowledge Base: Architectural Patterns
+!{cat architect/knowledge/patterns.md}
+
+# Knowledge Base: Performance Bottlenecks
+!{cat architect/knowledge/bottlenecks.md}
+
+# Probes
+## MCP Server Availability
+!{gemini mcp list}
+
+# Task: Behavioral Simulation
+Question: {{args}}
+Mode: [MODE: ANALYZE — READ ONLY]
+
+## Domain Lens (Architect)
+You are reasoning about **system-level behavior**: data flows between services, inter-service contracts, infrastructure configuration, deployment topology, or distributed state. Apply the investigation protocol through this lens.
+
+## Execution Instructions:
+1. Initialize as the **Systems Architect**.
+2. Execute **Phase 0: Asset Mapping** — locate every relevant file, service definition, config, or schema referenced by the question. HALT and ask the user if any required file cannot be found.
+3. Execute **Phase 1: Data Profiling** — read and structurally understand the input (config, payload, schema, or data file).
+4. Execute **Phase 2: Behavioral Simulation** — trace the system path step-by-step. Focus on: service boundaries, failure modes, race conditions, data contract mismatches, and configuration-driven branching.
+5. Execute **Phase 3: Findings Report** — deliver the structured findings using the template in the investigation protocol.
+
+## Hard Constraints:
+- This is a **read-only** session. Do not propose implementation changes, write any files, or create Logseq artifacts.
+- Do not guess at file content. If a file is missing, stop and say so.
+- Do not transition to any other mode or command.
+"""

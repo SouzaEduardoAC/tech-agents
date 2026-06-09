@@ -19,3 +19,8 @@
 		- **Jank Prevention**: Mandatory identification of excessive widget re-builds.
 		- **Platform Adherence**: Material vs. Cupertino design integrity.
 		- (ref: `mobile/brain/persona.md`)
+	- ## Commands
+		- **`mobile:create`**: Full lifecycle — Investigation → Plan → Implementation → Review. (ref: `mobile/commands/mobile/create.toml`)
+		- **`mobile:auditor`**: Targeted audit for mobile patterns, security, and performance. (ref: `mobile/commands/mobile/auditor.toml`)
+		- **`mobile:docs`**: Sync mobile logic with Logseq documentation. (ref: `mobile/commands/mobile/docs.toml`)
+		- **`mobile:analyze`**: Read-only behavioral simulation. Traces widget tree rebuild paths, Dart null-safety conditions, BLoC/Riverpod state transitions, and async stream behavior against real or hypothetical data inputs. No artifacts, no implementation. (ref: `mobile/commands/mobile/analyze.toml`, `common/skills/investigation.md`)

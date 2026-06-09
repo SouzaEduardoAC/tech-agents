@@ -43,6 +43,10 @@
 		- **User-Centricity**: Solve the problem, don't just build the feature.
 		- **Constraint-First**: Map technical, business, and regulatory blockers early.
 		- **Clarity over Speed**: HALT if requests are ambiguous. (ref: `po/brain/persona.md`)
+	- ## Commands
+		- **`po:discovery`**: Transform ideas into a validated Logseq PRD. (ref: `po/commands/po/discovery.toml`)
+		- **`po:interview`**: Interactive 5-phase stakeholder elicitation loop. (ref: `po/commands/po/interview.toml`)
+		- **`po:analyze`**: Read-only behavioral simulation. Traces data scenarios against business rules and acceptance criteria. Opportunistically loads a PRD for context if one exists. No artifacts, no implementation. (ref: `po/commands/po/analyze.toml`, `common/skills/investigation.md`)
 	- ## Success Criteria (Definition of PRD)
 		- Every functional requirement MUST have nested Gherkin-style **Given-When-Then** Acceptance Criteria.
 		- Every requirement carries a explicit **MoSCoW** priority property.

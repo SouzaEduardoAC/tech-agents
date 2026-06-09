@@ -36,8 +36,14 @@
 			- The Hub server performs a multi-stage optimized prompt assembly.
 			- Formula:: `Prompt = identityMeta + Deduplicated/Relevant Common Standards + Deduplicated/Relevant Common Skills + Dynamic Stack Skills + Auto-Injected Agent Skills + Auto-Injected Agent Knowledge + Command Prompt (TOML)`.
 			- **Late-Binding Deduplication**: Scanning TOML prompts for explicit `!{cat}` directives and dynamically filtering those files from prepended common sections to eliminate duplicate token injection (ref: `index.js -> compileCommonSection`, `index.js -> readAgentDirDeduped`).
-			- **Heuristic Relevance Filtering**: Dynamically prepending only the subset of common files matching the active command keywords and intent, reducing common block token bloat by up to 70%. `business_synthesis.md` is gated behind `synthesize|translate|export|stakeholder|business|report|decoder` keywords — prevents it from polluting debate-oriented prompts (e.g. `council:debate`). (ref: `index.js -> compileCommonSection`)
+			- **Heuristic Relevance Filtering**: Dynamically prepending only the subset of common files matching the active command keywords and intent, reducing common block token bloat by up to 70%. `business_synthesis.md` is gated behind `synthesize|translate|export|stakeholder|business|report|decoder` keywords — prevents it from polluting debate-oriented prompts (e.g. `council:debate`). `investigation.md` is gated behind `analyze|simulate|hypothetical|trace|csv|json|data file` keywords — prevents it from adding read-only framing to action-oriented commands. (ref: `index.js → compileCommonSection`)
 			- **Agent Skills/Knowledge Auto-Injection**: `call_agent_command` now automatically loads `[agent]/skills/*.md` and `[agent]/knowledge/*.md` with dedup-aware filtering (`readAgentDirDeduped`) — files already explicitly `!{cat}`'d in the TOML are skipped. This makes every agent's full identity available regardless of TOML authoring completeness, mirroring `get_agent_prompt` layout. (ref: `index.js -> call_agent_command`)
+		- **Shared Skills (common/skills/)**:
+			- **`investigation.md` — Internal Investigation Protocol**:
+				- Purpose:: Read-only behavioral simulation skill. Answers questions grounded in actual local files (CSV, JSON, configs, source code) and hypothetical data scenarios. Zero side effects — no artifacts produced, no implementation transitions triggered.
+				- Phases:: Asset Mapping → Data Profiling → Behavioral Simulation → Findings Report.
+				- Available via:: `architect:analyze`, `backend:analyze`, `frontend:analyze`, `mobile:analyze`, `po:analyze`.
+				- Injection guard:: Only injected when the search target matches analyze/simulate/trace/csv/json/hypothetical keywords. (ref: `common/skills/investigation.md`, `index.js → compileCommonSection`)
 		- **Dynamic Stack Detection (The Heuristic Engine)**:
 			- Activated for: `architect`, `backend`, `frontend`, `mobile`.
 			- Sniffs the project directory (`process.cwd()`) and immediately nested subdirectories (Depth-1 monorepo scan) for marker files (e.g. `pom.xml`, `package.json`, `pubspec.yaml`, `go.mod`, `.csproj`) or keywords in `taskArgs`.

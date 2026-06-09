@@ -18,3 +18,8 @@
 		- **Private Feed Guard**: Mandatory HALT if internal package registries are detected without config.
 		- **Regression-First Fixes**: Write a failing test before applying a bug fix.
 		- (ref: `backend/brain/persona.md`)
+	- ## Commands
+		- **`backend:create`**: Full lifecycle — Investigation → Plan → Implementation → Review. (ref: `backend/commands/backend/create.toml`)
+		- **`backend:auditor`**: Targeted audit for API patterns, security, and performance. (ref: `backend/commands/backend/auditor.toml`)
+		- **`backend:docs`**: Sync backend logic with Logseq documentation. (ref: `backend/commands/backend/docs.toml`)
+		- **`backend:analyze`**: Read-only behavioral simulation. Traces API payloads, data contracts, ORM queries, and business logic branches against real or hypothetical inputs. No artifacts, no implementation. (ref: `backend/commands/backend/analyze.toml`, `common/skills/investigation.md`)

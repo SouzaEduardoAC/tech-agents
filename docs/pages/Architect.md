@@ -24,3 +24,8 @@
 		- **Mirror Counseling**: Immediate halt if user request contradicts "AI Context" or engineering standards.
 		- **Strict Sequentiality**: Must announce and verify each step of the protocol before proceeding.
 		- (ref: `architect/brain/persona.md`)
+	- ## Commands
+		- **`architect:create`**: Full lifecycle — Investigation → Plan → Implementation → Review. (ref: `architect/commands/architect/create.toml`)
+		- **`architect:auditor`**: Targeted audit for patterns, security, and performance. (ref: `architect/commands/architect/auditor.toml`)
+		- **`architect:docs`**: Sync codebase logic with Logseq documentation. (ref: `architect/commands/architect/docs.toml`)
+		- **`architect:analyze`**: Read-only behavioral simulation. Traces system flows, infrastructure configs, and data contracts against real or hypothetical inputs. No artifacts, no implementation. (ref: `architect/commands/architect/analyze.toml`, `common/skills/investigation.md`)

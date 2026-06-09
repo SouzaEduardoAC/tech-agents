@@ -28,6 +28,10 @@
 			- status:: [DONE]
 			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]
 			- summary:: Fixed silent stack-detection failure in monorepo workspaces. The dynamic stack detection (`getDynamicKnowledge`) previously only checked `process.cwd()` (depth 0), missing module-level markers (`pom.xml`, `package.json`) hidden in subdirectories. Implemented `scanWorkspace()` depth-1 scan which checks the root AND immediate subdirectories (skipping `.git`, `node_modules`, etc.). When multiple stacks are detected across modules, the resulting multi-stack manifest now includes explicitly attributed module paths (e.g., `Java → module-auth/`, `React → module-frontend/`). (ref: `index.js → scanWorkspace`, `getDynamicKnowledge`)
+		- ## Feature: Internal Investigation Protocol (2026-06-09)
+			- status:: [DONE]
+			- ref:: [[TECHNICAL_SPECS]], [[Architect]], [[Backend]], [[Frontend]], [[Mobile]], [[Product Owner]]
+			- summary:: Added a shared `common/skills/investigation.md` protocol and a dedicated `analyze` command to five agents (architect, backend, frontend, mobile, po). The skill implements a four-phase read-only behavioral simulation loop: Asset Mapping → Data Profiling → Behavioral Simulation → Findings Report. Designed for internal Q&A against local files (CSV, JSON, configs, source code) and hypothetical data scenarios. Produces no artifacts and triggers no implementation transitions. `index.js` relevance filter updated to inject `investigation.md` only on analyze-scoped keywords. (ref: `common/skills/investigation.md`, `index.js → compileCommonSection`)
 	- ## Product Elicitation & PO Framework
 		- status:: [ACTIVE]
 		- nodes:: [[Product Owner]], [[prioritization-framework]], [[product-interview]]

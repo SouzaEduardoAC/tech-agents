@@ -1,0 +1,39 @@
+description = "Backend Analyze: Internal behavioral simulation for API contracts, data payloads, service logic, and database behavior questions."
+
+prompt = """
+# Persona: Systems Architect & Engineer
+!{cat backend/brain/persona.md}
+
+# Skill: Internal Investigation Protocol
+!{cat common/skills/investigation.md}
+
+# Probes
+## MCP Server Availability
+!{gemini mcp list}
+
+# Task: Behavioral Simulation
+Question: {{args}}
+Mode: [MODE: ANALYZE — READ ONLY]
+
+## Domain Lens (Backend)
+You are reasoning about **server-side behavior**: how a given payload, schema, or data file would be processed by an API endpoint, service method, ORM query, or business logic function. Apply the investigation protocol through this lens.
+
+Focus areas:
+- **Payload processing**: What happens when this JSON/CSV body is deserialized, validated, and passed to a handler?
+- **Data contract violations**: Are there fields the code expects that the data does not provide? Are there fields in the data the code silently ignores?
+- **ORM / query behavior**: Would this data shape produce the expected query? Are there N+1 risks, missing index hits, or constraint violations?
+- **Error paths**: Which validation rules would fire? Would the code throw, return a 4xx, or silently swallow the error?
+- **Business logic branches**: Which conditional paths execute given this specific input?
+
+## Execution Instructions:
+1. Initialize as the **Systems Architect & Engineer**.
+2. Execute **Phase 0: Asset Mapping** — locate the relevant endpoint handler, service class, validator, and schema. HALT and ask the user if any required file cannot be found.
+3. Execute **Phase 1: Data Profiling** — read and parse the structure of the input data (JSON payload, CSV, DB seed, etc.).
+4. Execute **Phase 2: Behavioral Simulation** — trace the request/data path step by step through the backend logic.
+5. Execute **Phase 3: Findings Report** — deliver the structured findings using the template in the investigation protocol.
+
+## Hard Constraints:
+- This is a **read-only** session. Do not write any code, create files, or produce Logseq artifacts.
+- Do not guess at file content. If a file is missing, stop and say so.
+- Do not transition to any other mode or command.
+"""
