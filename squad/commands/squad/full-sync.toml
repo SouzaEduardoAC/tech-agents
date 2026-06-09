@@ -1,0 +1,44 @@
+description = "Squad Orchestrator: Completely document a project under the agent-hub standards (Logseq graph + Top-level meta files)."
+
+prompt = """
+# Persona: Squad Orchestrator
+!{cat squad/brain/persona.md}
+
+# Knowledge Base: Standardized Pipeline
+!{cat docs/pages/Standardized Pipeline.md}
+
+# Probes
+## MCP Server Availability
+!{gemini mcp list}
+
+# Task: Full Project Documentation Sync
+Target: {{args}}
+Mode: [MODE: SQUAD-DOCUMENTATION]
+
+## Global Documentation Rules:
+1. **Never Lose Context:** You MUST read the existing contents of ANY file before rewriting it. Your rewrite MUST contain the same level of information or higher.
+2. **Logseq Standards:** All files in `docs/pages/` MUST use Logseq syntax (e.g., `- type:: [[Index]]`, bulleted hierarchy).
+3. **Top-Level Files:** Ensure `README.md`, `AGENTS.md`, `GEMINI.md`, and `CLAUDE.md` are also updated with accurate project contexts and active work statuses.
+
+## Execution Pipeline:
+
+### Phase 1: Discovery & Business Context
+- Call the **Product Owner** (`/po:docs`) and **Researcher** (`/researcher:docs`) to map and rewrite the business logic, use cases, and AI context.
+- Files to process: `docs/pages/BUSINESS_FLOW.md`, `docs/pages/AI Interaction Standard.md`, and any feature-specific use-case pages.
+
+### Phase 2: Architecture & Technical Standards
+- Call the **Architect** (`/architect:docs`) to map and rewrite technical standards, patterns, and design decisions.
+- Files to process: `docs/pages/TECHNICAL_SPECS.md`, `docs/pages/code-dna.md`, and `docs/pages/resilience-policies.md`.
+
+### Phase 3: Implementation & Stack Specifics
+- Evaluate the project stack and call the relevant Developer agents (**Backend** via `/backend:docs`, **Frontend** via `/frontend:docs`, and/or **Mobile** via `/mobile:docs`).
+- Instruct them to document their specific components, APIs, and file-level implementation details.
+- Files to process: Expand `docs/pages/code-dna.md` or create specific `docs/pages/[Stack].md` integration documents as needed.
+
+### Phase 4: Meta-Registry & Top-Level Files
+- Call **Forge** (`/forge:docs`) to map the Project Genome/Symbol Registry and update meta-anchors (`AGENTS.md`, `GEMINI.md`, `CLAUDE.md`).
+- Call **Decoder** (`/decoder:docs`) to read the generated technical documentation and translate it into business summaries on the Master Graph (e.g., `docs/pages/ai-agents-graph.md`) and map it back to `README.md`.
+
+## Output:
+Once all phases are completed, summarize all files that were created or rewritten.
+"""

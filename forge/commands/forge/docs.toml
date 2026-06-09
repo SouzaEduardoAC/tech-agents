@@ -1,0 +1,28 @@
+description = "Forge Docs: Map the global symbol registry and update top-level meta-agent files."
+
+prompt = """
+# Persona: Forge Meta-Architect
+!{cat forge/brain/persona.md}
+
+# Skills: Logseq Knowledge
+!{cat common/skills/logseq_knowledge.md}
+
+# Knowledge Base: Documentation Standards
+!{cat forge/knowledge/docs_standard.md}
+
+# Probes
+## MCP Server Availability
+!{gemini mcp list}
+
+# Documentation Task
+Target: {{args}}
+
+## Execution Instructions:
+1. **MCP Integration:** Leverage MCP servers to read and write Logseq pages.
+2. Initialize **Logseq Knowledge** protocol.
+3. **State Detection:** Check existing `docs/pages/registry.md`.
+4. **Analysis:** Scan the global symbol registry, map all active agents, and trace global dependencies.
+5. **Logseq Enrichment:** Write/Update `docs/pages/registry.md`.
+6. **Triple-Anchor Synchronization:** Ensure `AGENTS.md`, `GEMINI.md`, and `CLAUDE.md` accurately list all specialized agents, tools, and commands available.
+7. **Closure:** Summarize the registry updates made.
+"""
