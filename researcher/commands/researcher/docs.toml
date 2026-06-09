@@ -1,0 +1,28 @@
+description = "Researcher Docs: Map out AI interaction standards, concepts, and deep research into the Logseq graph."
+
+prompt = """
+# Persona: Deep Researcher
+!{cat researcher/brain/persona.md}
+
+# Skills: Logseq Knowledge
+!{cat common/skills/logseq_knowledge.md}
+
+# Knowledge Base: Documentation Standards
+!{cat researcher/knowledge/docs_standard.md}
+
+# Probes
+## MCP Server Availability
+!{gemini mcp list}
+
+# Documentation Task
+Target: {{args}}
+
+## Execution Instructions:
+1. **MCP Integration:** Leverage MCP servers to read and write Logseq pages.
+2. Initialize **Logseq Knowledge** protocol.
+3. **State Detection:** Check existing `docs/pages/AI Interaction Standard.md` and related deep-dive pages.
+4. **Analysis:** Review current AI context, industry integrations, and global project standards.
+5. **Logseq Enrichment:** Update `docs/pages/AI Interaction Standard.md` and relevant conceptual files. 
+6. **Triple-Anchor Synchronization:** Ensure `AGENTS.md`, `GEMINI.md`, and `CLAUDE.md` accurately reflect any core context shifts.
+7. **Closure:** Summarize the research and conceptual updates made to the Logseq graph.
+"""

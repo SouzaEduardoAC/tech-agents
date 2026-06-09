@@ -28,6 +28,7 @@ call_agent_command(agent="po", command="discovery", args="Feature name")
 call_agent_command(agent="council", command="debate", args="User request here")
 call_agent_command(agent="forge", command="create", args="New Agent Spec")
 call_agent_command(agent="squad", command="run", args="High-level project goal")
+call_agent_command(agent="squad", command="full-sync", args="Sync codebase documentation")
 ```
 
 ## 🗺 Documentation Map (Logseq Graph)
@@ -60,6 +61,7 @@ The project documentation is managed as a knowledge graph in `docs/pages/`.
 - DONE: Implement [[Decoder]] to translate tech docs for BAs/POs. (ref: [[common/skills/business_synthesis.md]])
 - DONE: Mature [[compliance/skills/audit_protocol.md|Compliance Audit Protocol]] (mapped detailed GDPR, LGPD, and HIPAA reference guidelines in compliance/knowledge/).
 - DONE: Reorganize default MCP stack, promote Context7 default integration with key placeholders, and enforce automated planning-level citation validation in the execution protocol. (ref: `[[TECHNICAL_SPECS]]`, `common/knowledge/anti_hallucination.md`)
+- DONE: Standardize global Logseq documentation protocol and interface (`/agent:docs`) across all agents via the new Squad `/squad:full-sync` orchestrator. (ref: [[registry]])
 - TODO: Implement automated AST-sync for [[Mobile]] widget trees.
 
 #AMD #ClaudeCode #AgenticFramework #Logseq

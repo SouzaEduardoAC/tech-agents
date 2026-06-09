@@ -32,6 +32,10 @@
 			- status:: [DONE]
 			- ref:: [[TECHNICAL_SPECS]], [[Architect]], [[Backend]], [[Frontend]], [[Mobile]], [[Product Owner]]
 			- summary:: Added a shared `common/skills/investigation.md` protocol and a dedicated `analyze` command to five agents (architect, backend, frontend, mobile, po). The skill implements a four-phase read-only behavioral simulation loop: Asset Mapping → Data Profiling → Behavioral Simulation → Findings Report. Designed for internal Q&A against local files (CSV, JSON, configs, source code) and hypothetical data scenarios. Produces no artifacts and triggers no implementation transitions. `index.js` relevance filter updated to inject `investigation.md` only on analyze-scoped keywords. (ref: `common/skills/investigation.md`, `index.js → compileCommonSection`)
+		- ## Feature: Global Documentation Standardization (2026-06-09)
+			- status:: [DONE]
+			- ref:: [[Squad Orchestrator]], [[Product Owner]], [[Researcher]], [[Forge]], [[Decoder]]
+			- summary:: Standardized the `/agent:docs` command interface across all operational and meta-agents (PO, Researcher, Forge, Decoder). Created `squad/full-sync` orchestrator pipeline to dynamically call developers and other agents to fully document any project into the Logseq structure without losing historical context. (ref: `po/commands/po/docs.toml`, `squad/commands/squad/full-sync.toml`)
 	- ## Product Elicitation & PO Framework
 		- status:: [ACTIVE]
 		- nodes:: [[Product Owner]], [[prioritization-framework]], [[product-interview]]

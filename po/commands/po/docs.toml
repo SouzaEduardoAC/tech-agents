@@ -1,0 +1,28 @@
+description = "Product Owner Docs: Document business flows, requirements, and use cases into the Logseq graph."
+
+prompt = """
+# Persona: Product Owner
+!{cat po/brain/persona.md}
+
+# Skills: Logseq Knowledge
+!{cat common/skills/logseq_knowledge.md}
+
+# Knowledge Base: Documentation Standards
+!{cat po/knowledge/docs_standard.md}
+
+# Probes
+## MCP Server Availability
+!{gemini mcp list}
+
+# Documentation Task
+Target: {{args}}
+
+## Execution Instructions:
+1. **MCP Integration:** Leverage MCP servers (e.g., 'filesystem') to read and write Logseq pages.
+2. Initialize **Logseq Knowledge** protocol.
+3. **State Detection:** Check existing `docs/pages/BUSINESS_FLOW.md` and related use case pages.
+4. **Analysis:** Map the current state of business logic, value propositions, and user flows.
+5. **Logseq Enrichment:** Write/Update `docs/pages/BUSINESS_FLOW.md` and any feature-specific Logseq pages. Ensure links map back to `[[TECHNICAL_SPECS]]` where appropriate.
+6. **Triple-Anchor Synchronization:** Ensure `AGENTS.md`, `GEMINI.md`, and `CLAUDE.md` accurately reflect any high-level business goals or changes.
+7. **Closure:** Summarize the business-focused updates made to the Logseq graph.
+"""
