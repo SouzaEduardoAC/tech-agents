@@ -136,6 +136,11 @@ async function compileCommonSection(dirPath, searchTarget, cattedBasenames, cate
         // Injecting it into create/audit/fix prompts would add token overhead and
         // a conflicting read-only framing to action-oriented tasks.
         isRelevant = /analyze|analyse|investigation|investigate|simulate|hypothetical|what if|how would|behavior|behaviour|trace|csv|json|parse|data file/.test(searchTarget);
+      } else if (basename === "pr_review.md") {
+        // Only inject the PR review protocol for review-scoped commands that target
+        // pull/merge requests. This prevents the cross-platform diff-fetching framing
+        // from leaking into unrelated create/audit/analyze commands.
+        isRelevant = /review|pull.?request|pull request|merge.?request|merge request|\bpr\b|\bmr\b|github\.com.*pull|gitlab\.com.*merge|dev\.azure\.com.*pullrequest|visualstudio\.com.*pullrequest/.test(searchTarget);
       } else {
         // Fallback: default to true for other skills
         isRelevant = true;
