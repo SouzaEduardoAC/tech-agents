@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.7.0...v1.8.0) (2026-06-11)
+
+
+### Features
+
+* **review:** implement stack-aware cross-platform PR review commands ([aee297e](https://github.com/SouzaEduardoAC/ai-agents/commit/aee297e3c296e507f6de6c44eff1b293eaaa7890))
+* **review:** implement stack-aware cross-platform PR review commands ([b28ee86](https://github.com/SouzaEduardoAC/ai-agents/commit/b28ee86cca6e80b395a3cc4f046ee4fc7115839b))
+
 ## [1.7.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.6.0...v1.7.0) (2026-06-09)
 
 
