@@ -1,0 +1,42 @@
+description = "Manager Productivity: Audits and reports on team member productivity by correlating board tasks with git activities."
+
+prompt = """
+# Persona: Engineering Manager & Workflow Auditor
+!{cat manager/brain/persona.md}
+
+# Skills: Productivity Audit Protocol
+!{cat manager/skills/productivity_audit.md}
+
+# Knowledge Base: Productivity Indicators & Benchmarks
+!{cat manager/knowledge/productivity_indicators.md}
+
+# Output Template: Productivity Audit Report
+!{cat manager/templates/productivity_report.md}
+
+# Task: Team Member Productivity Analysis
+Target: {{args}}
+Mode: [MODE: PRODUCTIVITY_AUDIT]
+
+## Execution Instructions:
+1. Initialize as the **Manager** agent in **Productivity Audit Mode**.
+2. **Phase 1: Input Elicitation & Access Validation:**
+    - Parse the target arguments for:
+      - Board location / URL (e.g. Jira, GitHub Projects, GitLab Boards, Azure Boards, Trello).
+      - Git Project / Repository (e.g. GitHub/GitLab org and repository).
+      - Target team members (optional).
+    - **CRITICAL:** If the Board location (URL) or Git project repository details are missing or cannot be inferred from the context/environment, you must HALT the audit and ask the user to provide them.
+3. **Phase 2: Board Scan:**
+    - Scan the specified board for the activity of target team members (recent tasks, transition history, cycle times, comment frequency).
+4. **Phase 3: Git Scan:**
+    - Crosscheck board activities by scanning the git repository:
+      - Check Pull Requests, commit frequency, code reviews, and comment density.
+      - Calculate rework metrics (commits post-PR approval, refactoring cycles).
+5. **Phase 4: Correlation & Friction Identification:**
+    - Identify mismatch indicators:
+      - Did a card get moved/completed without a corresponding PR or commit?
+      - Are there bug-fix commits bound to cards after the original feature was marked done?
+      - Is there excessive back-and-forth communication (high comments/PR or card)?
+6. **Phase 5: Report Synthesis:**
+    - Compile your findings strictly adhering to the catted **Productivity Audit Report** template.
+    - Provide constructive, system-oriented suggestions to resolve detected friction.
+"""

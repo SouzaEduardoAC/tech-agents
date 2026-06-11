@@ -29,6 +29,7 @@ call_agent_command(agent="council", command="debate", args="User request here")
 call_agent_command(agent="forge", command="create", args="New Agent Spec")
 call_agent_command(agent="squad", command="run", args="High-level project goal")
 call_agent_command(agent="squad", command="full-sync", args="Sync codebase documentation")
+call_agent_command(agent="manager", command="productivity", args="Audit Board and Repo")
 ```
 
 ## 🗺 Documentation Map (Logseq Graph)
@@ -53,6 +54,7 @@ The project documentation is managed as a knowledge graph in `docs/pages/`.
 - [[Forge]]: Specialized meta-agent to design, scaffold, audit, and upgrade other agents.
 - [[Quicky]]: Specialist for quick fixes, small tweaks, and isolated tasks maintaining documentation integrity.
 - [[Council]]: Symmetrical multi-perspective debate and design synthesis engine.
+- [[Manager]]: Team workflow audit, metrics tracking, and productivity analysis.
 
 ## 🛠 Active Work & Tasks
 - DONE: Verify path normalization across all agents. (ref: [[code-dna]])

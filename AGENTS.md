@@ -26,6 +26,7 @@ The project documentation is managed as a knowledge graph in `docs/pages/`.
 - [[Forge]]: Specialized meta-agent to design, scaffold, audit, and upgrade other agents (#MetaAgent).
 - [[Quicky]]: Specialist for quick fixes, small tweaks, and isolated tasks maintaining documentation integrity.
 - [[Council]]: Symmetrical multi-perspective debate and design synthesis engine.
+- [[Manager]]: Team workflow audit, metrics tracking, and productivity analysis.
 
 ## 🛠 Active Work & Tasks
 - DONE: Verify path normalization across all agents. (ref: [[code-dna]])

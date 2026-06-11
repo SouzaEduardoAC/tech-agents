@@ -23,6 +23,7 @@ The following namespaces are registered via `/bin/agent-hub bootstrap`:
 - `/forge:*`: Meta-agent design, creation, and auditing.
 - `/quicky:*`: Quick fixes, minor tweaks, and isolated code changes.
 - `/council:*`: Symmetrical multi-perspective design debate and synthesis.
+- `/manager:*`: Team workflow metrics and productivity audits.
 
 ## 🤖 Specialized Agents
 - [[Squad Orchestrator]]: Multi-agent pipeline management.
@@ -36,6 +37,7 @@ The following namespaces are registered via `/bin/agent-hub bootstrap`:
 - [[Forge]]: Meta-agent design, creation, and auditing.
 - [[Quicky]]: Specialist for quick fixes, small tweaks, and isolated tasks maintaining documentation integrity.
 - [[Council]]: Symmetrical multi-perspective debate and design synthesis engine.
+- [[Manager]]: Team workflow audit, metrics tracking, and productivity analysis.
 ## 🛠 Active Work & Tasks
 - DONE: Verify path normalization across all agents. (ref: [[code-dna]])
 - DONE: Implement prompt late-binding deduplication and heuristic relevance filtering (#AMD compiler optimization). (ref: [[TECHNICAL_SPECS]])

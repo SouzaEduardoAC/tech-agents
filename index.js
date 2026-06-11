@@ -375,7 +375,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           "frontend (UI, React/Angular/Vue), mobile (Flutter/iOS/Android), squad (full-stack orchestration),",
           "po (product discovery, PRDs), compliance (GDPR/HIPAA/SOC2 audits), council (multi-perspective debate & synthesis),",
           "researcher (deep investigation, reports), forge (meta-agent design), automata (workflow automation),",
-          "decoder (tech-to-business translation), quicky (quick fixes).",
+          "decoder (tech-to-business translation), quicky (quick fixes), manager (workflow metrics, productivity audits).",
           "Call this first to discover exact agent names and their commands before calling call_agent_command.",
         ].join(" "),
         inputSchema: { type: "object", properties: {} },
@@ -387,15 +387,15 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           "Use this whenever the user asks to: 'call the council', 'have the architect design X',",
           "'run the backend agent', 'ask the squad to build X', 'get compliance to audit Y',",
           "'let the researcher investigate Z', 'use the PO for discovery', 'have forge create an agent',",
-          "'get quicky to fix this', 'have the decoder translate this spec', or any similar delegation to a named agent.",
+          "'get quicky to fix this', 'have the decoder translate this spec', 'have the manager audit productivity', or any similar delegation to a named agent.",
           "The assembled prompt returned by this tool IS the agent — adopt its persona and execute its instructions directly.",
           "Call list_agents first if you are unsure of the exact agent name or available commands.",
         ].join(" "),
         inputSchema: {
           type: "object",
           properties: {
-            agent: { type: "string", description: "The agent name (e.g., architect, backend, squad, council, po, compliance, researcher, forge, automata, decoder, quicky, frontend, mobile)." },
-            command: { type: "string", description: "The command name. Common defaults: 'run' (squad), 'create' (architect/backend/frontend/mobile), 'debate' (council), 'discovery' (po), 'master' (compliance), 'report' (researcher), 'fix' (quicky), 'export' (decoder). Call list_agents to see all available commands." },
+            agent: { type: "string", description: "The agent name (e.g., architect, backend, squad, council, po, compliance, researcher, forge, automata, decoder, quicky, frontend, mobile, manager)." },
+            command: { type: "string", description: "The command name. Common defaults: 'run' (squad), 'create' (architect/backend/frontend/mobile), 'debate' (council), 'discovery' (po), 'master' (compliance), 'report' (researcher), 'fix' (quicky), 'export' (decoder), 'productivity' (manager). Call list_agents to see all available commands." },
             args: { type: "string", description: "The full task description, goal, or user request to pass to the agent. Be specific — this becomes the agent's primary objective." },
           },
           required: ["agent", "command", "args"],
@@ -407,7 +407,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         inputSchema: {
           type: "object",
           properties: {
-            agent: { type: "string", description: "The agent name (e.g., architect, backend, council)." },
+            agent: { type: "string", description: "The agent name (e.g., architect, backend, council, manager)." },
           },
           required: ["agent"],
         },
@@ -458,7 +458,8 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         researcher: { run: "report", create: "report", discovery: "investigate" },
         compliance: { run: "master", create: "master" },
         council: { run: "debate", create: "debate" },
-        decoder: { run: "export", create: "export", synthesize: "export" }
+        decoder: { run: "export", create: "export", synthesize: "export" },
+        manager: { run: "productivity", create: "productivity", audit: "productivity" }
       };
 
       let commandName = command;

@@ -61,6 +61,7 @@ const TEST_MATRIX = [
   ["researcher", "report",    "Research the best vector database options for a RAG system in 2025"],
   ["researcher", "investigate", "Investigate the root cause of the intermittent timeout errors in prod"],
   ["squad",      "run",       "Build a full-stack authentication system: design, backend, and frontend"],
+  ["manager",    "productivity", "Audit productivity on board https://jira.company.com/projects/PROJ and repo org/repo-name for user dev-john"],
 ];
 
 // ─── MCP client ──────────────────────────────────────────────────────────
@@ -175,6 +176,7 @@ const CONTENT_FINGERPRINTS = {
   "researcher:report":   ["research", "report"],
   "researcher:investigate": ["investigation", "research"],
   "squad:run":           ["squad", "orchestrat"],
+  "manager:productivity": ["board", "git", "productivity"],
 };
 
 // ─── assertions ───────────────────────────────────────────────────────────
@@ -267,7 +269,7 @@ async function runTests() {
     const agentsResp = await callTool(proc, "list_agents", {});
     const text = agentsResp?.result?.content?.[0]?.text ?? "";
     const agents = (text.match(/^- \w+/gm) ?? []).map((l) => l.replace("- ", "").split(" ")[0]);
-    if (agents.length !== 13) throw new Error(`Expected 13 agents, got ${agents.length}: ${agents.join(", ")}`);
+    if (agents.length !== 14) throw new Error(`Expected 14 agents, got ${agents.length}: ${agents.join(", ")}`);
     console.log(ok(`list_agents — ${agents.length} agents: ${agents.join(", ")}`));
     results.passed++;
   } catch (e) {
@@ -276,7 +278,7 @@ async function runTests() {
     results.errors.push({ phase: "list_agents", error: e.message });
   }
 
-  // ── Phase 4: call_agent_command (all 25 commands) ───────────────────────
+  // ── Phase 4: call_agent_command (all 26 commands) ───────────────────────
   console.log(hdr("\n⚡  Phase 4: call_agent_command (all commands)"));
 
   let lastAgent = null;

@@ -58,4 +58,8 @@
 		- nodes:: [[Architect]], [[Compliance]]
 	- ## Pipeline & Research
 		- status:: [ACTIVE]
-		- nodes:: [[Squad Orchestrator]], [[Researcher]], [[Council]]
+		- nodes:: [[Squad Orchestrator]], [[Researcher]], [[Council]], [[Manager]]
+		- ## Feature: Manager Agent & Productivity Audit (2026-06-11)
+			- status:: [DONE]
+			- ref:: [[Manager]], [[TECHNICAL_SPECS]]
+			- summary:: Created the Manager (`manager`) agent to assist engineering leads and project managers. Implemented `/manager:productivity` to scan activity boards (Jira, GitHub, GitLab, Azure, Trello) and crosscheck with git repository activities (PRs, commits, comment density, rework, bindings). Supports graceful fallback to user interview if credentials/APIs are missing. (ref: `manager/commands/manager/productivity.toml`, `manager/skills/productivity_audit.md`, `manager/knowledge/productivity_indicators.md`)

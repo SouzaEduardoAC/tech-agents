@@ -1,6 +1,6 @@
 - type:: [[Technical Specification]]
 - status:: [SYNC]
-- version:: 1.4.1
+- version:: 1.4.2
 - project:: [[ai-agents]]
 
 - # Core Infrastructure: Universal Agent Hub (Deep Specification)
@@ -38,6 +38,7 @@
 			- **Late-Binding Deduplication**: Scanning TOML prompts for explicit `!{cat}` directives and dynamically filtering those files from prepended common sections to eliminate duplicate token injection (ref: `index.js -> compileCommonSection`, `index.js -> readAgentDirDeduped`).
 			- **Heuristic Relevance Filtering**: Dynamically prepending only the subset of common files matching the active command keywords and intent, reducing common block token bloat by up to 70%. `business_synthesis.md` is gated behind `synthesize|translate|export|stakeholder|business|report|decoder` keywords — prevents it from polluting debate-oriented prompts (e.g. `council:debate`). `investigation.md` is gated behind `analyze|simulate|hypothetical|trace|csv|json|data file` keywords — prevents it from adding read-only framing to action-oriented commands. (ref: `index.js → compileCommonSection`)
 			- **Agent Skills/Knowledge Auto-Injection**: `call_agent_command` now automatically loads `[agent]/skills/*.md` and `[agent]/knowledge/*.md` with dedup-aware filtering (`readAgentDirDeduped`) — files already explicitly `!{cat}`'d in the TOML are skipped. This makes every agent's full identity available regardless of TOML authoring completeness, mirroring `get_agent_prompt` layout. (ref: `index.js -> call_agent_command`)
+			- **Manager Agent**: Supports `/manager:productivity` targeting developer process audits. Evaluates board-to-git telemetry alignment and falls back gracefully to manual stakeholder interview when API/CLI access is unavailable. (ref: `manager/commands/manager/productivity.toml`)
 		- **Shared Skills (common/skills/)**:
 			- **`investigation.md` — Internal Investigation Protocol**:
 				- Purpose:: Read-only behavioral simulation skill. Answers questions grounded in actual local files (CSV, JSON, configs, source code) and hypothetical data scenarios. Zero side effects — no artifacts produced, no implementation transitions triggered.
