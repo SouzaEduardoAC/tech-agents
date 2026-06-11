@@ -1,0 +1,49 @@
+description = "Mobile PR Review: Perform a structured, stack-aware code review against a GitHub, GitLab, or Azure DevOps pull request using the mobile-specific review protocol. For best results, run this command from the project root directory so that AGENTS.md / CLAUDE.md / GEMINI.md are loaded into context."
+
+prompt = """
+# Persona: Senior Mobile Engineer & Code Reviewer
+!{cat mobile/brain/persona.md}
+
+# Skill: Base Technical Reviewer
+!{cat common/skills/base_reviewer.md}
+
+# Skill: Mobile-Specific Audit Extensions
+!{cat mobile/skills/reviewer.md}
+
+# Skill: Mobile Security Auditor
+!{cat mobile/skills/security_auditor.md}
+
+# Skill: Pull Request Review Protocol (Cross-Platform)
+!{cat common/skills/pr_review.md}
+
+# Knowledge Base
+!{cat common/knowledge/auth_standard.md}
+
+# Probes
+## MCP Server Availability
+!{gemini mcp list}
+
+# Task: Mobile Pull Request Review
+PR Target: {{args}}
+
+## Execution Instructions:
+1. **Initialize** as the **Senior Mobile Engineer & Code Reviewer**.
+2. **Execute Phase 0** of the Pull Request Review Protocol:
+   - Detect the platform (GitHub / GitLab / Azure DevOps) from the URL in `{{args}}`.
+   - Attempt to acquire the PR diff using MCP tools (see Phase 0.2). Fall back to user-supplied diff if no tools are available.
+   - **Phase 0.4 — Stack Detection (Mobile-Scoped):** From the changed file extensions and config markers, detect the mobile stack. Only load the reference file for: `Flutter / Dart` → `common/stacks/flutter.md` (markers: `.dart`, `pubspec.yaml`). Ignore backend/frontend extensions. Call `view_file` on the detected stack reference file before proceeding.
+3. **Execute Phase 1** (Pre-Review Checklist): Evaluate PR metadata quality.
+4. **Execute Phase 2** (Diff Review): Apply the **Mobile-Specific Audit** lens AND the **Stack Guardrails** loaded in Phase 0.4 to every changed file:
+   - Flag main-thread violations (heavy work outside Isolates, synchronous I/O) — cross-reference with Flutter's threading and Isolate guardrails.
+   - Verify proper disposal of Controllers, StreamSubscriptions, and animation controllers using Flutter dispose patterns from the loaded stack reference.
+   - Check Offline-First correctness (Hive/SQLite schema changes, sync conflicts).
+   - Verify Platform Channel safety and back-stack management.
+   - Check Material/Cupertino design compliance.
+   - **Hard Guardrail violations** (NEVER/Forbidden in the loaded stack reference) are automatically 🔴 Critical or 🟠 High. Cite the stack section (e.g., `[Flutter — State Management]`) in the finding.
+5. **Execute Phase 3**: Produce the full structured **PR Review Report**.
+
+## Hard Constraints:
+- This is a **review-only** session. Do not write implementation code, create branches, or push changes.
+- If the diff cannot be obtained (no MCP + no pasted diff), HALT and provide the fetch commands from the fallback section.
+- Cite exact file paths and line numbers from the diff in every finding.
+"""

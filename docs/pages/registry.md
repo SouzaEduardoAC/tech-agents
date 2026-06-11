@@ -45,6 +45,14 @@
 	- ## Implementation Specialists
 		- status:: [ACTIVE]
 		- nodes:: [[Backend]], [[Frontend]], [[Mobile]], [[Automata]]
+		- ## Feature: Stack-Aware PR Review — Tech Stack Knowledge in Diff Review (2026-06-11)
+			- status:: [DONE]
+			- ref:: [[Backend]], [[Frontend]], [[Mobile]], [[TECHNICAL_SPECS]]
+			- summary:: Enhanced the `review` command on Backend, Frontend, and Mobile agents to detect the tech stack directly from the PR diff (Phase 0.4 in `common/skills/pr_review.md`). The agent scans changed file extensions and config markers (`.cs`/`.csproj` → .NET, `pom.xml`/`.java` → Java, `go.mod`/`.go` → Go, `pubspec.yaml`/`.dart` → Flutter, `angular.json` → Angular, `.tsx`/`.jsx` → React, `.vue` → Vue, `tsconfig.json`/`.ts` → TypeScript, `.js` → JavaScript), then calls `view_file` on the matching `common/stacks/*.md` reference before Phase 1. Stack detection is agent-scoped (backend detects .NET/Java/Go only; frontend detects React/Angular/Vue/TS/JS only; mobile detects Flutter only) to prevent cross-contamination. Hard Guardrail violations (NEVER/Forbidden entries in the stack reference) are automatically elevated to Critical/High severity with a stack-section citation in the finding. A `Prerequisites` section was added to the shared PR review protocol recommending execution from the project root directory so that `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` are loaded into context, enabling project-specific guardrails and supplementary stack hints alongside the diff-based detection. (ref: `common/skills/pr_review.md`, `backend/commands/backend/review.toml`, `frontend/commands/frontend/review.toml`, `mobile/commands/mobile/review.toml`)
+		- ## Feature: Cross-Platform Pull Request Review (2026-06-11)
+			- status:: [DONE]
+			- ref:: [[Backend]], [[Frontend]], [[Mobile]], [[TECHNICAL_SPECS]]
+			- summary:: Added a `review` command to the Backend, Frontend, and Mobile agents. Each command accepts a PR/MR URL from GitHub, GitLab, or Azure DevOps, auto-detects the platform, acquires the diff via MCP tools (with graceful CLI fallback), and runs a structured 3-phase review: Pre-Review Checklist → Domain-Specific Diff Review → Structured Report (Critical → Low severity, Verdict, Pre-Merge Checklist). A new shared skill `common/skills/pr_review.md` defines the cross-platform diff acquisition protocol and report format. `index.js` relevance filter updated to gate `pr_review.md` injection on PR/review-scoped keywords only. (ref: `backend/commands/backend/review.toml`, `frontend/commands/frontend/review.toml`, `mobile/commands/mobile/review.toml`, `common/skills/pr_review.md`, `index.js → compileCommonSection`)
 	- ## Systems & Security
 		- status:: [ACTIVE]
 		- nodes:: [[Architect]], [[Compliance]]
