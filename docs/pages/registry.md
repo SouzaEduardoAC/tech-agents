@@ -63,3 +63,8 @@
 			- status:: [DONE]
 			- ref:: [[Manager]], [[TECHNICAL_SPECS]]
 			- summary:: Created the Manager (`manager`) agent to assist engineering leads and project managers. Implemented `/manager:productivity` to scan activity boards (Jira, GitHub, GitLab, Azure, Trello) and crosscheck with git repository activities (PRs, commits, comment density, rework, bindings). Supports graceful fallback to user interview if credentials/APIs are missing. (ref: `manager/commands/manager/productivity.toml`, `manager/skills/productivity_audit.md`, `manager/knowledge/productivity_indicators.md`)
+		- ## Feature: Custom Report Template for Manager Audit (2026-06-11)
+			- status:: [DONE]
+			- ref:: [[Manager]], [[Quicky]]
+			- summary:: Enabled custom report template override for the Manager agent's productivity audit command. Added search protocol in Phase 1 and template selection logic in Phase 6 to check for `.productivity_report_template.md` or `productivity_report_template.md` in the workspace root, allowing users to customize audit reports without altering agent files. Added a `.productivity_report_template.md` configuration in the workspace root. (ref: `manager/skills/productivity_audit.md`, `manager/commands/manager/productivity.toml`, `.productivity_report_template.md`)
+

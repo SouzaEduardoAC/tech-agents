@@ -10,12 +10,15 @@ Before starting the audit, you must verify access credentials, active toolsets, 
 2.  **Verify Location Parameters:**
     - **Board Location:** Must be a valid URL or named board space (e.g., Jira board key, GitHub project board URL, Azure DevOps board path).
     - **Git Project:** Must identify the repository or project space containing the codebase (e.g., org/repo).
-3.  **Mandatory Prompt Fallback:**
+3.  **Check for Custom Report Template:**
+    - Before generating the report, check the workspace root for a custom report template file (e.g., `.productivity_report_template.md` or `productivity_report_template.md`).
+    - If a custom template is found, view its content and use it to structure the final report.
+4.  **Mandatory Prompt Fallback:**
     - If the Board URL or Git Repository path is missing or ambiguous, output a clear, friendly request asking the user to specify:
       - *The URL of the task board (e.g., Jira, Trello, Azure Boards, GitHub Projects)*
       - *The location/name of the Git repository or project*
       - *The team members' names or usernames (optional)*
-4.  **Check Available CLI / MCP Tools:**
+5.  **Check Available CLI / MCP Tools:**
     - Check if you have connected MCP servers (GitHub, GitLab, Jira, etc.) or CLI binaries (`gh`, `az`, `git`).
     - If tools are active, prepare to query. If no integrations are found, fall back to **Phase 5 (Elicitation Fallback)**.
 
@@ -68,7 +71,8 @@ If active MCP servers or CLI environments are unavailable or lack permissions to
 ---
 
 ## Phase 6: Reporting
-Formulate the audit output strictly using the **Productivity Audit Report** template:
-1.  **Synthesize Metrics:** Organize findings into structured Markdown comparison tables.
-2.  **Outline Friction Areas:** Group detected friction by severity (Critical, High, Medium, Low).
-3.  **Formulate Structural Solutions:** Ensure every finding has a constructive, process-focused recommendation (e.g., "break down user stories further" or "increase test coverage requirements").
+Formulate the audit output adhering to the report template:
+1.  **Select Template:** Use the custom report template if one was discovered in the workspace root in Phase 1. Otherwise, fall back to the default **Productivity Audit Report** template.
+2.  **Synthesize Metrics:** Organize findings into structured Markdown comparison tables matching the template layout.
+3.  **Outline Friction Areas:** Group detected friction by severity (Critical, High, Medium, Low) as defined in the template.
+4.  **Formulate Structural Solutions:** Ensure every finding has a constructive, process-focused recommendation (e.g., "break down user stories further" or "increase test coverage requirements") matching the template recommendations section.
