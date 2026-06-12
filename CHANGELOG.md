@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.4](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.9.3...v1.9.4) (2026-06-12)
+
+
+### Bug Fixes
+
+* **manager:** consolidate productivity templates and remove root over… ([9ec1289](https://github.com/SouzaEduardoAC/ai-agents/commit/9ec1289b759f5768e7af46210b2f92c1f966f2e0))
+* **manager:** consolidate productivity templates and remove root override ([6b00446](https://github.com/SouzaEduardoAC/ai-agents/commit/6b00446d72295d3d969fd64b1c1231baed4478ca))
+
 ## [1.9.3](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.9.2...v1.9.3) (2026-06-12)
 
 
