@@ -25,7 +25,6 @@ Mode: [MODE: PRODUCTIVITY_AUDIT]
       - Git Project / Repository (e.g. GitHub/GitLab org and repository).
       - Target team members (optional).
     - **CRITICAL:** If the Board location (URL) or Git project repository details are missing or cannot be inferred from the context/environment, you must HALT the audit and ask the user to provide them.
-    - Check the workspace root for a custom report template (e.g., `.productivity_report_template.md` or `productivity_report_template.md`). If present, read its contents to structure the final report.
 3. **Phase 2: Board Scan:**
     - Scan the specified board for the activity of target team members (recent tasks, transition history, cycle times, comment frequency).
 4. **Phase 3: Git Scan:**
@@ -38,7 +37,7 @@ Mode: [MODE: PRODUCTIVITY_AUDIT]
       - Are there bug-fix commits bound to cards after the original feature was marked done?
       - Is there excessive back-and-forth communication (high comments/PR or card)?
 6. **Phase 5: Report Synthesis & File Generation:**
-    - Compile your findings and format the report. Adhere to the custom template if one was discovered in the workspace root in Phase 1 (e.g., `.productivity_report_template.md` or `productivity_report_template.md`); otherwise, fall back strictly to the catted **Productivity Audit Report** template.
+    - Compile your findings and format the report. Structure it using the catted **Productivity Audit Report** template.
     - **CRITICAL FORMATTING:** The header of the generated report must contain the following fields on separate, individual lines:
       **Audit Target:** `[Board Name/URL & Git Repository]`
       **Date of Audit:** `[YYYY-MM-DD]`

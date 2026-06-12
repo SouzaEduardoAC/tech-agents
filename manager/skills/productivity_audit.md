@@ -10,15 +10,12 @@ Before starting the audit, you must verify access credentials, active toolsets, 
 2.  **Verify Location Parameters:**
     - **Board Location:** Must be a valid URL or named board space (e.g., Jira board key, GitHub project board URL, Azure DevOps board path).
     - **Git Project:** Must identify the repository or project space containing the codebase (e.g., org/repo).
-3.  **Check for Custom Report Template:**
-    - Before generating the report, check the workspace root for a custom report template file (e.g., `.productivity_report_template.md` or `productivity_report_template.md`).
-    - If a custom template is found, view its content and use it to structure the final report.
-4.  **Mandatory Prompt Fallback:**
+3.  **Mandatory Prompt Fallback:**
     - If the Board URL or Git Repository path is missing or ambiguous, output a clear, friendly request asking the user to specify:
       - *The URL of the task board (e.g., Jira, Trello, Azure Boards, GitHub Projects)*
       - *The location/name of the Git repository or project*
       - *The team members' names or usernames (optional)*
-5.  **Check Available CLI / MCP Tools:**
+4.  **Check Available CLI / MCP Tools:**
     - Check if you have connected MCP servers (GitHub, GitLab, Jira, etc.) or CLI binaries (`gh`, `az`, `git`).
     - If tools are active, prepare to query. If no integrations are found, fall back to **Phase 5 (Elicitation Fallback)**.
 
@@ -72,7 +69,7 @@ If active MCP servers or CLI environments are unavailable or lack permissions to
 
 ## Phase 6: Reporting & Writing
 Formulate the productivity report adhering to the templates and write it to the workspace root:
-1.  **Select Template:** Use the custom report template if one was discovered in the workspace root in Phase 1 (e.g., `.productivity_report_template.md` or `productivity_report_template.md`). Otherwise, fall back to the default `manager/templates/productivity_report.md` template.
+1.  **Select Template:** Use the default `manager/templates/productivity_report.md` template to structure the report.
 2.  **Report Header Format:** Ensure the header of the report has the following fields on separate, individual lines:
     **Audit Target:** `[Board Name/URL & Git Repository]`
     **Date of Audit:** `[YYYY-MM-DD]`

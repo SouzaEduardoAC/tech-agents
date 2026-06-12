@@ -13,10 +13,14 @@
 
 ## 2. Telemetry & Correlation Matrix
 
-| Developer / Handle | Board Tasks (Done) | Avg Cycle Time (Board Tasks) | PRs Merged | Linked Cards (%) | PR Comment Density | Avg Cycle Time (PR) | Rework Index |
+| Developer / Handle | Board Tasks (Done) | Avg Cycle Time (Board Tasks) | PRs Merged | Traceability (%) | PR Comment Density | Avg Cycle Time (PR) | Rework & Churn Index |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| `[Handle 1]` | `[Count]` | `[X.X days]` | `[Count]` | `[XX%]` | `[Low/Med/High]` | `[X.X days]` | `[Low/Med/High]` |
-| `[Handle 2]` | `[Count]` | `[X.X days]` | `[Count]` | `[XX%]` | `[Low/Med/High]` | `[X.X days]` | `[Low/Med/High]` |
+| `[Developer 1]` | `[Count]` | `[X.X days]` | `[Count]` | `[XX%]` | `[Low/Med/High]` | `[X.X days]` | `[Low/Med/High]` |
+| `[Developer 2]` | `[Count]` | `[X.X days]` | `[Count]` | `[XX%]` | `[Low/Med/High]` | `[X.X days]` | `[Low/Med/High]` |
+
+> [!NOTE]
+> **Traceability (%)** represents the percentage of completed cards that link directly to a git branch, commit, or PR.
+> **Rework & Churn Index** measures post-completion bug fix commits and recurring review iterations.
 
 ---
 
@@ -25,8 +29,11 @@
 
 | Developer / Handle | Primary Work Focus | Work Type Distribution (%) | Heuristic & Velocity Context |
 | :--- | :--- | :---: | :--- |
-| `[Handle 1]` | `[e.g., Core Integrations & Architecture]` | `[Arch: XX%, Integrations: XX%, Fixes: XX%]` | `[e.g., Complex, high-risk changes; expect longer cycle times.]` |
-| `[Handle 2]` | `[e.g., Small Fixes & Automations]` | `[Fixes: XX%, Automations: XX%, Refactor: XX%]` | `[e.g., Rapid, low-risk changes; expect short cycle times.]` |
+| `[Developer 1]` | `[e.g., Core Integrations & Architecture]` | `[Arch: XX%, Integrations: XX%, Fixes: XX%]` | `[e.g., Complex, high-risk changes; expect longer cycle times and higher review loops.]` |
+| `[Developer 2]` | `[e.g., Small Fixes & Automations]` | `[Fixes: XX%, Automations: XX%, Refactor: XX%]` | `[e.g., Rapid, low-risk changes; expect short cycle times and minimal review loops.]` |
+
+> [!TIP]
+> Use this classification to avoid comparing raw velocity metrics (like cycle time) between developers handling major architectural refactoring and those doing minor documentation or bug fixes.
 
 ---
 

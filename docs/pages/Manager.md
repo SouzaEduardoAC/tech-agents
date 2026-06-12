@@ -19,8 +19,8 @@
 			- (ref: `manager/commands/manager/productivity.toml`)
 	- ## Specialized Skills (Audit Protocols)
 		- **Productivity Audit Protocol**:
-			- Run source discovery (including scanning for workspace custom templates like `.productivity_report_template.md` or `productivity_report_template.md`), board activity extraction, git telemetry scan, correlation synthesis, and manual elicitation fallback.
-			- Respect custom report templates if discovered in the workspace root, format the header fields on separate individual lines, and write the synthesized report to `productivity_report.md` in the workspace root.
+			- Run source discovery, board activity extraction, git telemetry scan, correlation synthesis, and manual elicitation fallback.
+			- Structure the report using the default productivity report template, format the header fields on separate individual lines, and write the synthesized report to `productivity_report.md` in the workspace root.
 			- (ref: `manager/skills/productivity_audit.md`)
 	- ## Operating Guardrails
 		- **Constructive Tone Mandate**: Report summaries must highlight systemic issues (e.g., poor requirements, style nitpicking) rather than individual blame.

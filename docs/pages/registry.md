@@ -71,4 +71,8 @@
 			- status:: [DONE]
 			- ref:: [[Manager]], [[Quicky]]
 			- summary:: Fixed productivity report generation for the Manager agent. The synthesized report is now written to `productivity_report.md` in the workspace root. The report header fields (Audit Target, Date of Audit, Scope) are formatted on separate, individual lines. (ref: `manager/skills/productivity_audit.md`, `manager/commands/manager/productivity.toml`)
+		- ## Refactor: Consolidate Productivity Templates (2026-06-12)
+			- status:: [DONE]
+			- ref:: [[Manager]], [[Quicky]]
+			- summary:: Consolidated the workspace root custom template `.productivity_report_template.md` and the built-in fallback template `manager/templates/productivity_report.md` into a single unified template inside `manager/templates`. Removed the workspace override logic from `productivity_audit.md` and `productivity.toml`. (ref: `manager/templates/productivity_report.md`, `manager/skills/productivity_audit.md`, `manager/commands/manager/productivity.toml`)
 
