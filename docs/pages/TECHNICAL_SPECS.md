@@ -1,6 +1,5 @@
 - type:: [[Technical Specification]]
 - status:: [SYNC]
-- version:: 1.4.2
 - project:: [[ai-agents]]
 
 - # Core Infrastructure: Universal Agent Hub (Deep Specification)

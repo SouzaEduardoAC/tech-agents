@@ -1,4 +1,4 @@
-# Agentic AI Framework (Universal Agent Hub) v1.3.0
+# Agentic AI Framework (Universal Agent Hub)
 **Standardized orchestration for specialized AI Agents across Gemini, Claude, AntiGravity, and Codex.**
 
 ## 🧠 Cognitive Anchors (AI Optimized)
