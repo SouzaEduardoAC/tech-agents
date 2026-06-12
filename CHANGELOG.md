@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.5](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.9.4...v1.9.5) (2026-06-12)
+
+
+### Bug Fixes
+
+* **docs:** remove hardcoded version mentions to prevent drift ([3b9a055](https://github.com/SouzaEduardoAC/ai-agents/commit/3b9a055d1ce6463b53880960d898a5e38140c765))
+* **docs:** remove hardcoded version mentions to prevent drift ([ee5a66d](https://github.com/SouzaEduardoAC/ai-agents/commit/ee5a66dbf1cdbbbd5de3e9222d9999c03c1b4932))
+
 ## [1.9.4](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.9.3...v1.9.4) (2026-06-12)
 
 
