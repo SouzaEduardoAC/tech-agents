@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.2](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.9.1...v1.9.2) (2026-06-12)
+
+
+### Bug Fixes
+
+* **manager:** generate productivity report to markdown file with line-broken header ([8256a74](https://github.com/SouzaEduardoAC/ai-agents/commit/8256a743b9d8874ed6a0ae6a0c2961b61445c6e9))
+* **manager:** generate productivity report to markdown file with line-broken header ([4817e60](https://github.com/SouzaEduardoAC/ai-agents/commit/4817e60de3dc7623df57341c6fa4c47876420835))
+
 ## [1.9.1](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.9.0...v1.9.1) (2026-06-11)
 
 
