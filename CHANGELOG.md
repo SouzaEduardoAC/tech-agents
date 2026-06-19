@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.6](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.9.5...v1.9.6) (2026-06-19)
+
+
+### Bug Fixes
+
+* **mcp:** implement structural human approval gate system ([deaa769](https://github.com/SouzaEduardoAC/ai-agents/commit/deaa7693b47692ef4d0b33723e8c9532b11ea51f))
+* **mcp:** implement structural human approval gate system ([52b85cd](https://github.com/SouzaEduardoAC/ai-agents/commit/52b85cdcf73b498f95b5c398393b43f73585d101))
+
 ## [1.9.7] (2026-06-19)
 
 ### Features
