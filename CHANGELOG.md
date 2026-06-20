@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.7](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.9.6...v1.9.7) (2026-06-20)
+
+
+### Bug Fixes
+
+* **squad:** isolate pipeline state to workspace and update journals p… ([a190c8e](https://github.com/SouzaEduardoAC/ai-agents/commit/a190c8edb502af9a5a98a1e83498cc2f7f963801))
+* **squad:** isolate pipeline state to workspace and update journals protocol ([2373093](https://github.com/SouzaEduardoAC/ai-agents/commit/237309361355ccf9f94d98e6bccb076a1a05c7c2))
+
 ## [1.9.6](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.9.5...v1.9.6) (2026-06-19)
 
 
