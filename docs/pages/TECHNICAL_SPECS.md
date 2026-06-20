@@ -70,7 +70,7 @@
 				- Description:: The core orchestration server developed in this repository.
 				- Interaction:: Provides the `call_agent_command` tool, mapping high-level goals to specialized agent personas and skillsets.
 				- Link:: [[Internal]] (ref: `index.js`)
-				- **MCP Config Entry (Correct):** `{ "command": "node", "args": ["<ABSOLUTE_PATH>/index.js"] }` — do NOT point to `bin/agent-hub.js serve`.
+				- **MCP Config Entry (Correct):** `{ "command": "node", "args": ["<ABSOLUTE_PATH>/bin/agent-hub.js", "serve"] }` — points to the CLI wrapper with the `serve` option (using stdin/stdout stream piping to forward JSON-RPC framing to `index.js`).
 				- **Startup Diagnostics:** `index.js` wraps `server.connect(transport)` in a `try/catch`, writing fatal errors to `process.stderr` and calling `process.exit(1)` for visibility to MCP host processes. (ref: `index.js → transport connect`)
 			- **Filesystem MCP**:
 				- Description:: Secure access to the project's `/docs` directory for Logseq graph manipulation.

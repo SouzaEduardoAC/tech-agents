@@ -36,6 +36,10 @@
 			- status:: [DONE]
 			- ref:: [[Squad Orchestrator]], [[Product Owner]], [[Researcher]], [[Forge]], [[Decoder]]
 			- summary:: Standardized the `/agent:docs` command interface across all operational and meta-agents (PO, Researcher, Forge, Decoder). Created `squad/full-sync` orchestrator pipeline to dynamically call developers and other agents to fully document any project into the Logseq structure without losing historical context. (ref: `po/commands/po/docs.toml`, `squad/commands/squad/full-sync.toml`)
+		- ## Feature: Global MCP Configuration Serve Realignment (2026-06-20)
+			- status:: [DONE]
+			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]
+			- summary:: Updated all global MCP config files and global settings (`settings.json`, `antigravity/mcp_config.json`, `antigravity-cli/mcp_config.json`, and `antigravity-ide/mcp_config.json`) to invoke the `agent-hub` MCP server using the CLI wrapper `bin/agent-hub.js serve` instead of calling `index.js` directly, aligning with wrapper-level stdio piping and user preferences. Updated bootstrap script `bin/agent-hub.js` to write and maintain the wrapper command path. (ref: `bin/agent-hub.js`, `package.json`)
 	- ## Product Elicitation & PO Framework
 		- status:: [ACTIVE]
 		- nodes:: [[Product Owner]], [[prioritization-framework]], [[product-interview]]

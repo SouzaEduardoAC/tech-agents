@@ -155,18 +155,16 @@ program
       }
 
       // Add/fix Agent Hub MCP.
-      // Point directly to index.js — bypasses the Commander.js wrapper so the
-      // MCP client's stdio connects straight to the StdioServerTransport.
-      // Also migrate any existing entry that still points to bin/agent-hub.js
-      // (the old broken path pre-fix/mcp-stdio-transport) to index.js directly.
+      // Point to bin/agent-hub.js with the 'serve' command. Stdio piping in
+      // the serve command forwards framing correctly to index.js.
       const correctAgentHubEntry = {
         command: "node",
-        args: [path.join(ROOT, "index.js")]
+        args: [path.join(ROOT, "bin", "agent-hub.js"), "serve"]
       };
       const existingHub = mcpServers["agent-hub"];
-      const isOldBinPath = existingHub && Array.isArray(existingHub.args) &&
-        existingHub.args.some(a => a.includes("bin/agent-hub.js"));
-      if (!existingHub || isOldBinPath) {
+      const isDirectIndexPath = existingHub && Array.isArray(existingHub.args) &&
+        existingHub.args.some(a => a.includes("index.js"));
+      if (!existingHub || isDirectIndexPath) {
         mcpServers["agent-hub"] = correctAgentHubEntry;
         updated = true;
       }
