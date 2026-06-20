@@ -43,6 +43,48 @@ async function resolveStateFilePath() {
   };
 }
 
+/**
+ * Detects if the resolved project root is the Agent Hub repository.
+ */
+async function isInsideHub(projectRoot) {
+  const agentsMdPath = path.join(projectRoot, "AGENTS.md");
+  const geminiMdPath = path.join(projectRoot, "GEMINI.md");
+  if (!(await fs.pathExists(agentsMdPath)) || !(await fs.pathExists(geminiMdPath))) {
+    return false;
+  }
+  const pkgPath = path.join(projectRoot, "package.json");
+  if (await fs.pathExists(pkgPath)) {
+    try {
+      const pkgJson = await fs.readJson(pkgPath);
+      return pkgJson.name === "@souzaeduardoac/ai-agents";
+    } catch (e) {
+      return false;
+    }
+  }
+  return false;
+}
+
+/**
+ * Retrieves the compliance mandate from AGENTS.md or fallbacks to the default text.
+ */
+async function getComplianceMandate(projectRoot) {
+  const defaultMandate = `## 📜 Documentation Protocol Integrity\n**CRITICAL MANDATE:** You MUST always respect and update the entire documentation protocol of all agents (such as journals, registry, and graphs) when modifying the repository, EVEN if you are not currently operating as the specific agent responsible for that domain. Code changes without corresponding protocol updates are strictly prohibited.`;
+  const agentsMdPath = path.join(projectRoot, "AGENTS.md");
+  if (!(await fs.pathExists(agentsMdPath))) {
+    return defaultMandate;
+  }
+  try {
+    const content = await fs.readFile(agentsMdPath, "utf-8");
+    const match = content.match(/(## 📜 Documentation Protocol Integrity[\s\S]*?)(?=\n+##\s+|$)/);
+    if (match) {
+      return match[1].trim();
+    }
+  } catch (e) {
+    // Ignore error, fallback
+  }
+  return defaultMandate;
+}
+
 const pkg = fs.readJsonSync(path.join(AGENTS_ROOT, "package.json"));
 
 const server = new Server(
@@ -498,6 +540,21 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           required: ["gate"],
         },
       },
+      {
+        name: "pipeline_approve",
+        description: [
+          "Approve a specific pipeline gate to unblock the next phase.",
+          "Updates the gate status in .squad-state.json to 'approved' and records the approved_at timestamp.",
+          "Must be called after request_approval has set the gate to pending.",
+        ].join(" "),
+        inputSchema: {
+          type: "object",
+          properties: {
+            gate: { type: "string", description: "The gate_key to approve (e.g., 'prd', 'plan', 'discovery', 'audit')." },
+          },
+          required: ["gate"],
+        },
+      },
     ],
   };
 });
@@ -552,6 +609,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       if (aliases[agent] && aliases[agent][command]) {
         commandName = aliases[agent][command];
       }
+
+      const { projectRoot } = await resolveStateFilePath();
+      const insideHub = await isInsideHub(projectRoot);
 
       const tomlPath = path.join(AGENTS_ROOT, agent, "commands", agent, `${commandName}.toml`);
 
@@ -616,8 +676,27 @@ To maintain transparency and multi-agent coordination, you MUST prefix your very
 
 --------------------------------------------------------------------------------\n\n`;
 
-      prompt = `${identityMeta}# Common Standards\n${commonKnowledge}\n\n# Common Skills\n${commonSkills}\n\n# Dynamic Knowledge\n${dynamicKnowledge}\n\n# Agent Skills\n${agentSkills}\n\n# Agent Knowledge\n${agentKnowledge}\n\n${prompt}`;
+      let logseqWarning = "";
+      const hasPagesDir = await fs.pathExists(path.join(projectRoot, "docs", "pages"));
+      if (!hasPagesDir) {
+        logseqWarning = `⚠️ **WARNING: The 'docs/pages/' folder is missing in the active workspace. This project is NOT a Logseq knowledge graph. Do NOT write documentation in Logseq outliner format (nested bullets) or use [[links]] for new page references. Write standard, clean Markdown (.md) instead.**\n\n`;
+      }
+
+      let externalAdaptation = "";
+      if (!insideHub && (commandName === "full-sync" || commandName === "docs")) {
+        externalAdaptation = `⚠️ **EXTERNAL WORKSPACE NOTICE:** You are executing this command within an external project (not the Agent Hub codebase).
+- **DO NOT** create, edit, or refer to the Hub-specific cognitive anchors: \`AGENTS.md\`, \`GEMINI.md\`, or \`CLAUDE.md\` at the project root.
+- Document this project's own architecture, code patterns, and files instead of the Hub's.
+- Write documentation using the format and path layout appropriate for this project (following standard Markdown if Logseq is missing).\n\n`;
+      }
+
+      prompt = `${identityMeta}${logseqWarning}${externalAdaptation}# Common Standards\n${commonKnowledge}\n\n# Common Skills\n${commonSkills}\n\n# Dynamic Knowledge\n${dynamicKnowledge}\n\n# Agent Skills\n${agentSkills}\n\n# Agent Knowledge\n${agentKnowledge}\n\n${prompt}`;
       
+      if (insideHub) {
+        const complianceMandate = await getComplianceMandate(projectRoot);
+        prompt = `${prompt}\n\n${complianceMandate}`;
+      }
+
       // Resolve {{args}}
       prompt = prompt.replace(/\{\{args\}\}/g, taskArgs);
       
@@ -751,7 +830,7 @@ ${knowledge}
             artifact_path ? `Artifact: ${artifact_path}` : ``,
             `Summary: ${summary}`,
             ``,
-            `To proceed, the human must run: /squad:approve ${gate}`,
+            `To proceed, the human must approve this gate. They can do this in chat (by running /squad:approve ${gate}) or by using the pipeline_approve tool.`,
             `DO NOT call any further agent tools until approval is registered.`,
             `PIPELINE STATUS: BLOCKED`,
           ].filter(Boolean).join("\n"),
@@ -796,13 +875,66 @@ ${knowledge}
       if (gateData.status === "pending") {
         return {
           isError: true,
-          content: [{ type: "text", text: `🚫 GATE BLOCKED: '${gate}' is awaiting human approval. The human must run /squad:approve ${gate} to unlock. DO NOT PROCEED.` }],
+          content: [{ type: "text", text: `🚫 GATE BLOCKED: '${gate}' is awaiting human approval. The human must approve this gate via chat (by running /squad:approve ${gate}) or by using the pipeline_approve tool. DO NOT PROCEED.` }],
         };
       }
       // status === "locked"
       return {
         isError: true,
         content: [{ type: "text", text: `🚫 GATE BLOCKED: '${gate}' has not been reached yet in the pipeline. Run phases in order and use request_approval to advance gates.` }],
+      };
+    }
+
+    if (name === "pipeline_approve") {
+      const { gate } = args;
+      const { statePath } = await resolveStateFilePath();
+      if (!(await fs.pathExists(statePath))) {
+        return {
+          isError: true,
+          content: [{
+            type: "text",
+            text: "No active pipeline session found. Start a pipeline first with pipeline_start.",
+          }],
+        };
+      }
+      const state = await fs.readJson(statePath);
+      if (!state.gates || !state.gates[gate]) {
+        const available = Object.keys(state.gates || {});
+        return {
+          isError: true,
+          content: [{
+            type: "text",
+            text: `Gate '${gate}' does not exist in the active pipeline session. Available gates: ${available.join(", ") || "none"}`,
+          }],
+        };
+      }
+      const gateData = state.gates[gate];
+      if (gateData.status === "approved") {
+        return {
+          content: [{
+            type: "text",
+            text: `Gate '${gate}' is already approved (approved at ${gateData.approved_at}).`,
+          }],
+        };
+      }
+      if (gateData.status === "locked") {
+        return {
+          isError: true,
+          content: [{
+            type: "text",
+            text: `🚫 Gate '${gate}' is currently locked. The pipeline has not reached this gate yet. Phases must run in order and use request_approval to advance gates.`,
+          }],
+        };
+      }
+      // status is pending
+      state.gates[gate].status = "approved";
+      state.gates[gate].approved_at = new Date().toISOString();
+      await fs.writeJson(statePath, state, { spaces: 2 });
+      return {
+        content: [{
+          type: "text",
+          text: `✅ Gate '${gate}' approved at ${state.gates[gate].approved_at}. The pipeline is now unblocked. The agent may proceed to the next phase.`,
+        }],
       };
     }
 

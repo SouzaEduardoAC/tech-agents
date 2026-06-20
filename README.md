@@ -70,6 +70,15 @@ Claude Code communicates with the Hub using **MCP tool calls**. Since Claude is 
     *   Format: `call_agent_command(agent="[agent-name]", command="[command]", args="[your goal]")`
     *   Example: `call_agent_command(agent="quicky", command="fix", args="Fix the summary label mismatch")`
 
+*   **Available MCP Tools**:
+    *   `list_agents`: Lists all available specialized agents and their commands.
+    *   `call_agent_command`: Activates a specialized agent command with a task description.
+    *   `get_agent_prompt`: Retrieves the persona, skills, and knowledge for a specific agent.
+    *   `pipeline_start`: Initializes a new pipeline session and locks all gates in `.squad-state.json`.
+    *   `request_approval`: Sets a gate status to `pending` and pauses the pipeline for human sign-off.
+    *   `check_gate`: Checks if a specific pipeline gate is approved before starting the next phase.
+    *   `pipeline_approve`: Approves a specific pipeline gate to unblock the next phase.
+
 ### 3. Cursor & Codex IDEs (System Rules & Persona Linking)
 For Cursor, VS Code, or other IDEs using context files (like `.cursorrules` or custom system instructions), you link the agent's core identity file directly into your workspace.
 *   **Link Command**: 
