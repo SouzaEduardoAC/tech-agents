@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.10.0...v1.11.0) (2026-06-20)
+
+
+### Features
+
+* **mcp:** realign global MCP server configuration to use serve wrapper ([22b50a9](https://github.com/SouzaEduardoAC/ai-agents/commit/22b50a9214a23b193697674cce098c8d29577d3d))
+* **mcp:** realign global MCP server configuration to use serve wrapper ([493d789](https://github.com/SouzaEduardoAC/ai-agents/commit/493d789e682db64d37ca56418a442f2e9c726df8))
+
 ## [1.10.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.9.7...v1.10.0) (2026-06-20)
 
 
