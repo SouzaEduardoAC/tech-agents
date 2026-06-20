@@ -13,6 +13,36 @@ import toml from "toml";
 const AGENTS_ROOT = path.dirname(fileURLToPath(import.meta.url));
 const STATE_FILE = path.join(AGENTS_ROOT, ".squad-state.json");
 
+/**
+ * Dynamic state file resolver. Traverses upward from process.cwd() looking for
+ * .squad-state.json or project root markers (.git, package.json) to locate
+ * the active project root and state file.
+ */
+async function resolveStateFilePath() {
+  let dir = process.cwd();
+  while (true) {
+    const candidateState = path.join(dir, ".squad-state.json");
+    if (await fs.pathExists(candidateState)) {
+      return { statePath: candidateState, projectRoot: dir };
+    }
+    const hasGit = await fs.pathExists(path.join(dir, ".git"));
+    const hasPkg = await fs.pathExists(path.join(dir, "package.json"));
+    if (hasGit || hasPkg) {
+      return { statePath: candidateState, projectRoot: dir };
+    }
+    const parent = path.dirname(dir);
+    if (parent === dir) {
+      break;
+    }
+    dir = parent;
+  }
+  // Fallback: default to process.cwd()
+  return {
+    statePath: path.join(process.cwd(), ".squad-state.json"),
+    projectRoot: process.cwd()
+  };
+}
+
 const pkg = fs.readJsonSync(path.join(AGENTS_ROOT, "package.json"));
 
 const server = new Server(
@@ -650,7 +680,22 @@ ${knowledge}
         gatesObj[key] = { status: "locked" };
       }
       const state = { session_id, initiated_at, goal, gates: gatesObj };
-      await fs.writeJson(STATE_FILE, state, { spaces: 2 });
+      const { statePath, projectRoot } = await resolveStateFilePath();
+      await fs.writeJson(statePath, state, { spaces: 2 });
+
+      // Automatically append .squad-state.json to the target project's .gitignore if it exists
+      const gitignorePath = path.join(projectRoot, ".gitignore");
+      if (await fs.pathExists(gitignorePath)) {
+        const gitignoreContent = await fs.readFile(gitignorePath, "utf-8");
+        const lines = gitignoreContent.split(/\r?\n/);
+        const hasStateFile = lines.some(line => line.trim() === ".squad-state.json");
+        if (!hasStateFile) {
+          const endsWithNewline = gitignoreContent.endsWith("\n") || gitignoreContent.endsWith("\r");
+          const appendStr = (endsWithNewline ? "" : "\n") + ".squad-state.json\n";
+          await fs.appendFile(gitignorePath, appendStr);
+        }
+      }
+
       return {
         content: [{
           type: "text",
@@ -659,7 +704,7 @@ ${knowledge}
             `Session ID: ${session_id}`,
             `Goal: ${goal}`,
             `Gates registered (all locked): ${gates.join(", ")}`,
-            `State file: ${STATE_FILE}`,
+            `State file: ${statePath}`,
             ``,
             `Proceed with Phase 1. After each phase, call request_approval to pause for human sign-off.`,
             `Call check_gate at the START of each subsequent phase before doing any work.`,
@@ -670,7 +715,8 @@ ${knowledge}
 
     if (name === "request_approval") {
       const { gate, artifact_path, summary } = args;
-      if (!(await fs.pathExists(STATE_FILE))) {
+      const { statePath } = await resolveStateFilePath();
+      if (!(await fs.pathExists(statePath))) {
         // Standalone mode — no active session, just emit a prompt-level STOP message
         return {
           content: [{
@@ -688,14 +734,14 @@ ${knowledge}
           }],
         };
       }
-      const state = await fs.readJson(STATE_FILE);
+      const state = await fs.readJson(statePath);
       if (!state.gates[gate]) {
         state.gates[gate] = {};
       }
       state.gates[gate].status = "pending";
       state.gates[gate].requested_at = new Date().toISOString();
       if (artifact_path) state.gates[gate].artifact = artifact_path;
-      await fs.writeJson(STATE_FILE, state, { spaces: 2 });
+      await fs.writeJson(statePath, state, { spaces: 2 });
       return {
         content: [{
           type: "text",
@@ -715,7 +761,8 @@ ${knowledge}
 
     if (name === "check_gate") {
       const { gate } = args;
-      if (!(await fs.pathExists(STATE_FILE))) {
+      const { statePath } = await resolveStateFilePath();
+      if (!(await fs.pathExists(statePath))) {
         // Soft advisory for standalone agent runs — do not block
         return {
           content: [{
@@ -727,7 +774,7 @@ ${knowledge}
           }],
         };
       }
-      const state = await fs.readJson(STATE_FILE);
+      const state = await fs.readJson(statePath);
       const gateData = state.gates && state.gates[gate];
       if (!gateData) {
         return {

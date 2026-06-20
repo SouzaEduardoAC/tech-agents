@@ -17,13 +17,14 @@
 		- 5. **Synthesis & Export Phase (Optional)**: Call `get_agent_prompt(agent="decoder")` for stakeholder reporting.
 			- **Trigger Conditions**: Requested by Product Owners, BAs, or non-technical business stakeholders to translate technical Logseq graph nodes into high-fidelity business specification matrices.
 	- ## Guardrails
-		- **Gate Enforcement**: Never skip a "Human Approval" point. Enforced at two layers:
+		- **Gate Enforcement**: Never skip a "Human Approval" point. Enforced at three layers:
 			- **Prompt-Level**: `⚠️ MANDATORY HUMAN CHECKPOINT` blocks in `run.toml` with triple-prohibition pattern.
 			- **Structural MCP-Level**: `check_gate` returns `isError: true` if a gate is `pending`/`locked`, physically preventing the next agent call. (ref: `index.js → check_gate`)
+			- **Cross-Project Isolation**: Dynamically resolves the state file path by traversing upward to the active project root and auto-appends it to `.gitignore` to keep projects clean. (ref: `index.js → resolveStateFilePath`)
 		- **No Context Dilution**: Persona swapping must be absolute to prevent instruction drift.
 		- **Zero Context Decay**: Finalize each step by updating the Logseq graph. (ref: `squad/brain/persona.md`)
 	- ## MCP Gate Tools
-		- **`pipeline_start`**: Initializes a pipeline session. Locks all gates in `.squad-state.json`. Must be called before Phase 1. (ref: `index.js`)
-		- **`request_approval`**: Called at phase exit. Sets gate to `pending`, emits a hard STOP message. LLM must cease tool calls until human approves. (ref: `index.js`)
-		- **`check_gate`**: Called at phase entry. Returns `isError: true` if gate is `pending` or `locked`. Returns soft advisory if no active session (standalone mode). (ref: `index.js`)
-		- **`/squad:approve <gate>`**: Human-only trust anchor. The sole mechanism to write `approved` to the state file. (ref: `squad/commands/squad/approve.toml`)
+		- **`pipeline_start`**: Initializes a pipeline session. Dynamically traverses upward from `process.cwd()` to resolve the active project root, writes `.squad-state.json`, and auto-appends it to `.gitignore` if it exists. Must be called before Phase 1. (ref: `index.js → pipeline_start`)
+		- **`request_approval`**: Called at phase exit. Dynamically resolves the state file path, sets gate to `pending`, and emits a hard STOP message. LLM must cease tool calls until human approves. (ref: `index.js → request_approval`)
+		- **`check_gate`**: Called at phase entry. Dynamically resolves the state file path and returns `isError: true` if gate is `pending` or `locked`. Returns soft advisory if no active session (standalone mode). (ref: `index.js → check_gate`)
+		- **`/squad:approve <gate>`**: Human-only trust anchor. Reads and writes the `.squad-state.json` file relative to the active workspace root. The sole mechanism to write `approved` to the state file. (ref: `squad/commands/squad/approve.toml`)

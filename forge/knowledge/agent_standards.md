@@ -75,14 +75,16 @@ Every agent must be mapped as a first-class node inside the Logseq graph:
     - Cross-link key concepts using bidirectional `[[Links]]`.
 3.  **Registry Sync:**
     - Add the new agent and its core specs to [`docs/pages/registry.md`](../../docs/pages/registry.md) under the corresponding active feature block.
-4.  **Rule 4.1: Active Workspace Isolation & Scoping:**
+4.  **Journal Entry:**
+    - Create or update the daily Logseq journal file under `docs/journals/YYYY_MM_DD.md` (e.g., `2026_06_20.md`) listing the implemented features or upgrades with clear summaries and file references.
+5.  **Rule 4.1: Active Workspace Isolation & Scoping:**
     - All created or modified files must reside strictly within the active workspace root of the repository being worked on.
     - **NEVER** write or leak files into the global Agent Hub directory. Always resolve path locations dynamically relative to the active workspace's root `.git` or `package.json` file.
     - Preserve the target file's indentation integrity (tabs vs spaces) when appending entries.
-5.  **Rule 4.2: The No-Ghost-Page Rule:**
+6.  **Rule 4.2: The No-Ghost-Page Rule:**
     - Any link created pointing to a new page (e.g. `[[SkillName]]` or `[[ProtocolName]]`) **MANDATES** the immediate creation and initialization of that file. 
     - If full content is not yet written, the file must be initialized with `status:: [[STUB]]` and a standard `TODO` to prevent dangling references.
-6.  **Rule 4.3: Dialectical Critique Mandate:**
+7.  **Rule 4.3: Dialectical Critique Mandate:**
     - Every new or overhauled agent documentation page must conclude with a structured **Dialectical Critique** block:
       - **Yellow Hat:** Resilience checks, testing assertions, and recoverability.
       - **Black Hat:** Architectural risks, token bloat, and technical debt.
