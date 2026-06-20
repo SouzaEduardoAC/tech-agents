@@ -17,31 +17,67 @@ This project utilizes a **Logseq-powered Knowledge Graph** for its documentation
 
 ---
 
-## 🚀 Installation & Updates
+## 🚀 Installation & Updates (MCP First)
 
-### 1. Start the MCP Server
-Required for **Claude Code** and **AntiGravity CLI**.
+The Universal Agent Hub is designed to run primarily as a **Model Context Protocol (MCP) Server**. This configuration allows any AI assistant to dynamically call our specialized agents without needing a cloned codebase inside the target project workspace.
+
+### 1. Register the MCP Server
+
+Add the Agent Hub to your preferred AI environment.
+
+#### A. Claude Code (CLI)
+Run the standard MCP command:
 ```bash
-# Register the hub as an MCP tool
-mcp add agent-hub -- npx github:SouzaEduardoAC/ai-agents serve
+mcp add agent-hub -- npx -y github:SouzaEduardoAC/ai-agents serve
 ```
 
-### 2. Universal Bootstrap (One-Time Setup)
-Installs all AntiGravity CLI slash commands and personas locally.
+#### B. Claude Desktop
+Add this to your configuration file (see locations in [CLAUDE.md](file:///home/ecoza/Projects/ai-agents/CLAUDE.md)):
+```json
+{
+  "mcpServers": {
+    "agent-hub": {
+      "command": "npx",
+      "args": ["-y", "github:SouzaEduardoAC/ai-agents", "serve"]
+    }
+  }
+}
+```
+
+#### C. Gemini CLI & AntiGravity
+Add this to `~/.gemini/settings.json`:
+```json
+{
+  "mcpServers": {
+    "agent-hub": {
+      "command": "npx",
+      "args": ["-y", "github:SouzaEduardoAC/ai-agents", "serve"]
+    }
+  }
+}
+```
+
+### 2. IDE Static Integration (Codex / Cursor)
+If your IDE does not support dynamic MCP servers, you can statically link the agent's core persona file into your workspace (e.g. to `.cursorrules`):
+```bash
+npx github:SouzaEduardoAC/ai-agents link [agent-name] [target-file]
+```
+*(Example: `npx github:SouzaEduardoAC/ai-agents link squad .cursorrules`)*
+
+### 3. Legacy Slash Commands Setup (Optional)
+If you require terminal-native slash commands (e.g. `/squad:run`, `/architect:create`) inside Gemini CLI/AntiGravity, run the bootstrap installer locally:
 ```bash
 npx github:SouzaEduardoAC/ai-agents bootstrap
 ```
 
-### 3. IDE Integration (Codex / Cursor)
-Link an agent persona to your local project (e.g., `.cursorrules`):
+### 🔄 Keeping it Current (Automatic Updates)
+When registered via `npx`, updates are fetched dynamically on launch. To force-update the server to the latest version, run the server with the `--prefer-online` flag:
 ```bash
-npx github:SouzaEduardoAC/ai-agents link [agent-name] [target-file]
+npx --prefer-online github:SouzaEduardoAC/ai-agents serve
 ```
-
-### 🔄 Keeping it Current
-To update the Hub logic and local personas:
+If you are developing locally with a cloned repository, a simple pull updates the server:
 ```bash
-npx --prefer-online github:SouzaEduardoAC/ai-agents bootstrap
+git pull && npm install
 ```
 
 ---
