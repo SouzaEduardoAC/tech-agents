@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.11.0...v1.12.0) (2026-06-21)
+
+
+### Features
+
+* completely remove manager agent and all its references ([f60254d](https://github.com/SouzaEduardoAC/ai-agents/commit/f60254dcbf74374e9703564ba4a6541644f0cdcc))
+* completely remove manager agent and all its references ([f07729f](https://github.com/SouzaEduardoAC/ai-agents/commit/f07729f0ac82fb7df2f8321f21cb3c3be53ae371))
+
 ## [1.11.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.10.0...v1.11.0) (2026-06-20)
 
 
