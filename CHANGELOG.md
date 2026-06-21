@@ -57,45 +57,6 @@
 * **docs:** remove hardcoded version mentions to prevent drift ([3b9a055](https://github.com/SouzaEduardoAC/ai-agents/commit/3b9a055d1ce6463b53880960d898a5e38140c765))
 * **docs:** remove hardcoded version mentions to prevent drift ([ee5a66d](https://github.com/SouzaEduardoAC/ai-agents/commit/ee5a66dbf1cdbbbd5de3e9222d9999c03c1b4932))
 
-## [1.9.4](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.9.3...v1.9.4) (2026-06-12)
-
-
-### Bug Fixes
-
-* **manager:** consolidate productivity templates and remove root over… ([9ec1289](https://github.com/SouzaEduardoAC/ai-agents/commit/9ec1289b759f5768e7af46210b2f92c1f966f2e0))
-* **manager:** consolidate productivity templates and remove root override ([6b00446](https://github.com/SouzaEduardoAC/ai-agents/commit/6b00446d72295d3d969fd64b1c1231baed4478ca))
-
-## [1.9.3](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.9.2...v1.9.3) (2026-06-12)
-
-
-### Bug Fixes
-
-* **manager:** generate productivity report to markdown file with line-broken header ([8256a74](https://github.com/SouzaEduardoAC/ai-agents/commit/8256a743b9d8874ed6a0ae6a0c2961b61445c6e9))
-
-## [1.9.2](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.9.1...v1.9.2) (2026-06-12)
-
-
-### Bug Fixes
-
-* **manager:** generate productivity report to markdown file with line-broken header ([8256a74](https://github.com/SouzaEduardoAC/ai-agents/commit/8256a743b9d8874ed6a0ae6a0c2961b61445c6e9))
-* **manager:** generate productivity report to markdown file with line-broken header ([4817e60](https://github.com/SouzaEduardoAC/ai-agents/commit/4817e60de3dc7623df57341c6fa4c47876420835))
-
-## [1.9.1](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.9.0...v1.9.1) (2026-06-11)
-
-
-### Bug Fixes
-
-* **manager:** check and respect custom report template in productivit… ([978399c](https://github.com/SouzaEduardoAC/ai-agents/commit/978399c66f8d90b521afc4115680b976c5c7c366))
-* **manager:** check and respect custom report template in productivity audit ([1debeb2](https://github.com/SouzaEduardoAC/ai-agents/commit/1debeb24fd1ea6325c6f6a41e26d22bcde8ef13b))
-
-## [1.9.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.8.0...v1.9.0) (2026-06-11)
-
-
-### Features
-
-* **manager:** add manager agent with productivity audit capability ([dff1fc3](https://github.com/SouzaEduardoAC/ai-agents/commit/dff1fc352b957b142d62badb47b3ebfe4370ced0))
-* **manager:** add manager agent with productivity audit capability ([484d8ad](https://github.com/SouzaEduardoAC/ai-agents/commit/484d8ada008792c59c216bbe72aeef9769bdb05f))
-
 ## [1.8.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.7.0...v1.8.0) (2026-06-11)
 
 
