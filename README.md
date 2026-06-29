@@ -64,6 +64,11 @@ npx github:SouzaEduardoAC/ai-agents link [agent-name] [target-file]
 ```
 *(Example: `npx github:SouzaEduardoAC/ai-agents link squad .cursorrules`)*
 
+You can also link the complete MCP Usage Guide to configure the client LLM with the proper tools usage protocol:
+```bash
+npx github:SouzaEduardoAC/ai-agents link mcp .clauderules # (or .cursorrules, .windsurfrules)
+```
+
 ### 3. Legacy Slash Commands Setup (Optional)
 If you require terminal-native slash commands (e.g. `/squad:run`, `/architect:create`) inside Gemini CLI/AntiGravity, run the bootstrap installer locally:
 ```bash
@@ -121,7 +126,7 @@ For Cursor, VS Code, or other IDEs using context files (like `.cursorrules` or c
     ```bash
     npx github:SouzaEduardoAC/ai-agents link [agent-name] [target-file]
     ```
-    *(e.g., `npx github:SouzaEduardoAC/ai-agents link squad .cursorrules` or `link quicky .cursorrules`)*
+    *(e.g., `npx github:SouzaEduardoAC/ai-agents link squad .cursorrules`, `link quicky .cursorrules`, or `npx github:SouzaEduardoAC/ai-agents link mcp .clauderules` to link the complete MCP Usage Guide)*
 *   **Usage**: The IDE model immediately inherits that agent's complete persona, skills, and guardrails. Simply reference `@.cursorrules` in your Composer or sidebar chat to execute the flow.
 
 ---

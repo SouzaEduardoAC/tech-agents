@@ -106,6 +106,11 @@
 
 ## [Unreleased]
 
+### Features
+
+* **mcp:** add MCP usage guide skill for improved tool accuracy (`common/skills/mcp_usage_guide.md`)
+* **cli:** support linking the MCP usage guide via the `link` command by passing `mcp` (case-insensitive) as the agent parameter
+
 ### Bug Fixes
 
 * **mcp:** fix MCP tools not surfacing to AI clients — point `mcp_config.json` directly to `index.js`, eliminating the Commander.js wrapper from the stdio chain (fixes `stdio: "inherit"` MCP framing bug)
