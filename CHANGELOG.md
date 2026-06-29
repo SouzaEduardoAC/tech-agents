@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.13.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.12.0...v1.13.0) (2026-06-29)
+
+
+### Features
+
+* **cli:** allow linking MCP usage guide via link command ([4d9f44e](https://github.com/SouzaEduardoAC/ai-agents/commit/4d9f44e9499badd62fad3db8612c6e22fec5e325))
+* **mcp:** serve mcp usage guide via list_agents tool ([4816d9d](https://github.com/SouzaEduardoAC/ai-agents/commit/4816d9d8208de9aae2c6dfe71b82318308092b22))
+
 ## [1.12.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.11.0...v1.12.0) (2026-06-21)
 
 
