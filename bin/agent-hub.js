@@ -43,13 +43,18 @@ program
 
 program
   .command("link")
-  .description("Link an agent persona to a local file (e.g., .cursorrules)")
-  .argument("<agent>", "Name of the agent")
+  .description("Link an agent persona or MCP usage guide to a local file (e.g., .cursorrules)")
+  .argument("<agent>", "Name of the agent or 'mcp' for MCP Usage Guide")
   .argument("<target>", "Target file path")
   .action(async (agent, target) => {
-    const personaPath = path.join(ROOT, agent, "brain", "persona.md");
+    const isMcp = agent.toLowerCase() === "mcp";
+    const targetName = isMcp ? "MCP usage guide" : `${agent} persona`;
+    const personaPath = isMcp
+      ? path.join(ROOT, "common", "skills", "mcp_usage_guide.md")
+      : path.join(ROOT, agent, "brain", "persona.md");
+
     if (!(await fs.pathExists(personaPath))) {
-      console.error(`Error: Agent '${agent}' not found.`);
+      console.error(`Error: ${isMcp ? "MCP usage guide" : `Agent '${agent}'`} not found.`);
       process.exit(1);
     }
     const absoluteTarget = path.resolve(process.cwd(), target);
@@ -59,14 +64,14 @@ program
       
       try {
         await fs.symlink(personaPath, absoluteTarget);
-        console.log(`Success: Symlinked ${agent} persona to ${target}`);
+        console.log(`Success: Symlinked ${targetName} to ${target}`);
       } catch (symlinkErr) {
         // Fall back to physical copy if symlink fails (e.g. on Windows without Developer Mode)
         await fs.copy(personaPath, absoluteTarget);
-        console.log(`Success: Copied ${agent} persona to ${target} (fallback due to symlink restrictions)`);
+        console.log(`Success: Copied ${targetName} to ${target} (fallback due to symlink restrictions)`);
       }
     } catch (err) {
-      console.error(`Error linking persona: ${err.message}`);
+      console.error(`Error linking file: ${err.message}`);
       process.exit(1);
     }
   });

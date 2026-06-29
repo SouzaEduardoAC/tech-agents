@@ -214,6 +214,9 @@ async function compileCommonSection(dirPath, searchTarget, cattedBasenames, cate
         // pull/merge requests. This prevents the cross-platform diff-fetching framing
         // from leaking into unrelated create/audit/analyze commands.
         isRelevant = /review|pull.?request|pull request|merge.?request|merge request|\bpr\b|\bmr\b|github\.com.*pull|gitlab\.com.*merge|dev\.azure\.com.*pullrequest|visualstudio\.com.*pullrequest/.test(searchTarget);
+      } else if (basename === "mcp_usage_guide.md") {
+        // Always inject the MCP usage guide — foundational knowledge for all agents.
+        isRelevant = true;
       } else {
         // Fallback: default to true for other skills
         isRelevant = true;
@@ -442,15 +445,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     tools: [
       {
         name: "list_agents",
-        description: [
-          "List all available specialized agents and their supported commands.",
-          "Agents available: architect (systems design, security), backend (APIs, databases),",
-          "frontend (UI, React/Angular/Vue), mobile (Flutter/iOS/Android), squad (full-stack orchestration),",
-          "po (product discovery, PRDs), compliance (GDPR/HIPAA/SOC2 audits), council (multi-perspective debate & synthesis),",
-          "researcher (deep investigation, reports), forge (meta-agent design), automata (workflow automation),",
-          "decoder (tech-to-business translation), quicky (quick fixes).",
-          "Call this first to discover exact agent names and their commands before calling call_agent_command.",
-        ].join(" "),
+        description: "List all available specialized agents, their registered commands, and retrieve the complete MCP Usage Guide & Decision Flowchart. Call this first to understand how to interact with the Agent Hub MCP server, select the correct agent, and avoid common orchestration mistakes.",
         inputSchema: { type: "object", properties: {} },
       },
       {
@@ -564,6 +559,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
   try {
     if (name === "list_agents") {
+      const guidePath = path.join(AGENTS_ROOT, "common", "skills", "mcp_usage_guide.md");
+      if (await fs.pathExists(guidePath)) {
+        const guideContent = await fs.readFile(guidePath, "utf-8");
+        return { content: [{ type: "text", text: guideContent }] };
+      }
+
       const dirs = await fs.readdir(AGENTS_ROOT, { withFileTypes: true });
       const agents = dirs
         .filter((d) => d.isDirectory() && !d.name.startsWith(".") && !["node_modules", "bin", "docs", "common", "test"].includes(d.name))

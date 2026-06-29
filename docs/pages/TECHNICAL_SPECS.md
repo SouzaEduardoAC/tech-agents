@@ -43,6 +43,9 @@
 				- Phases:: Asset Mapping → Data Profiling → Behavioral Simulation → Findings Report.
 				- Available via:: `architect:analyze`, `backend:analyze`, `frontend:analyze`, `mobile:analyze`, `po:analyze`.
 				- Injection guard:: Only injected when the search target matches analyze/simulate/trace/csv/json/hypothetical keywords. (ref: `common/skills/investigation.md`, `index.js → compileCommonSection`)
+			- **`mcp_usage_guide.md` — MCP Usage Guide**:
+				- Purpose:: Foundational guide instructing any client LLM on the 7 MCP tools, 13 agents, 42+ commands, trigger phrases, aliases, and flowchart logic.
+				- Behavior:: Statically linked via CLI (`link mcp <target>`) or dynamically served as the response of the `list_agents` tool, and always injected into the prompt of any running agent command as foundational baseline knowledge. (ref: `common/skills/mcp_usage_guide.md`, `index.js → compileCommonSection`)
 		- **Dynamic Stack Detection (The Heuristic Engine)**:
 			- Activated for: `architect`, `backend`, `frontend`, `mobile`.
 			- Sniffs the project directory (`process.cwd()`) and immediately nested subdirectories (Depth-1 monorepo scan) for marker files (e.g. `pom.xml`, `package.json`, `pubspec.yaml`, `go.mod`, `.csproj`) or keywords in `taskArgs`.
@@ -71,6 +74,7 @@
 				- Link:: [[Internal]] (ref: `index.js`)
 				- **MCP Config Entry (Correct):** `{ "command": "node", "args": ["<ABSOLUTE_PATH>/bin/agent-hub.js", "serve"] }` — points to the CLI wrapper with the `serve` option (using stdin/stdout stream piping to forward JSON-RPC framing to `index.js`).
 				- **Startup Diagnostics:** `index.js` wraps `server.connect(transport)` in a `try/catch`, writing fatal errors to `process.stderr` and calling `process.exit(1)` for visibility to MCP host processes. (ref: `index.js → transport connect`)
+				- **`list_agents` Upgrade:** The `list_agents` tool dynamically detects and returns the full `mcp_usage_guide.md` text rather than a raw listing of folder names. This guarantees that any client LLM executing `list_agents` immediately receives the complete tool execution protocols, agent directory mapping, aliases, and flowchart, enabling out-of-the-box accuracy in external workspace environments. (ref: `index.js → list_agents`)
 			- **Filesystem MCP**:
 				- Description:: Secure access to the project's `/docs` directory for Logseq graph manipulation.
 				- Interaction:: Used by ALL agents to read/write documentation, ADRs, and PRDs.

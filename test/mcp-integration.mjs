@@ -266,7 +266,15 @@ async function runTests() {
   try {
     const agentsResp = await callTool(proc, "list_agents", {});
     const text = agentsResp?.result?.content?.[0]?.text ?? "";
-    const agents = (text.match(/^- \w+/gm) ?? []).map((l) => l.replace("- ", "").split(" ")[0]);
+    let agents = [];
+    if (text.includes("Skill: MCP Usage Guide")) {
+      agents = (text.match(/### .* \(`\w+`\)/g) ?? []).map(l => {
+        const m = l.match(/\(`(\w+)`\)/);
+        return m ? m[1] : null;
+      }).filter(Boolean);
+    } else {
+      agents = (text.match(/^- \w+/gm) ?? []).map((l) => l.replace("- ", "").split(" ")[0]);
+    }
     if (agents.length !== 13) throw new Error(`Expected 13 agents, got ${agents.length}: ${agents.join(", ")}`);
     console.log(ok(`list_agents — ${agents.length} agents: ${agents.join(", ")}`));
     results.passed++;
