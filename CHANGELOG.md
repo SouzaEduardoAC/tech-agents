@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.14.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.13.0...v1.14.0) (2026-07-06)
+
+
+### Features
+
+* **gates:** isolate Automata as standalone agent and implement branc… ([83da264](https://github.com/SouzaEduardoAC/ai-agents/commit/83da26458c42639f2bab627b68411a6a3578ff96))
+* **gates:** isolate Automata as standalone agent and implement branch-scoped pipeline state files ([e83f750](https://github.com/SouzaEduardoAC/ai-agents/commit/e83f750138e7ed5bf0dc1cfa2118dbba02417f3a))
+
 ## [1.13.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.12.0...v1.13.0) (2026-06-29)
 
 
