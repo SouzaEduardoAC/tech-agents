@@ -24,9 +24,13 @@
 			- Phase 3:: Technical & Organizational Measures (AES-256, TLS 1.3, MFA, RBAC, 6-month logs, 2025 HIPAA NPRM readiness).
 			- Phase 4:: Data Subject Rights Verification (15-day LGPD SLA default, Deletion overrides, Law 15.211/2025 minors' data).
 			- Phase 5:: Breach Notification Readiness (72h GDPR Supervisory, 3 business days ANPD Res. 15/2024, 60 calendar days HIPAA).
-			- Phase 6:: Evidence Artifact Checklist (RIPD/DPIA, RoPA, SRA, BAA, Incident Log 5-year retention).
+			- Phase 6:: Evidence Artifact Checklist (RIPD/DPIA, RoPA, SRA, BAA, Incident Log 5-year retention). **Gate: `request_approval(gate="compliance")` fires here — halts before Phase 7 until human acknowledges findings.**
 			- Phase 7:: Audit Output (Cross-framework risk matrix, penalty calculations).
 	- ## Guardrails
 		- **Clinical Accuracy**: Use exact law text, no analogies or metaphors.
 		- **Risk-First Reporting**: Always lead with the most critical legal exposure.
+		- **Structural Gate Enforcement**: `compliance:audit` uses `request_approval(gate="compliance")` after Phase 6 to block Phase 7 (Remediation Roadmap) until the human acknowledges the findings.
 		- (ref: `compliance/brain/persona.md`)
+	- ## Commands
+		- **`compliance:audit`**: Full 7-phase standalone privacy audit (GDPR, HIPAA, LGPD, MICS, SOC 2). Fires a mandatory human gate after Phase 6 before outputting the Remediation Roadmap. (ref: `compliance/commands/compliance/audit.toml`)
+		- **`compliance:master`**: Squad Flow audit command. Invoked by the Squad Orchestrator in Phase 3. Integrates with `check_gate("compliance")` controlled by the orchestrator. (ref: `compliance/commands/compliance/master.toml`)

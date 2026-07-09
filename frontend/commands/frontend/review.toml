@@ -1,4 +1,4 @@
-description = "Frontend PR Review: Perform a structured, stack-aware code review against a GitHub, GitLab, or Azure DevOps pull request using the frontend-specific review protocol. For best results, run this command from the project root directory so that AGENTS.md / CLAUDE.md / GEMINI.md are loaded into context."
+description = "Frontend PR Review (External): Structured, stack-aware review of a remote GitHub, GitLab, or Azure DevOps pull request. Use this for reviewing external or third-party PRs — it does NOT push changes. For in-squad local code review (git diff + SonarQube + push-to-origin on APPROVE), use frontend:squad-review. For best results, run from the project root so that AGENTS.md / CLAUDE.md / GEMINI.md are loaded into context."
 
 prompt = """
 # Persona: Senior Frontend Engineer & Code Reviewer

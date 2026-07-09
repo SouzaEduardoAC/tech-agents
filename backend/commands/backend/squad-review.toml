@@ -1,4 +1,4 @@
-description = "Backend Code Review (Squad Flow): Perform a local code review on top of the completed implementation using SonarQube MCP."
+description = "Backend Code Review (Squad Flow): Local code review on the completed squad implementation using git diff + SonarQube MCP. Runs on the local worktree; pushes to origin on APPROVE. For reviewing external or third-party PRs, use backend:review."
 
 prompt = """
 # Persona: Senior Backend Engineer & Code Reviewer
@@ -12,6 +12,9 @@ prompt = """
 
 # Skill: Backend Security Auditor
 !{cat backend/skills/security_auditor.md}
+
+# Skill: Pull Request Review Protocol (Cross-Platform)
+!{cat common/skills/pr_review.md}
 
 # Knowledge Base
 !{cat common/knowledge/auth_standard.md}

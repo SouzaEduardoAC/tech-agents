@@ -7,9 +7,6 @@ prompt = """
 # Skills: Logseq Knowledge
 !{cat common/skills/logseq_knowledge.md}
 
-# Knowledge Base: Gatekeeping Rubric
-!{cat po/knowledge/gatekeeping.md}
-
 # Knowledge Base: GDPR
 !{cat compliance/knowledge/gdpr.md}
 
@@ -160,6 +157,8 @@ For each processing activity, confirm ONE of the following applies:
 
 ### Phase 6: Evidence Artifact Checklist
 **Objective:** Confirm all mandatory documentary evidence exists and is current (DPIA/RIPD, RoPA, SRA, PHI Inventory, Network Map, BAAs, DPAs, Training Logs, Pen Tests).
+
+- **Gate — MCP Structural Enforcement:** After completing the Evidence Checklist, call `agent_hub:request_approval(gate="compliance", artifact_path="docs/pages/{{args}}-audit.md", summary="Compliance audit complete. All 6 phases reviewed and evidence checklist verified. Remediation roadmap ready for human acknowledgment.")` and halt. Do NOT proceed to Phase 7 until the gate is approved.
 
 ### Phase 7: Audit Output
 After completing all phases, produce the following:
