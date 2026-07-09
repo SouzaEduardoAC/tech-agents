@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.15.1...v1.16.0) (2026-07-09)
+
+
+### Features
+
+* **squad:** align standalone agent commands with squad counterparts ([85cd26e](https://github.com/SouzaEduardoAC/ai-agents/commit/85cd26e6f25a9ca828ad78b0113bc651431f49b2))
+
 ## [1.15.1](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.15.0...v1.15.1) (2026-07-09)
 
 
