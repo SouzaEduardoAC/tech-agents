@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.14.1](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.14.0...v1.14.1) (2026-07-09)
+
+
+### Bug Fixes
+
+* **mcp:** support multi-client paths and unversioned remote hub confi… ([3574c7f](https://github.com/SouzaEduardoAC/ai-agents/commit/3574c7f8e8bc18633b444089653d57943f2affc9))
+* **mcp:** support multi-client paths and unversioned remote hub configurations ([261f3ed](https://github.com/SouzaEduardoAC/ai-agents/commit/261f3ed422e39684feee78d5bff2f10a7af1a860))
+
 ## [1.14.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.13.0...v1.14.0) (2026-07-06)
 
 
