@@ -7,7 +7,6 @@ prompt = """
 # Skills
 !{cat architect/skills/reviewer.md}
 !{cat architect/skills/security_auditor.md}
-!{cat architect/skills/protocol.md}
 
 # Knowledge Base
 !{cat common/knowledge/auth_standard.md}

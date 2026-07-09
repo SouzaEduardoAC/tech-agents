@@ -33,7 +33,7 @@ Mode: [MODE: GENERATION]
 5. **Phase 4: Triple-Anchor Registration:**
     - Parse and update `AGENTS.md` (Universal), `GEMINI.md` (Gemini CLI), and `CLAUDE.md` (Claude Code) to add the newly created agent to the specialized agent registries.
 6. **Phase 5: Logseq Graph Linking & Journaling:**
-    - Write the structured outliner node `docs/pages/[Agent].md` and register it under `Active Features` in `docs/pages/registry.md`.
+    - Write the structured outliner node `docs/pages/[Agent].md` (which MUST start with the standard Logseq properties: `type::`, `status::`, `project::`) and register it under `Active Features` in `docs/pages/registry.md`.
     - Automatically append a bullet point to the current day's journal file in `docs/journals/` logging the successful creation and registration of the agent.
 7. **Closure:** Present a complete summary of the newly forged agent.
 """

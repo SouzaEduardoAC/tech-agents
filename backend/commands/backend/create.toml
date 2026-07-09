@@ -4,9 +4,6 @@ prompt = """
 # Persona: Systems Architect & Engineer
 !{cat backend/brain/persona.md}
 
-# Skills: Engineering Execution Protocol
-!{cat backend/skills/protocol.md}
-
 # Skills: Logseq Knowledge
 !{cat common/skills/logseq_knowledge.md}
 
@@ -20,24 +17,35 @@ prompt = """
 ## MCP Server Availability
 !{gemini mcp list}
 
-# Squad Flow Task
+# Standalone Flow Task
 Goal: {{args}}
 Mode: [MODE: SQUAD-FLOW]
 
 ## Execution Instructions:
 1. Initialize as the **Systems Architect & Engineer**.
-3. **Phase 0: Pre-Sync.** Verify current Logseq documentation in `docs/pages/`.
-4. **Phase 1: Technical Analysis.** 
+2. **Phase 0: Pre-Sync.** Verify current Logseq documentation in `docs/pages/`.
+3. **Phase 1: Technical Analysis.** 
     - **Read the Logseq PRD:** Locate and read `docs/pages/{{args}}-prd.md`.
     - **Codebase Mapping:** Map data flows, API contracts, and dependencies.
-    - **Write findings to `docs/pages/{{args}}-analysis.md`** in Logseq format.
-5. **Phase 2: Architectural Intent.**
+    - **Write findings to `docs/pages/{{args}}-analysis.md`** using standard Logseq properties:
+      - `type:: [[Analysis]]`
+      - `status:: [[ACTIVE]]`
+      - `project:: [[ai-agents]]`
+      prefixed with `- ` and bulleted.
+4. **Phase 2: Architectural Intent.**
     - **Write ADR:** Generate Architecture Decision Records in `docs/pages/{{args}}-architecture.md`.
-    - **Gate 1 — MCP Structural Enforcement:** Call `agent_hub:request_approval(gate="plan", artifact_path="docs/pages/{{args}}-architecture.md", summary="Backend architecture plan complete. Ready for implementation approval.")` THEN halt for explicit user approval.
-    - Before proceeding to Phase 3, call `agent_hub:check_gate(gate="plan")` — if blocked, stop and inform the user.
-6. **Phase 3: Execution.** Implement backend services and logic.
-7. **Phase 4: Audit.** Generate report in `docs/pages/{{args}}-audit.md`.
-8. **Phase 5: Post-Sync.** Update `docs/journals/` and `docs/pages/business-rules.md`.
-
+    - **Logseq Header Mandate:** Must start with standard Logseq properties:
+      - `type:: [[Plan]]`
+      - `status:: [[ACTIVE]]`
+      - `project:: [[ai-agents]]`
+      prefixed with `- ` and bulleted.
+    - **Context7 Citation Mandate:** If external APIs are involved, query the `context7` MCP server and embed API contracts under `## Dependency & API Contracts (Context7)`.
+    - **Gate 1 — MCP Structural Enforcement:** Call `agent_hub:request_approval(gate="plan", artifact_path="docs/pages/{{args}}-architecture.md", summary="Backend architecture plan complete. Ready for implementation approval.")` THEN halt.
+    - Before proceeding, call `agent_hub:check_gate(gate="plan")` — if blocked, stop.
+5. **Phase 3: Execution (TDD).** Implement backend services and logic.
+    - **Package Restore Check:** Check manifests for private registries; if found, request nuget.config/npmrc config files.
+    - Write unit/integration tests first. Implement production code. Ensure 100% test pass rate.
+6. **Phase 4: Audit.** Generate report in `docs/pages/{{args}}-audit.md` (started with Logseq properties).
+7. **Phase 5: Post-Sync.** Update `docs/journals/` and `docs/pages/business-rules.md`.
 8. **Closure.** Summarize results.
 """

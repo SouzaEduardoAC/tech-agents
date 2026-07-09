@@ -4,9 +4,6 @@ prompt = """
 # Persona: Mobile Architect & Specialist (Dart/Flutter)
 !{cat mobile/brain/persona.md}
 
-# Skills: Engineering Execution Protocol
-!{cat mobile/skills/protocol.md}
-
 # Skills: Logseq Knowledge
 !{cat common/skills/logseq_knowledge.md}
 
@@ -20,7 +17,7 @@ prompt = """
 ## MCP Server Availability
 !{gemini mcp list}
 
-# Squad Flow Task
+# Standalone Flow Task
 Goal: {{args}}
 Mode: [MODE: SQUAD-FLOW]
 
@@ -29,16 +26,29 @@ Mode: [MODE: SQUAD-FLOW]
 2. **Phase 0: Pre-Sync.** Verify current Logseq documentation in `docs/pages/`.
 3. **Phase 1: Technical Analysis.** 
     - **Read the Logseq PRD:** Locate and read `docs/pages/{{args}}-prd.md`.
-    - **Design Extraction:** If `stitch` is available, use `extract_design_dna` to fetch Material/Cupertino tokens and `get_screen_code` for widget structure.
+    - **Design Extraction:** If `stitch` is available, use `extract_design_dna` and `get_screen_code` to fetch the visual specification for this feature.
     - **Codebase Mapping:** Map mobile structures, widget trees, and data flows relative to the PRD requirements.
-    - **Write findings to `docs/pages/{{args}}-analysis.md`** in Logseq format.
-    - **Gate 0 — MCP Structural Enforcement:** Call `agent_hub:request_approval(gate="discovery", artifact_path="docs/pages/{{args}}-analysis.md", summary="Mobile discovery/analysis phase complete. Widget tree and platform architecture ready for review.")` THEN halt for explicit user approval.
+    - **Write findings to `docs/pages/{{args}}-analysis.md`** using standard Logseq properties:
+      - `type:: [[Analysis]]`
+      - `status:: [[ACTIVE]]`
+      - `project:: [[ai-agents]]`
+      prefixed with `- ` and bulleted.
+    - **Gate 0 — MCP Structural Enforcement:** Call `agent_hub:request_approval(gate="discovery", artifact_path="docs/pages/{{args}}-analysis.md", summary="Mobile discovery/analysis phase complete. Widget tree and platform architecture ready for review.")` THEN halt.
 4. **Phase 2: Architectural Intent.**
     - **Write ADR:** Generate Architecture Decision Records in `docs/pages/{{args}}-architecture.md`.
-    - **Gate 1 — MCP Structural Enforcement:** Call `agent_hub:check_gate(gate="discovery")` FIRST — if blocked, stop. Then after presenting the plan: call `agent_hub:request_approval(gate="plan", artifact_path="docs/pages/{{args}}-architecture.md", summary="Mobile architecture plan complete. Ready for implementation approval.")` and halt.
-    - Before proceeding to Phase 3, call `agent_hub:check_gate(gate="plan")` — if blocked, stop and inform the user.
-5. **Phase 3: Execution.** Implement features and run tests.
-6. **Phase 4: Audit.** Generate report in `docs/pages/{{args}}-audit.md`.
+    - **Logseq Header Mandate:** Must start with standard Logseq properties:
+      - `type:: [[Plan]]`
+      - `status:: [[ACTIVE]]`
+      - `project:: [[ai-agents]]`
+      prefixed with `- ` and bulleted.
+    - **Context7 Citation Mandate:** If external packages/libraries are involved, query the `context7` MCP server and embed API contracts under `## Dependency & API Contracts (Context7)`.
+    - **Gate 1 — MCP Structural Enforcement:** Call `agent_hub:check_gate(gate="discovery")` FIRST. Then call `agent_hub:request_approval(gate="plan", artifact_path="docs/pages/{{args}}-architecture.md", summary="Mobile architecture plan complete. Ready for implementation approval.")` and halt.
+    - Before proceeding, call `agent_hub:check_gate(gate="plan")` — if blocked, stop.
+5. **Phase 3: Execution (TDD).** Implement features and run tests.
+    - **Package Restore Check:** Check manifests for private registries; if found, request nuget.config/npmrc/pubspec configuration files.
+    - Write unit/integration tests first. Implement production code. Ensure 100% test pass rate.
+    - **Visual Verification (UI Only):** If playwright is available, run browser snapshot verifications.
+6. **Phase 4: Audit.** Generate report in `docs/pages/{{args}}-audit.md` (started with Logseq properties).
 7. **Phase 5: Post-Sync.** Update `docs/journals/` and `docs/pages/business-rules.md`.
 8. **Closure.** Summarize results.
 """

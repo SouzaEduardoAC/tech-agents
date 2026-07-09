@@ -31,5 +31,5 @@ Mode: [MODE: Automata-IMPLEMENT]
     - Write the JSON to `docs/pages/{{args}}-workflow.json` (embedded in a Logseq block).
 4. **Final Output:**
     - Provide the complete JSON in a code block marked with `[N8N_JSON]`.
-    - Update `docs/journals/` with the implementation summary.
+    - Update the Logseq journals in `docs/journals/` with the implementation summary, ensuring standard properties (type::, status::, project::) are preserved.
 """

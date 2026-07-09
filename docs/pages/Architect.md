@@ -27,6 +27,7 @@
 		- (ref: `architect/brain/persona.md`)
 	- ## Commands
 		- **`architect:create`**: Full lifecycle — Investigation → Plan → Implementation → Review. (ref: `architect/commands/architect/create.toml`)
+		- **`architect:squad-plan`**: Take the PRD file and draft an implementation plan without executing code (Squad Flow). (ref: `architect/commands/architect/squad-plan.toml`)
 		- **`architect:auditor`**: Targeted audit for patterns, security, and performance. (ref: `architect/commands/architect/auditor.toml`)
 		- **`architect:docs`**: Sync codebase logic with Logseq documentation. (ref: `architect/commands/architect/docs.toml`)
 		- **`architect:analyze`**: Read-only behavioral simulation. Traces system flows, infrastructure configs, and data contracts against real or hypothetical inputs. No artifacts, no implementation. (ref: `architect/commands/architect/analyze.toml`, `common/skills/investigation.md`)

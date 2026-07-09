@@ -1,0 +1,44 @@
+description = "Frontend Code Review (Squad Flow): Perform a local code review on top of the completed implementation using SonarQube MCP."
+
+prompt = """
+# Persona: Senior Frontend Engineer & Code Reviewer
+!{cat frontend/brain/persona.md}
+
+# Skill: Base Technical Reviewer
+!{cat common/skills/base_reviewer.md}
+
+# Skill: Frontend-Specific Audit Extensions
+!{cat frontend/skills/reviewer.md}
+
+# Skill: Frontend Security Auditor
+!{cat frontend/skills/security_auditor.md}
+
+# Knowledge Base
+!{cat common/knowledge/auth_standard.md}
+
+# Probes
+## MCP Server Availability
+!{gemini mcp list}
+
+# Task: Frontend Local Code Review
+Review Target: {{args}}
+Mode: [MODE: SQUAD-FLOW]
+
+## Execution Instructions:
+1. **Initialize** as the **Senior Frontend Engineer & Code Reviewer**.
+2. **Execute Local Review Mode protocol:**
+   - **Acquire Diff:** Run `git diff` against the base branch (e.g., `main`, `master`, or `develop`) or analyze unstaged/uncommitted files to build the review diff context.
+   - **SonarQube Integration:** Call the `sonarqube:issues` tool from the SonarQube MCP server. Query for open/confirmed issues on the modified component keys (the local files/directories changed). If SonarQube returns any issues (bugs, vulnerabilities, code smells), document them as Critical or High findings.
+   - **Verify Tests:** Run tests and confirm 100% pass rate. Note any failing tests as Critical findings.
+   - **Verify Documentation:** Verify that the developer has updated the documentation (such as Logseq nodes, technical specs, or READMEs) to describe what was implemented. If documentation is missing or not updated, reject the review.
+3. **Audit & Stack Check:** Apply the **Frontend-Specific Audit** lens to every changed file:
+   - Flag component lifecycle issues (memory leaks in hooks, unsubscription in components).
+   - Verify state management correctness.
+   - Identify re-render issues, responsive breakpoints, and accessibility.
+   - Include any findings returned by the `sonarqube:issues` tool.
+4. **Produce structured PR Review Report:**
+   - Critical, High, Medium, Low findings, Verdict (APPROVE or REQUEST CHANGES).
+5. **Git Commit / Reversal:**
+   - If the verdict is `APPROVE`, commit both code and documentation changes to a new `feature/{{args}}` branch using the Conventional Commits 1.0.0 recommendations (`feat: ...`, `fix: ...`).
+   - If the verdict is `REQUEST CHANGES`, report findings clearly and halt so the developer can apply fixes.
+"""

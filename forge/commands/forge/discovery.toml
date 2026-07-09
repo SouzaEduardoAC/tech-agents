@@ -27,5 +27,5 @@ Mode: [MODE: DISCOVERY]
 3. **Reasoned Pushback:** Apply the **Repository Agentic Standards** (ref: `knowledge/agent_standards.md`). Reject proposals that are bloated, duplicate existing agent jobs, or ignore the symmetrical directory standard.
 4. **Stitch / Codebase check:** Check the existing codebase to see if any similar specialized agents exist to prevent job duplication.
 5. **Blueprint Output:** Once requirements are aligned, save a structured blueprint markdown file `agent_blueprint.md` in `scratch/` containing the persona draft, command list, and skill mapping.
-6. **Next Step:** Instruct the user on how they can run `/forge:create` on the generated blueprint to scaffold the agent.
+6. **Next Step:** Instruct the user on how they can run `/forge:create` on the generated blueprint to scaffold the agent and register its Logseq properties block (type::, status::, project::).
 """

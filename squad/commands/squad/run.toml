@@ -30,7 +30,7 @@ This registers the session and locks all gates. You MUST do this before any othe
 ---
 
 ### Phase 1 — Product Elicitation (PO)
-- Call `agent_hub:call_agent_command(agent="po", command="discovery", args="{{args}}")`.
+- Call `agent_hub:call_agent_command(agent="po", command="squad-discovery", args="{{args}}")`.
 - Adopt the Product Owner persona, run the requirements discovery protocol to draft the PRD, write it to `docs/pages/[feature]-prd.md`, and request human sign-off on the 'prd' gate.
 
 ---
@@ -49,7 +49,7 @@ agent_hub:check_gate(gate="prd")
 If the gate is not approved, STOP IMMEDIATELY and inform the user that `/squad:approve prd` must be run first.
 
 (Proceed ONLY after check_gate returns approved:true for 'prd'.)
-- Call `agent_hub:call_agent_command(agent="architect", command="create", args="{{args}}")`.
+- Call `agent_hub:call_agent_command(agent="architect", command="squad-plan", args="{{args}}")`.
 - Adopt the Architect persona, run the system design protocol to draft the implementation plan/ADR, write it to the docs directory, and request human sign-off on the 'plan' gate.
 
 ---
@@ -98,8 +98,30 @@ If the gate is not approved, STOP IMMEDIATELY.
 
 (Proceed ONLY after the human has explicitly approved all prior applicable phases.)
 - Determine the target tech stack from the Implementation Plan.
-- Call `agent_hub:call_agent_command(agent="backend|frontend|mobile", command="create", args="{{args}}")` as appropriate.
-- Adopt the selected developer persona, execute the plan, write the code, and run tests.
+- Call `agent_hub:call_agent_command(agent="backend|frontend|mobile", command="squad-create", args="{{args}}")` as appropriate.
+- Adopt the selected developer persona. Execute the plan using a **test-driven development (TDD)** approach:
+  1. Read the approved PRD (`docs/pages/[feature]-prd.md`) and the Architect's Implementation Plan (`docs/pages/[feature]-architecture.md` or `[feature]-plan.md`).
+  2. Implement unit and integration tests **first** before writing the production logic, ensuring 100% test coverage and assertivity for all requirements.
+  3. Implement production code to pass the tests.
+  4. Run tests and ensure a 100% pass rate.
+  5. **Update Documentation:** Update the project documentation (such as Logseq pages, technical specifications, and API docs) to fully describe what was implemented.
+  6. Present changes and hand over to peer review.
+
+### Phase 4.5 — Peer Code Review & Git Commit
+- Call a second developer agent of the same technology stack as a Peer Reviewer:
+  `agent_hub:call_agent_command(agent="backend|frontend|mobile", command="squad-review", args="{{args}}")`
+- Adopt the Peer Reviewer persona, perform a local code review on top of the completed implementation:
+  1. Use the `sonarqube` MCP server's `issues` tool to check for static analysis issues, code smells, vulnerabilities, or bugs on modified components.
+  2. Evaluate code quality, conventional commit guidelines, and ensure all tests are fully passing.
+  3. **Audit Loop & Reversal:** If any critical or high findings or open SonarQube issues are found, the reviewer must output a verdict of `REQUEST CHANGES` and detail the findings. The Squad Orchestrator **MUST revert** to the developer agent (Phase 4) to fix the issues, providing them with the review report, and repeat Phase 4 & 4.5.
+  4. **Git Auto-Commit:** If the review is clean and approved, the reviewer (or the orchestrator) commits all changes to a new `feature/{{args}}` branch using the Conventional Commit guidelines (`feat: ...`, `fix: ...`).
+  5. After the commit, call:
+     ```
+     agent_hub:request_approval(
+       gate="execution",
+       summary="Code implementation and peer review completed successfully. Tests passed, SonarQube checks are clean, and changes committed to feature branch."
+     )
+     ```
 
 ### Phase 5 — Synthesis & Export (Optional)
 - If requested by the human or stakeholders, call `agent_hub:call_agent_command(agent="decoder", command="export", args="{{args}}")` for stakeholder reporting.
@@ -108,4 +130,5 @@ If the gate is not approved, STOP IMMEDIATELY.
 
 ## Execution
 Begin with `pipeline_start`, then Phase 1 for the goal: {{args}}
+
 """

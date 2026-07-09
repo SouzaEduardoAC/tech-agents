@@ -1,0 +1,33 @@
+description = "Backend Create (Squad Flow): Implement backend features based on PRD and implementation plan using Test-Driven Development."
+
+prompt = """
+# Persona: Systems Architect & Engineer
+!{cat backend/brain/persona.md}
+
+# Skills: Logseq Knowledge
+!{cat common/skills/logseq_knowledge.md}
+
+# Knowledge Base: ROI Logic
+!{cat backend/knowledge/roi_logic.md}
+
+# Probes
+## MCP Server Availability
+!{gemini mcp list}
+
+# Squad Flow Task
+Goal: {{args}}
+Mode: [MODE: SQUAD-FLOW]
+
+## Execution Instructions:
+1. Initialize as the **Systems Architect & Engineer**.
+2. **Phase 0: Flow & Grounding Check.** 
+   - Verify current Logseq documentation. Read the approved PRD (`docs/pages/{{args}}-prd.md`) and the Architect's Implementation Plan/ADR (`docs/pages/{{args}}-architecture.md`).
+   - Proceed directly to execution (Phase 3). Do not recreate PRD or ADR documents.
+3. **Phase 3: Execution (TDD Mandate).** Implement backend services and logic.
+    - **Package Restore Check:** Check manifests for private registries; if found, stop and request the nuget.config/npmrc files before restoring.
+    - **TDD (Tests-First):** You MUST write your unit and integration tests **first** before implementing the production code. Ensure the tests comprehensively cover all requirements from the PRD and the architectural assertions from the Implementation Plan.
+    - **Implementation:** Once tests are written, write the production code to satisfy the tests.
+    - **Verification:** Run all tests and verify 100% pass rate.
+    - **Update Documentation:** Before completing, update the project documentation (such as Logseq nodes, technical specifications, and API docs) to describe what was implemented. Ensure formatting follows Logseq bullet/indent standards.
+4. **Closure.** Present results and notify the orchestrator that the code is ready for peer review. Do not commit or push changes.
+"""

@@ -36,11 +36,14 @@ const TEST_MATRIX = [
   ["architect",  "create",    "Design a REST API for a user authentication service using JWT"],
   ["architect",  "auditor",   "Audit the security posture of our current API gateway layer"],
   ["architect",  "docs",      "Document the system architecture for the auth service"],
+  ["architect",  "squad-plan", "Design a plan for the user authentication service"],
   ["automata",   "plan",      "Automate the CI/CD pipeline for our monorepo"],
   ["automata",   "create",    "Create a GitHub Actions workflow that runs tests on PR"],
   ["backend",    "create",    "Implement a user registration endpoint with email validation"],
   ["backend",    "auditor",   "Audit the performance bottlenecks in our database query layer"],
   ["backend",    "docs",      "Write OpenAPI documentation for the payments service"],
+  ["backend",    "squad-create", "Implement a user registration endpoint with email validation"],
+  ["backend",    "squad-review", "Review local changes for the user registration endpoint"],
   ["compliance", "master",    "Full GDPR and LGPD compliance audit for user data flows"],
   ["compliance", "audit",     "Audit the data retention policy against HIPAA requirements"],
   ["council",    "debate",    "Should we use a microservices or monolith architecture for this project?"],
@@ -52,11 +55,16 @@ const TEST_MATRIX = [
   ["frontend",   "create",    "Build a React dashboard for real-time analytics using TypeScript"],
   ["frontend",   "auditor",   "Audit the Lighthouse performance and accessibility score of the landing page"],
   ["frontend",   "docs",      "Document the component library API for the design system"],
+  ["frontend",   "squad-create", "Build a React dashboard for real-time analytics using TypeScript"],
+  ["frontend",   "squad-review", "Review local UI changes for the dashboard"],
   ["mobile",     "create",    "Create a Flutter login screen with biometric authentication"],
   ["mobile",     "auditor",   "Audit the Flutter app for memory leaks and jank"],
   ["mobile",     "docs",      "Document the widget tree for the checkout flow"],
+  ["mobile",     "squad-create", "Create a Flutter login screen with biometric authentication"],
+  ["mobile",     "squad-review", "Review local Dart changes for the login screen"],
   ["po",         "discovery", "Discover and document requirements for a B2B SaaS invoicing feature"],
   ["po",         "interview", "Conduct a product interview for the mobile onboarding flow"],
+  ["po",         "squad-discovery", "Discover requirements for the invoice feature"],
   ["quicky",     "fix",       "Fix the null pointer exception in the user profile controller"],
   ["researcher", "report",    "Research the best vector database options for a RAG system in 2025"],
   ["researcher", "investigate", "Investigate the root cause of the intermittent timeout errors in prod"],
@@ -148,6 +156,7 @@ async function callTool(proc, name, args) {
 // Proves the agent's persona, skills, and knowledge files were actually loaded.
 const CONTENT_FINGERPRINTS = {
   "architect:create":    ["SOLID", "architecture"],
+  "architect:squad-plan": ["SOLID", "architecture"],
   "architect:auditor":   ["security", "audit"],
   "architect:docs":      ["documentation", "architecture"],
   "automata:plan":       ["workflow", "automation"],
@@ -155,6 +164,8 @@ const CONTENT_FINGERPRINTS = {
   "backend:create":      ["API", "backend"],
   "backend:auditor":     ["bottleneck", "security"],
   "backend:docs":        ["documentation"],
+  "backend:squad-create": ["API", "backend"],
+  "backend:squad-review": ["backend", "review"],
   "compliance:master":   ["GDPR", "HIPAA"],
   "compliance:audit":    ["GDPR", "compliance"],
   "council:debate":      ["Dialectical", "Council Compromise"],
@@ -166,11 +177,16 @@ const CONTENT_FINGERPRINTS = {
   "frontend:create":     ["component", "frontend"],
   "frontend:auditor":    ["performance", "accessibility"],
   "frontend:docs":       ["documentation"],
+  "frontend:squad-create": ["component", "frontend"],
+  "frontend:squad-review": ["frontend", "review"],
   "mobile:create":       ["Flutter", "mobile"],
   "mobile:auditor":      ["performance", "mobile"],
   "mobile:docs":         ["documentation"],
+  "mobile:squad-create": ["Flutter", "mobile"],
+  "mobile:squad-review": ["mobile", "review"],
   "po:discovery":        ["product", "discovery"],
   "po:interview":        ["interview", "product"],
+  "po:squad-discovery":  ["product", "discovery"],
   "quicky:fix":          ["fix", "task"],
   "researcher:report":   ["research", "report"],
   "researcher:investigate": ["investigation", "research"],
@@ -343,11 +359,11 @@ async function runTests() {
     });
     const text = resp?.result?.content?.[0]?.text ?? "";
 
-    // protocol.md is NOT catted in backend/docs.toml — must come from auto-injection
-    // It contains SOLID principles and implementation protocol
-    const hasProtocol = text.includes("SOLID") || text.includes("bottleneck") || text.includes("Bottleneck") || text.includes("protocol");
-    if (!hasProtocol) {
-      throw new Error("Auto-injection failed: backend/skills/protocol.md not found — expected 'SOLID' or 'bottleneck'");
+    // reviewer.md is NOT catted in backend/docs.toml — must come from auto-injection
+    // It contains database optimization and resilience guidelines
+    const hasReviewerSkill = text.includes("Database Optimization") || text.includes("Resilience") || text.includes("API Integrity");
+    if (!hasReviewerSkill) {
+      throw new Error("Auto-injection failed: backend/skills/reviewer.md not found — expected 'Database Optimization' or 'Resilience'");
     }
 
     // security_standards.md is NOT catted in backend/docs.toml — must come from auto-injection
@@ -362,7 +378,7 @@ async function runTests() {
       throw new Error("Dedup regression: docs_standard.md was catted but is missing from prompt");
     }
 
-    console.log(ok(`Auto-injection: backend:docs — protocol.md + security_standards.md auto-injected without !{cat} ✓`));
+    console.log(ok(`Auto-injection: backend:docs — reviewer.md + security_standards.md auto-injected without !{cat} ✓`));
     results.passed++;
   } catch (e) {
     console.log(fail(`Auto-injection — ${e.message}`));

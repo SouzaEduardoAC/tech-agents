@@ -1,4 +1,4 @@
-description = "Product Owner Discovery: Transform ideas into a validated PRD (Product Requirements Document) using Logseq-flavored Markdown."
+description = "Product Owner Discovery (Squad Flow): Transform ideas into a validated PRD (Product Requirements Document) using Logseq-flavored Markdown."
 
 prompt = """
 # Persona: Product Owner
@@ -19,7 +19,7 @@ prompt = """
 
 # Task: Requirement Discovery
 Target: {{args}}
-Mode: [MODE: DISCOVERY]
+Mode: [MODE: SQUAD-FLOW]
 
 ## Execution Instructions:
 1. Initialize as the **Product Owner**.

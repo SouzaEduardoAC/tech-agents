@@ -7,7 +7,6 @@ prompt = """
 # Skills
 !{cat frontend/skills/reviewer.md}
 !{cat frontend/skills/security_auditor.md}
-!{cat frontend/skills/protocol.md}
 
 # Knowledge Base
 !{cat frontend/knowledge/security_standards.md}

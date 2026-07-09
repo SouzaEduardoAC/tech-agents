@@ -9,11 +9,12 @@
 		- **Quality Control**: Enforces mandatory user sign-off for Discovery, Plans, and Implementation.
 		- **Context Integrity**: Ensures prompt assembly includes all relevant Common Knowledge and Dynamic Stack Skills.
 	- ## Squad Protocol (The 4-Phase Squad Loop)
-		- 1. **Elicitation Phase**: Call `call_agent_command(agent="po", command="discovery", args="{{args}}")`. Write `docs/pages/[feature]-prd.md`.
-		- 2. **Analysis Phase**: Call `call_agent_command(agent="architect", command="create", args="{{args}}")`. Write `docs/pages/[feature]-plan.md` (which MUST start with standard Logseq properties and follow the outliner format).
+		- 1. **Elicitation Phase**: Call `call_agent_command(agent="po", command="squad-discovery", args="{{args}}")`. Write `docs/pages/[feature]-prd.md`.
+		- 2. **Analysis Phase**: Call `call_agent_command(agent="architect", command="squad-plan", args="{{args}}")`. Write `docs/pages/[feature]-analysis.md` and `docs/pages/[feature]-architecture.md` (which MUST start with standard Logseq properties and follow the outliner format).
 		- 3. **Compliance Phase (Optional)**: Call `call_agent_command(agent="compliance", command="master", args="{{args}}")` for regulatory/privacy gating.
 			- **Trigger Conditions**: Required if the feature handles **PII**, **Financial Data**, **Account/Auth Logic**, or targets **GDPR/LGPD** regions.
-		- 4. **Execution Phase**: Call `call_agent_command(agent="backend|frontend|mobile", command="create", args="{{args}}")`. Execute plan and run tests.
+		- 4. **Execution Phase**: Call `call_agent_command(agent="backend|frontend|mobile", command="squad-create", args="{{args}}")`. Execute plan using test-driven development (TDD) writing tests first and running tests.
+		- 4.5. **Code Review & Verification Phase**: Call peer developer agent's `squad-review` command. Runs local review using SonarQube MCP and tests. Reverts to execution phase if issues are found, otherwise auto-commits to a new feature branch.
 		- 5. **Synthesis & Export Phase (Optional)**: Call `call_agent_command(agent="decoder", command="export", args="{{args}}")` for stakeholder reporting.
 			- **Trigger Conditions**: Requested by Product Owners, BAs, or non-technical business stakeholders to translate technical Logseq graph nodes into high-fidelity business specification matrices.
 	- ## Guardrails
