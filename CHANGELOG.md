@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.15.1](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.15.0...v1.15.1) (2026-07-09)
+
+
+### Bug Fixes
+
+* **squad:** resolve run.toml ↔ agent command conflicts and establish … ([825bf49](https://github.com/SouzaEduardoAC/ai-agents/commit/825bf49cf6fccb0875fda5844e37a82cd5a66058))
+* **squad:** resolve run.toml ↔ agent command conflicts and establish canonical commit cycle ([4b7a455](https://github.com/SouzaEduardoAC/ai-agents/commit/4b7a455bbe421beb34fc420287205dddd9573774))
+
 ## [1.15.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.14.1...v1.15.0) (2026-07-09)
 
 
