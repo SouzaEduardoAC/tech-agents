@@ -64,7 +64,7 @@
 	- ## Data Standards & Guardrails
 		- **Testing Gate**: Mandates unit tests for business logic and regression tests for bug fixes. (ref: `common/knowledge/testing_standard.md`)
 		- **Licensing Gate**: Mandatory **HALT** and **ROI Logic** report for commercial dependencies. (ref: `common/knowledge/licensing.md`)
-		- **Git Gate**: Strictly follows Conventional Commits 1.0.0. (ref: `common/knowledge/git_standard.md`)
+		- **Git Gate**: Strictly follows Conventional Commits 1.0.0, mandating both a scope and a body for all commits. (ref: `common/knowledge/git_standard.md`)
 	- ## MCP Ecosystem (The Probe Layer)
 		- ### Shipped with Agentic Hub
 			- The following MCPs are automatically configured during the `bootstrap` phase.

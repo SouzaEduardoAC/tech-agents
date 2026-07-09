@@ -12,6 +12,10 @@
 	- ## Core Infrastructure
 		- status:: [SYNC]
 		- nodes:: [[TECHNICAL_SPECS]], [[BUSINESS_FLOW]], [[code-dna]], [[resilience-policies]], [[AI Interaction Standard]], [[Decoder]]
+		- ## Feature: Mandatory Commit Scope & Body standard (2026-07-09)
+			- status:: [DONE]
+			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]
+			- summary:: Modified the Conventional Commit guidelines in `common/knowledge/git_standard.md` to require both a scope and a body for all commits. Upgraded the code review validation protocols in `common/skills/base_reviewer.md` and `common/skills/pr_review.md` to verify mandatory commit scope and body compliance. (ref: `common/knowledge/git_standard.md`, `common/skills/base_reviewer.md`, `common/skills/pr_review.md`)
 		- ## Bug Fix: MCP stdio Transport (2026-06-04)
 			- status:: [DONE]
 			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]
@@ -61,6 +65,10 @@
 	- ## Implementation Specialists
 		- status:: [ACTIVE]
 		- nodes:: [[Backend]], [[Frontend]], [[Mobile]], [[Automata]]
+		- ## Feature: Upgrade Squad & Developer Run Completeness Criteria (2026-07-09)
+			- status:: [DONE]
+			- ref:: [[Squad Orchestrator]], [[Backend]], [[Frontend]], [[Mobile]], [[TECHNICAL_SPECS]]
+			- summary:: Upgraded the `squad-create` commands for Backend, Frontend, and Mobile developer agents and the Squad Orchestrator run command. They now push the confirmed feature branch directly to origin (`git push origin <branch-name>`) and explicitly enforce that the developer implementation is incomplete until all 5 steps are done (docs updated, branch name proposed, user confirms branch, commit created, branch pushed to origin). (ref: `squad/commands/squad/run.toml`, `backend/commands/backend/squad-create.toml`, `frontend/commands/frontend/squad-create.toml`, `mobile/commands/mobile/squad-create.toml`, `docs/pages/Squad Orchestrator.md`, `docs/pages/Backend.md`, `docs/pages/Frontend.md`, `docs/pages/Mobile.md`)
 		- ## Feature: Stack-Aware PR Review — Tech Stack Knowledge in Diff Review (2026-06-11)
 			- status:: [DONE]
 			- ref:: [[Backend]], [[Frontend]], [[Mobile]], [[TECHNICAL_SPECS]]

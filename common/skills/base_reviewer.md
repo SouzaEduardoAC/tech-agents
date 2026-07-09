@@ -6,7 +6,7 @@
 - **Anti-Pattern Detection:** Flag "God Objects," "Spaghetti Logic," or "Hardcoded Dependencies."
 
 ## 2. Standards & Conventionality
-- **Conventional Commits:** Verify commit messages follow the `feat:`, `fix:`, etc., standard.
+- **Conventional Commits:** Verify commit messages strictly follow the `<type>(<scope>): <description>` format and contain a non-empty body (both scope and body are mandatory).
 - **Documentation Sync:** Ensure Mermaid diagrams and technical specs are updated to reflect logic changes.
 
 ## 3. Security & Identity

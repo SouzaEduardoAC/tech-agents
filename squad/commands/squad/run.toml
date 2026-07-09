@@ -127,7 +127,15 @@ If the gate is not approved, STOP IMMEDIATELY.
   5. **Update Documentation:** Update Logseq pages, technical specifications, and API docs.
   6. **Ask for branch name approval** — suggest `feature/{{args}}`, wait for explicit human confirmation or a custom name.
   7. **Commit** all code and documentation to the confirmed branch using Conventional Commit guidelines.
-  8. Hand over to peer review.
+  8. **Push to Origin:** Push the confirmed branch to origin (`git push origin <branch-name>`).
+  9. Hand over to peer review.
+
+  ⚠️ **CRITICAL:** In agent-hub developer runs, you MUST treat "implementation complete" as incomplete until these are also done:
+  - docs updated
+  - branch name proposed
+  - user confirms branch
+  - commit created
+  - branch pushed to origin
 
 ### Phase 4.5 — Peer Code Review, Fix Loop & Push to Origin
 - Call a second developer agent of the same technology stack as a Peer Reviewer:

@@ -16,10 +16,10 @@
 			- 2b. **Architecture/ADR**: Write `docs/pages/[feature]-architecture.md` (MUST start with standard Logseq properties and follow outliner format). Gate: `plan`.
 		- 3. **Compliance Phase (Conditional)**: Skip decision is evaluated by the orchestrator **before** calling any agent. Call `call_agent_command(agent="compliance", command="master", args="{{args}}")` only if triggered. Gate: `compliance`.
 			- **Trigger Conditions**: Required if the feature handles **PII**, **Financial Data**, **Account/Auth Logic**, or targets **GDPR/LGPD/HIPAA** regions. If not triggered, orchestrator calls `request_approval(gate="compliance", summary="skipped")` directly.
-		- 4. **Execution Phase**: Call `call_agent_command(agent="backend|frontend|mobile", command="squad-create", args="{{args}}")`. Developer agent runs TDD, then **asks human for branch name approval** (suggests `feature/[feature]`), commits all code and docs, and hands off to peer review. Gate entry checks: `compliance`.
+		- 4. **Execution Phase**: Call `call_agent_command(agent="backend|frontend|mobile", command="squad-create", args="{{args}}")`. Developer agent runs TDD, then **asks human for branch name approval** (suggests `feature/[feature]`), commits all code and docs, pushes the branch to origin, and hands off to peer review. Enforces that the developer run is treated as incomplete until docs are updated, branch name is proposed and confirmed, commit is created, and branch is pushed to origin. Gate entry checks: `compliance`.
 		- 4.5. **Code Review & Verification Phase**: Call peer developer agent's `squad-review` command. Reviewer runs SonarQube + test verification on the committed branch.
 			- **`REQUEST CHANGES`**: Reviewer reports findings and halts. Orchestrator reverts to developer (Phase 4) for fixes and re-commit. Phase 4.5 repeats.
-			- **`APPROVE`**: Reviewer pushes the branch to origin (`git push origin <branch>`). Orchestrator calls `request_approval(gate="execution")`.
+			- **`APPROVE`**: Reviewer pushes the branch to origin (`git push origin <branch>`) to finalize any review changes. Orchestrator calls `request_approval(gate="execution")`.
 		- 5. **Synthesis & Export Phase (Optional)**: Call `call_agent_command(agent="decoder", command="export", args="{{args}}")` for stakeholder reporting.
 			- **Trigger Conditions**: Requested by Product Owners, BAs, or non-technical business stakeholders.
 	- ## Guardrails
@@ -30,7 +30,7 @@
 		- **No Context Dilution**: Persona swapping must be absolute to prevent instruction drift.
 		- **Zero Context Decay**: Finalize each step by updating the Logseq graph. (ref: `squad/brain/persona.md`)
 		- **Compliance-Before-Execution**: Phase 4 gate check is `compliance`, not `plan`. Compliance approval is the final gate before developer agents are invoked.
-		- **Commit Ownership**: Git commits belong to the developer agent (`squad-create`). The reviewer agent (`squad-review`) is review-only and only pushes to origin on a clean `APPROVE` verdict.
+		- **Commit and Push Ownership**: Git commits and initial push to origin belong to the developer agent (`squad-create`). The reviewer agent (`squad-review`) is review-only and pushes any final approved changes to origin on a clean `APPROVE` verdict.
 	- ## MCP Gate Tools
 		- **`pipeline_start`**: Initializes a pipeline session with gates `["prd", "discovery", "plan", "compliance", "execution"]`. Dynamically resolves the active project root, writes `.squad-state-[branchSlug].json`, and auto-appends to `.gitignore`. Must be called before Phase 1. (ref: `index.js → pipeline_start`)
 		- **`request_approval`**: Called at phase exit. Sets gate to `pending` and emits a hard STOP message. LLM must cease tool calls until human approves. (ref: `index.js → request_approval`)

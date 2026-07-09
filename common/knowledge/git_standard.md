@@ -1,5 +1,12 @@
-# Knowledge: Conventional Commits 1.0.0
-Follow the <type>[optional scope]: <description> structure.
+# Knowledge: Conventional Commits 1.0.0 (Mandatory Scope & Body)
+Follow the `<type>(<scope>): <description>` structure. Both the **scope** and **body** are **MANDATORY** for all commits created by agents.
+
+## Structure
+```text
+<type>(<scope>): <description>
+
+<body>
+```
 
 ## Core Types
 - **feat:** A new feature (correlates with MINOR in SemVer).

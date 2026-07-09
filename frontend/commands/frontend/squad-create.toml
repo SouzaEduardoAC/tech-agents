@@ -31,8 +31,15 @@ Mode: [MODE: SQUAD-FLOW]
     - **Verification:** Run all tests and verify 100% pass rate.
     - **Visual Verification (UI Only):** If playwright is available, run browser snapshot/screenshot verifications to confirm visual layout.
     - **Update Documentation:** Before completing, update the project documentation (such as Logseq nodes, technical specifications, and API docs) to describe what was implemented. Ensure formatting follows Logseq bullet/indent standards.
-4. **Closure — Branch, Commit & Hand-off.**
+4. **Closure — Branch, Commit, Push & Hand-off.**
    - **Ask for branch name:** Present the suggested branch name `feature/{{args}}` to the user and request explicit approval or a custom name. Halt until the human confirms.
    - **Commit:** Once approved, commit all code and documentation changes to the confirmed branch using Conventional Commit guidelines (`feat: ...`, `fix: ...`). Include the docs updates in the same commit.
-   - **Notify:** Inform the orchestrator the branch is committed locally and is ready for peer review. Do NOT push to origin.
+   - **Push to Origin:** Push the confirmed branch to origin (`git push origin <branch-name>`).
+   - **Notify:** Inform the orchestrator the branch is committed and pushed to origin, and is ready for peer review.
+   - **CRITICAL:** Treat "implementation complete" as incomplete and DO NOT declare the task complete until these are also done:
+     - docs updated
+     - branch name proposed
+     - user confirms branch
+     - commit created
+     - branch pushed to origin
 """

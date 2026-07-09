@@ -103,7 +103,7 @@ Before diving into the diff, evaluate these structural signals:
 - [ ] **Target Branch Sanity:** Is the base branch correct (feature → main, hotfix → main/develop)?
 - [ ] **Linked Issue/Ticket:** Is there a reference to a task, story, or bug ID?
 - [ ] **Breaking Change Declaration:** If the change is breaking, is it clearly flagged in the PR title/description?
-- [ ] **Conventional Commit Compliance:** Verify the PR title matches `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `test:` or `perf:` conventions.
+- [ ] **Conventional Commit Compliance:** Verify the PR title strictly matches the `<type>(<scope>): <description>` convention (scope is mandatory).
 
 ---
 
