@@ -8,15 +8,20 @@
 		- **State Management**: Orchestrates transitions between Product Owner, Architect, and specialized Developers.
 		- **Quality Control**: Enforces mandatory user sign-off for Discovery, Plans, and Implementation.
 		- **Context Integrity**: Ensures prompt assembly includes all relevant Common Knowledge and Dynamic Stack Skills.
-	- ## Squad Protocol (The 4-Phase Squad Loop)
-		- 1. **Elicitation Phase**: Call `call_agent_command(agent="po", command="squad-discovery", args="{{args}}")`. Write `docs/pages/[feature]-prd.md`.
-		- 2. **Analysis Phase**: Call `call_agent_command(agent="architect", command="squad-plan", args="{{args}}")`. Write `docs/pages/[feature]-analysis.md` and `docs/pages/[feature]-architecture.md` (which MUST start with standard Logseq properties and follow the outliner format).
-		- 3. **Compliance Phase (Optional)**: Call `call_agent_command(agent="compliance", command="master", args="{{args}}")` for regulatory/privacy gating.
-			- **Trigger Conditions**: Required if the feature handles **PII**, **Financial Data**, **Account/Auth Logic**, or targets **GDPR/LGPD** regions.
-		- 4. **Execution Phase**: Call `call_agent_command(agent="backend|frontend|mobile", command="squad-create", args="{{args}}")`. Execute plan using test-driven development (TDD) writing tests first and running tests.
-		- 4.5. **Code Review & Verification Phase**: Call peer developer agent's `squad-review` command. Runs local review using SonarQube MCP and tests. Reverts to execution phase if issues are found, otherwise auto-commits to a new feature branch.
+	- ## Squad Protocol (The 5-Phase Pipeline)
+		- **Registered Gates**: `prd` → `discovery` → `plan` → `compliance` → `execution`
+		- 1. **Elicitation Phase**: Call `call_agent_command(agent="po", command="squad-discovery", args="{{args}}")`. Write `docs/pages/[feature]-prd.md`. Gate: `prd`.
+		- 2. **Analysis Phase**: Call `call_agent_command(agent="architect", command="squad-plan", args="{{args}}")`. Runs in two sub-phases:
+			- 2a. **Discovery/Analysis**: Write `docs/pages/[feature]-analysis.md`. Gate: `discovery`. Human approval required before ADR is written.
+			- 2b. **Architecture/ADR**: Write `docs/pages/[feature]-architecture.md` (MUST start with standard Logseq properties and follow outliner format). Gate: `plan`.
+		- 3. **Compliance Phase (Conditional)**: Skip decision is evaluated by the orchestrator **before** calling any agent. Call `call_agent_command(agent="compliance", command="master", args="{{args}}")` only if triggered. Gate: `compliance`.
+			- **Trigger Conditions**: Required if the feature handles **PII**, **Financial Data**, **Account/Auth Logic**, or targets **GDPR/LGPD/HIPAA** regions. If not triggered, orchestrator calls `request_approval(gate="compliance", summary="skipped")` directly.
+		- 4. **Execution Phase**: Call `call_agent_command(agent="backend|frontend|mobile", command="squad-create", args="{{args}}")`. Developer agent runs TDD, then **asks human for branch name approval** (suggests `feature/[feature]`), commits all code and docs, and hands off to peer review. Gate entry checks: `compliance`.
+		- 4.5. **Code Review & Verification Phase**: Call peer developer agent's `squad-review` command. Reviewer runs SonarQube + test verification on the committed branch.
+			- **`REQUEST CHANGES`**: Reviewer reports findings and halts. Orchestrator reverts to developer (Phase 4) for fixes and re-commit. Phase 4.5 repeats.
+			- **`APPROVE`**: Reviewer pushes the branch to origin (`git push origin <branch>`). Orchestrator calls `request_approval(gate="execution")`.
 		- 5. **Synthesis & Export Phase (Optional)**: Call `call_agent_command(agent="decoder", command="export", args="{{args}}")` for stakeholder reporting.
-			- **Trigger Conditions**: Requested by Product Owners, BAs, or non-technical business stakeholders to translate technical Logseq graph nodes into high-fidelity business specification matrices.
+			- **Trigger Conditions**: Requested by Product Owners, BAs, or non-technical business stakeholders.
 	- ## Guardrails
 		- **Gate Enforcement**: Never skip a "Human Approval" point. Enforced at three layers:
 			- **Prompt-Level**: `⚠️ MANDATORY HUMAN CHECKPOINT` blocks in `run.toml` with triple-prohibition pattern.
@@ -24,8 +29,10 @@
 			- **Cross-Project Isolation**: Dynamically resolves the state file path by traversing upward to the active project root and auto-appends it to `.gitignore` to keep projects clean. (ref: `index.js → resolveStateFilePath`)
 		- **No Context Dilution**: Persona swapping must be absolute to prevent instruction drift.
 		- **Zero Context Decay**: Finalize each step by updating the Logseq graph. (ref: `squad/brain/persona.md`)
+		- **Compliance-Before-Execution**: Phase 4 gate check is `compliance`, not `plan`. Compliance approval is the final gate before developer agents are invoked.
+		- **Commit Ownership**: Git commits belong to the developer agent (`squad-create`). The reviewer agent (`squad-review`) is review-only and only pushes to origin on a clean `APPROVE` verdict.
 	- ## MCP Gate Tools
-		- **`pipeline_start`**: Initializes a pipeline session. Dynamically resolves the active project root based on `cwd` or `process.cwd()`, writes `.squad-state-[branchSlug].json` scoped to the current Git branch, and auto-appends `.squad-state-*.json` to `.gitignore` if it exists. Must be called before Phase 1. (ref: `index.js → pipeline_start`)
-		- **`request_approval`**: Called at phase exit. Dynamically resolves the state file path, sets gate to `pending`, and emits a hard STOP message. LLM must cease tool calls until human approves. (ref: `index.js → request_approval`)
-		- **`check_gate`**: Called at phase entry. Dynamically resolves the state file path and returns `isError: true` if gate is `pending` or `locked`. Returns soft advisory if no active session (standalone mode). (ref: `index.js → check_gate`)
-		- **`/squad:approve <gate>`**: Human-only trust anchor. Calls the `pipeline_approve` MCP tool under the hood, which dynamically resolves the branch-specific pipeline state file at the active workspace root and transitions the gate to `approved`. (ref: `squad/commands/squad/approve.toml`)
+		- **`pipeline_start`**: Initializes a pipeline session with gates `["prd", "discovery", "plan", "compliance", "execution"]`. Dynamically resolves the active project root, writes `.squad-state-[branchSlug].json`, and auto-appends to `.gitignore`. Must be called before Phase 1. (ref: `index.js → pipeline_start`)
+		- **`request_approval`**: Called at phase exit. Sets gate to `pending` and emits a hard STOP message. LLM must cease tool calls until human approves. (ref: `index.js → request_approval`)
+		- **`check_gate`**: Called at phase entry. Returns `isError: true` if gate is `pending` or `locked`. Returns soft advisory if no active session (standalone mode). (ref: `index.js → check_gate`)
+		- **`/squad:approve <gate>`**: Human-only trust anchor. Calls the `pipeline_approve` MCP tool, which transitions the gate to `approved`. (ref: `squad/commands/squad/approve.toml`)

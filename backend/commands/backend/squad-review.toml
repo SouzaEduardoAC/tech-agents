@@ -40,7 +40,7 @@ Mode: [MODE: SQUAD-FLOW]
    - Include any findings returned by the `sonarqube:issues` tool.
 4. **Produce structured PR Review Report:**
    - Critical, High, Medium, Low findings, Verdict (APPROVE or REQUEST CHANGES).
-5. **Git Commit / Reversal:**
-   - If the verdict is `APPROVE`, commit both code and documentation changes to a new `feature/{{args}}` branch using the Conventional Commits 1.0.0 recommendations (`feat: ...`, `fix: ...`).
-   - If the verdict is `REQUEST CHANGES`, report findings clearly and halt so the developer can apply fixes.
+5. **Audit Loop & Closure:**
+   - **`REQUEST CHANGES`:** Report all findings clearly and halt. The orchestrator will revert to the developer agent (Phase 4) to apply fixes and re-commit to the same branch. Once re-committed, Phase 4.5 repeats.
+   - **`APPROVE`:** Push the feature branch to origin (`git push origin <branch-name>`). Then signal the orchestrator that execution is complete.
 """
