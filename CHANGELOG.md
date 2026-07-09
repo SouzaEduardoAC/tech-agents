@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.17.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.16.0...v1.17.0) (2026-07-09)
+
+
+### Features
+
+* **git-standard:** upgrade Conventional Commits to mandate scope and body ([964bc33](https://github.com/SouzaEduardoAC/ai-agents/commit/964bc33ae074e4fb0239912f35b5fd003a18e00a))
+* **git-standard:** upgrade Conventional Commits to mandate scope and… ([8f0901e](https://github.com/SouzaEduardoAC/ai-agents/commit/8f0901eef01af9849dfeddd5cdc619b4b8c6354b))
+
 ## [1.16.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.15.1...v1.16.0) (2026-07-09)
 
 
