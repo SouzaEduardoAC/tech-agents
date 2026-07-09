@@ -13,20 +13,20 @@
 			- **ReactJS**: Hooks, Context API, Zustand, Next.js.
 		- **Standards**: Component-driven architecture, type-safe state management, optimized rendering.
 	- ## Design-Driven Capabilities [Recommended]
-		- **Google Stitch Integration**:
+		- **Design Tool Integration** (e.g. Stitch, Figma, Lovable):
 			- Design DNA Extraction: Automatic mapping of colors, spacing, and typography tokens.
 			- UI Scaffolding: Generating production-ready components from design screens.
 			- (ref: `frontend/commands/frontend/create.toml`)
 	- ## Guardrails
 		- **Zero Trust UI Logic**: Unverified logic is rejected.
 		- **Accessibility-First**: HALT if user request contradicts A11y best practices.
-		- **Structural Gate Enforcement**: `frontend:create` uses `check_gate`/`request_approval` MCP tools at Gate 1 (plan) to block autonomous transition to implementation. (ref: `index.js`, `frontend/commands/frontend/create.toml`)
+		- **Structural Gate Enforcement**: `frontend:create` uses `check_gate`/`request_approval` MCP tools at Gate 0 (discovery) and Gate 1 (plan) to block autonomous phase transitions. (ref: `index.js`, `frontend/commands/frontend/create.toml`)
 		- (ref: `frontend/brain/persona.md`)
 	- ## Commands
 		- **`frontend:create`**: Full lifecycle — Investigation → Plan → Implementation → Review. (ref: `frontend/commands/frontend/create.toml`)
 		- **`frontend:auditor`**: Targeted audit for UI patterns, accessibility, and performance. (ref: `frontend/commands/frontend/auditor.toml`)
 		- **`frontend:docs`**: Sync UI logic with Logseq documentation. (ref: `frontend/commands/frontend/docs.toml`)
 		- **`frontend:analyze`**: Read-only behavioral simulation. Traces component rendering paths, state mutations, and conditional display logic against real or hypothetical data inputs. No artifacts, no implementation. (ref: `frontend/commands/frontend/analyze.toml`, `common/skills/investigation.md`)
-		- **`frontend:review`**: Structured, stack-aware code review against a GitHub, GitLab, or Azure DevOps pull request. Auto-detects platform from PR URL, acquires diff via MCP (falls back to CLI instructions), runs Phase 0.4 to detect the frontend stack from changed file extensions (React/Angular/Vue/TypeScript/JavaScript, agent-scoped), self-loads the relevant `common/stacks/*.md` guardrails, and applies the full frontend-specific review protocol (component lifecycle, state management, A11y, XSS, bundle size). Hard Guardrail violations are auto-elevated to Critical/High severity. Run from the project root for optimal context loading (AGENTS.md, CLAUDE.md, GEMINI.md). (ref: `frontend/commands/frontend/review.toml`, `common/skills/pr_review.md`)
+		- **`frontend:review`**: **(External PR only — does NOT push changes.)** Structured, stack-aware code review against a GitHub, GitLab, or Azure DevOps pull request. Auto-detects platform from PR URL, acquires diff via MCP, detects frontend stack from file extensions (React/Angular/Vue/TypeScript/JavaScript), self-loads the relevant `common/stacks/*.md` guardrails, and applies the full frontend-specific review protocol. For in-squad local review (git diff + SonarQube + push on APPROVE), use `frontend:squad-review`. (ref: `frontend/commands/frontend/review.toml`, `common/skills/pr_review.md`)
 		- **`frontend:squad-create`**: Squad Flow implementation command (Phase 4). Reads approved PRD and Architecture ADR, runs TDD (tests first), asks human for branch name approval (suggests `feature/[feature]`), commits all code and docs to the confirmed branch, and notifies the orchestrator for peer review. Does NOT push to origin. (ref: `frontend/commands/frontend/squad-create.toml`)
-		- **`frontend:squad-review`**: Squad Flow peer review command (Phase 4.5). Reviews the committed branch using SonarQube MCP + test verification. On `APPROVE`: pushes to origin (`git push origin <branch>`). On `REQUEST CHANGES`: reports findings and halts; developer must fix and re-commit, then Phase 4.5 repeats. (ref: `frontend/commands/frontend/squad-review.toml`)
+		- **`frontend:squad-review`**: Squad Flow peer review command (Phase 4.5). Reviews the committed branch using `git diff` + SonarQube MCP + test verification. Loads full `pr_review.md` protocol and frontend-specific reviewer skill. On `APPROVE`: pushes to origin (`git push origin <branch>`). On `REQUEST CHANGES`: reports findings and halts; developer must fix and re-commit, then Phase 4.5 repeats. (ref: `frontend/commands/frontend/squad-review.toml`)

@@ -11,9 +11,9 @@
 		- **Flutter**: Widget lifecycle, Skia/Impeller rendering, custom animations.
 		- **Platform Bridge**: Native integration via Method Channels and FFI.
 	- ## Design-Driven Capabilities [Recommended]
-		- **Google Stitch Integration**:
+		- **Design Tool Integration** (e.g. Stitch, Figma, Lovable):
 			- Material/Cupertino Token Mapping: Automated design-to-widget constant extraction.
-			- Widget Scaffolding: Generating Flutter widget trees from Stitch design screens.
+			- Widget Scaffolding: Generating Flutter widget trees from design screens.
 			- (ref: `mobile/commands/mobile/create.toml`)
 	- ## Guardrails
 		- **Jank Prevention**: Mandatory identification of excessive widget re-builds.
@@ -25,6 +25,6 @@
 		- **`mobile:auditor`**: Targeted audit for mobile patterns, security, and performance. (ref: `mobile/commands/mobile/auditor.toml`)
 		- **`mobile:docs`**: Sync mobile logic with Logseq documentation. (ref: `mobile/commands/mobile/docs.toml`)
 		- **`mobile:analyze`**: Read-only behavioral simulation. Traces widget tree rebuild paths, Dart null-safety conditions, BLoC/Riverpod state transitions, and async stream behavior against real or hypothetical data inputs. No artifacts, no implementation. (ref: `mobile/commands/mobile/analyze.toml`, `common/skills/investigation.md`)
-		- **`mobile:review`**: Structured, stack-aware code review against a GitHub, GitLab, or Azure DevOps pull request. Auto-detects platform from PR URL, acquires diff via MCP (falls back to CLI instructions), runs Phase 0.4 to detect the mobile stack from changed file extensions (Flutter/Dart, agent-scoped), self-loads `common/stacks/flutter.md` guardrails, and applies the full mobile-specific review protocol (main-thread safety, resource disposal, Offline-First, Platform Channels, Material/Cupertino fidelity). Hard Guardrail violations are auto-elevated to Critical/High severity. Run from the project root for optimal context loading (AGENTS.md, CLAUDE.md, GEMINI.md). (ref: `mobile/commands/mobile/review.toml`, `common/skills/pr_review.md`)
+		- **`mobile:review`**: **(External PR only — does NOT push changes.)** Structured, stack-aware code review against a GitHub, GitLab, or Azure DevOps pull request. Auto-detects platform from PR URL, acquires diff via MCP, detects mobile stack from file extensions (Flutter/Dart), self-loads `common/stacks/flutter.md` guardrails, and applies the full mobile-specific review protocol. For in-squad local review (git diff + SonarQube + push on APPROVE), use `mobile:squad-review`. (ref: `mobile/commands/mobile/review.toml`, `common/skills/pr_review.md`)
 		- **`mobile:squad-create`**: Squad Flow implementation command (Phase 4). Reads approved PRD and Architecture ADR, runs TDD (tests first), asks human for branch name approval (suggests `feature/[feature]`), commits all code and docs to the confirmed branch, and notifies the orchestrator for peer review. Does NOT push to origin. (ref: `mobile/commands/mobile/squad-create.toml`)
-		- **`mobile:squad-review`**: Squad Flow peer review command (Phase 4.5). Reviews the committed branch using SonarQube MCP + test verification. On `APPROVE`: pushes to origin (`git push origin <branch>`). On `REQUEST CHANGES`: reports findings and halts; developer must fix and re-commit, then Phase 4.5 repeats. (ref: `mobile/commands/mobile/squad-review.toml`)
+		- **`mobile:squad-review`**: Squad Flow peer review command (Phase 4.5). Reviews the committed branch using `git diff` + SonarQube MCP + test verification. Loads full `pr_review.md` protocol and mobile-specific reviewer skill. On `APPROVE`: pushes to origin (`git push origin <branch>`). On `REQUEST CHANGES`: reports findings and halts; developer must fix and re-commit, then Phase 4.5 repeats. (ref: `mobile/commands/mobile/squad-review.toml`)
