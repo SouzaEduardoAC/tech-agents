@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.15.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.14.1...v1.15.0) (2026-07-09)
+
+
+### Features
+
+* **compliance:** inline auditing protocol and remove audit_protocol.md ([e8d1f3c](https://github.com/SouzaEduardoAC/ai-agents/commit/e8d1f3cf6e54cd71a24f88e19c265408d3199050))
+* **core:** inline execution protocols directly to commands and confi… ([f1d8449](https://github.com/SouzaEduardoAC/ai-agents/commit/f1d844918085217643e5db97768ff42e9a8fa150))
+* **core:** inline execution protocols directly to commands and configure PR validation CI ([116e2fa](https://github.com/SouzaEduardoAC/ai-agents/commit/116e2fa74eafd9aa26c28aae91e2c55559eda272))
+
 ## [1.14.1](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.14.0...v1.14.1) (2026-07-09)
 
 
