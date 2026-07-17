@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.0-beta.1](https://github.com/SouzaEduardoAC/ai-agents/compare/v2.0.0-beta.1...v3.0.0-beta.1) (2026-07-17)
+## [2.0.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.18.0...v2.0.0) (2026-07-17)
 
 
 ### ⚠ BREAKING CHANGES
