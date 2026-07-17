@@ -16,6 +16,10 @@
 			- status:: [DONE]
 			- ref:: [[TECHNICAL_SPECS]], [[code-dna]], [[CLAUDE]], [[README]], [[GEMINI]], [[AGENTS]]
 			- summary:: Renamed the MCP server name and CLI command from `agent-hub` to `tech-agents`. Updated the command script file to `bin/tech-agents.js`. Refactored the bootstrapper's update settings and Claude integration logic to automatically clean up the old `agent-hub` configuration key and register `tech-agents`. Updated all 26 TOML prompt files to call the new namespace `tech_agents:`. Updated all documentation, integration tests, and specs.
+		- ## Feature: Add adhoc consultation command to po, architect, backend, frontend, and mobile (2026-07-17)
+			- status:: [DONE]
+			- ref:: [[TECHNICAL_SPECS]]
+			- summary:: Designed and created the non-coding consultative command `adhoc` (implemented via `adhoc.toml`) for `po`, `architect`, `backend`, `frontend`, and `mobile` agents. This allows conversational, analytical, and collaborative planning/brainstorming using agent-specific personas and skills, bypassing standard coding pipelines and validation gates. Added integration test coverage.
 		- ## Bug Fix: MCP Sampling Loop Early Exit & Peer Review SonarQube Reporting (2026-07-17)
 			- status:: [DONE]
 			- ref:: [[TECHNICAL_SPECS]], [[Squad Orchestrator]], [[Backend]], [[Frontend]], [[Mobile]]

@@ -77,6 +77,11 @@ const TEST_MATRIX = [
   ["frontend",   "squad-docs", "Document the design system components and React endpoints"],
   ["mobile",     "squad-docs", "Document the mobile widgets and Flutter structure"],
   ["squad",      "run",       "Build a full-stack authentication system: design, backend, and frontend"],
+  ["architect",  "adhoc",     "Discuss if we should use GraphQL or REST for our new public catalog API"],
+  ["backend",    "adhoc",     "Discuss caching strategy for hot queries on user profile"],
+  ["frontend",   "adhoc",     "Discuss if React Server Components fit a search result page"],
+  ["mobile",     "adhoc",     "Discuss how to handle offline synchronization in Flutter"],
+  ["po",         "adhoc",     "Brainstorm feature ideas for a user referral program"],
 ];
 
 // ─── MCP client ──────────────────────────────────────────────────────────
@@ -207,6 +212,11 @@ const CONTENT_FINGERPRINTS = {
   "frontend:squad-docs": ["squad", "documentation"],
   "mobile:squad-docs": ["squad", "documentation"],
   "squad:run":           ["squad", "orchestrat"],
+  "architect:adhoc":     ["architect", "consultation"],
+  "backend:adhoc":       ["backend", "consultation"],
+  "frontend:adhoc":      ["frontend", "consultation"],
+  "mobile:adhoc":        ["mobile", "consultation"],
+  "po:adhoc":            ["product", "consultation"],
 };
 
 // ─── assertions ───────────────────────────────────────────────────────────
