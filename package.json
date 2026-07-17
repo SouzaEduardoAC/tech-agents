@@ -1,6 +1,6 @@
 {
   "name": "@souzaeduardoac/ai-agents",
-  "version": "1.18.0",
+  "version": "3.0.0-beta.1",
   "description": "Universal bridge for AI Agents (Gemini, Claude, Codex)",
   "type": "module",
   "main": "index.js",

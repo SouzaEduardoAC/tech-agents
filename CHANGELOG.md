@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.0.0-beta.1](https://github.com/SouzaEduardoAC/ai-agents/compare/v2.0.0-beta.1...v3.0.0-beta.1) (2026-07-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* **mcp:** The Model Context Protocol (MCP) server name has been renamed from `agent-hub` to `tech-agents`, and the binary command has been renamed to `tech-agents`. Legacy configurations will be automatically migrated by running the bootstrap tool, but manually registered settings must be updated. This major version also introduces server-side MCP sampling support.
+
+### Features
+
+* **mcp:** rename MCP server and CLI commands to tech-agents ([79c099b](https://github.com/SouzaEduardoAC/ai-agents/commit/79c099b18c6abde28b3950fad8d66ff66625bff3))
+* **mcp:** support server-side MCP sampling and rename to tech-agents ([1d271b4](https://github.com/SouzaEduardoAC/ai-agents/commit/1d271b473793723c3cce952120758afba84af7f7))
+* **po,architect,backend,frontend,mobile:** add consultative adhoc commands ([f143f04](https://github.com/SouzaEduardoAC/ai-agents/commit/f143f04c60ffd6940b2f66f132f06d4ad45bb10b))
+
 ## [1.18.0](https://github.com/SouzaEduardoAC/ai-agents/compare/v1.17.0...v1.18.0) (2026-07-10)
 
 
