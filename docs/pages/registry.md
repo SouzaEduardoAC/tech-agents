@@ -67,7 +67,7 @@
 		- ## Feature: Remote Unversioned Agent Hub MCP Configuration (2026-07-06)
 			- status:: [DONE]
 			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]
-			- summary:: Updated all global and workspace-level settings and config files (`settings.json`, `antigravity/mcp_config.json`, etc.) to point `agent-hub` directly to the remote URL (`https://github.com/SouzaEduardoAC/ai-agents`) without version pinning, adding the `--prefer-online` and `-y` flags to ensure NPX executes the latest version from origin. Aligned the local `bin/agent-hub.js` bootstrap command to write and maintain this remote cache-busted configuration. (ref: `bin/agent-hub.js`, `.gemini/settings.json`)
+			- summary:: Updated all global and workspace-level settings and config files (`settings.json`, `antigravity/mcp_config.json`, etc.) to point `agent-hub` directly to the remote URL (`https://github.com/SouzaEduardoAC/tech-agents`) without version pinning, adding the `--prefer-online` and `-y` flags to ensure NPX executes the latest version from origin. Aligned the local `bin/agent-hub.js` bootstrap command to write and maintain this remote cache-busted configuration. (ref: `bin/agent-hub.js`, `.gemini/settings.json`)
 		- ## Feature: Support Multi-Client Paths for Gemini, AntiGravity, and Codex (2026-07-09)
 			- status:: [DONE]
 			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]

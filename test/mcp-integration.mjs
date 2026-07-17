@@ -2,7 +2,7 @@
 /**
  * MCP Integration Test Suite
  * Tests ALL agent commands via the bin/tech-agents.js serve transport
- * (the path used by external clients: `npx github:SouzaEduardoAC/ai-agents serve`)
+ * (the path used by external clients: `npx github:SouzaEduardoAC/tech-agents serve`)
  *
  * Usage: node test/mcp-integration.mjs [--verbose]
  */

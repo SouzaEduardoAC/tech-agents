@@ -237,14 +237,14 @@ program
             args: [
               "-y",
               "--prefer-online",
-              "https://github.com/SouzaEduardoAC/ai-agents",
+              "https://github.com/SouzaEduardoAC/tech-agents",
               "serve"
             ]
           };
       const existingHub = mcpServers["tech-agents"];
       const needsUpdate = !existingHub ||
         (isLocalClone && (existingHub.command !== "node" || !Array.isArray(existingHub.args) || existingHub.args[0] !== path.join(ROOT, "index.js"))) ||
-        (!isLocalClone && (existingHub.command !== "npx" || !Array.isArray(existingHub.args) || existingHub.args.length < 4 || existingHub.args[2] !== "https://github.com/SouzaEduardoAC/ai-agents"));
+        (!isLocalClone && (existingHub.command !== "npx" || !Array.isArray(existingHub.args) || existingHub.args.length < 4 || existingHub.args[2] !== "https://github.com/SouzaEduardoAC/tech-agents"));
       if (needsUpdate) {
         mcpServers["tech-agents"] = correctTechAgentsEntry;
         updated = true;
@@ -362,7 +362,7 @@ program
           args: [
             "-y",
             "--prefer-online",
-            "https://github.com/SouzaEduardoAC/ai-agents",
+            "https://github.com/SouzaEduardoAC/tech-agents",
             "serve"
           ],
         };
@@ -381,7 +381,7 @@ program
           const existingTechAgents = claudeConfig.mcpServers["tech-agents"];
           const needsTechAgentsUpdate = !existingTechAgents || 
             (isLocalClone && (existingTechAgents.command !== "node" || !Array.isArray(existingTechAgents.args) || existingTechAgents.args[0] !== path.join(ROOT, "index.js"))) ||
-            (!isLocalClone && (existingTechAgents.command !== "npx" || !Array.isArray(existingTechAgents.args) || existingTechAgents.args.length < 4 || existingTechAgents.args[2] !== "https://github.com/SouzaEduardoAC/ai-agents"));
+            (!isLocalClone && (existingTechAgents.command !== "npx" || !Array.isArray(existingTechAgents.args) || existingTechAgents.args.length < 4 || existingTechAgents.args[2] !== "https://github.com/SouzaEduardoAC/tech-agents"));
           
           if (needsTechAgentsUpdate) {
             claudeConfig.mcpServers["tech-agents"] = HUB_MCP_ENTRY;
@@ -480,7 +480,7 @@ program
     console.log("\n3️⃣  Claude Code");
     console.log("    → If auto-config succeeded, restart Claude Code.");
     console.log("    → If not detected, run this command manually:");
-    console.log("       mcp add tech-agents -- npx github:SouzaEduardoAC/ai-agents serve");
+    console.log("       mcp add tech-agents -- npx github:SouzaEduardoAC/tech-agents serve");
     console.log("    → Then use: call_agent_command(agent, command, args)");
     console.log("\n4️⃣  Codex / Cursor");
     console.log("    → Link an agent persona to your project:");

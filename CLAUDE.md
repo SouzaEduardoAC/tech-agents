@@ -9,7 +9,7 @@ Claude Code interacts with this platform exclusively via the **MCP server**. The
 ## 🚀 Setup (One-Time)
 Register the platform as an MCP server in your environment:
 ```bash
-mcp add tech-agents -- npx github:SouzaEduardoAC/ai-agents serve
+mcp add tech-agents -- npx github:SouzaEduardoAC/tech-agents serve
 ```
 
 ## 🛠 MCP Tools

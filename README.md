@@ -28,7 +28,7 @@ Add the Agent Hub to your preferred AI environment.
 #### A. Claude Code (CLI)
 Run the standard MCP command:
 ```bash
-mcp add tech-agents -- npx -y github:SouzaEduardoAC/ai-agents serve
+mcp add tech-agents -- npx -y github:SouzaEduardoAC/tech-agents serve
 ```
 
 #### B. Claude Desktop
@@ -38,7 +38,7 @@ Add this to your configuration file (see locations in [CLAUDE.md](file:///home/e
   "mcpServers": {
     "tech-agents": {
       "command": "npx",
-      "args": ["-y", "github:SouzaEduardoAC/ai-agents", "serve"]
+      "args": ["-y", "github:SouzaEduardoAC/tech-agents", "serve"]
     }
   }
 }
@@ -51,7 +51,7 @@ Add this to `~/.gemini/settings.json`:
   "mcpServers": {
     "tech-agents": {
       "command": "npx",
-      "args": ["-y", "github:SouzaEduardoAC/ai-agents", "serve"]
+      "args": ["-y", "github:SouzaEduardoAC/tech-agents", "serve"]
     }
   }
 }
@@ -60,25 +60,25 @@ Add this to `~/.gemini/settings.json`:
 ### 2. IDE Static Integration (Codex / Cursor)
 If your IDE does not support dynamic MCP servers, you can statically link the agent's core persona file into your workspace (e.g. to `.cursorrules`):
 ```bash
-npx github:SouzaEduardoAC/ai-agents link [agent-name] [target-file]
+npx github:SouzaEduardoAC/tech-agents link [agent-name] [target-file]
 ```
-*(Example: `npx github:SouzaEduardoAC/ai-agents link squad .cursorrules`)*
+*(Example: `npx github:SouzaEduardoAC/tech-agents link squad .cursorrules`)*
 
 You can also link the complete MCP Usage Guide to configure the client LLM with the proper tools usage protocol:
 ```bash
-npx github:SouzaEduardoAC/ai-agents link mcp .clauderules # (or .cursorrules, .windsurfrules)
+npx github:SouzaEduardoAC/tech-agents link mcp .clauderules # (or .cursorrules, .windsurfrules)
 ```
 
 ### 3. Legacy Slash Commands Setup (Optional)
 If you require terminal-native slash commands (e.g. `/squad:run`, `/architect:create`) inside Gemini CLI/AntiGravity, run the bootstrap installer locally:
 ```bash
-npx github:SouzaEduardoAC/ai-agents bootstrap
+npx github:SouzaEduardoAC/tech-agents bootstrap
 ```
 
 ### 🔄 Keeping it Current (Automatic Updates)
 When registered via `npx`, updates are fetched dynamically on launch. To force-update the server to the latest version, run the server with the `--prefer-online` flag:
 ```bash
-npx --prefer-online github:SouzaEduardoAC/ai-agents serve
+npx --prefer-online github:SouzaEduardoAC/tech-agents serve
 ```
 If you are developing locally with a cloned repository, a simple pull updates the server:
 ```bash
@@ -131,9 +131,9 @@ Claude Code communicates with the Hub using **MCP tool calls**. Since Claude is 
 For Cursor, VS Code, or other IDEs using context files (like `.cursorrules` or custom system instructions), you link the agent's core identity file directly into your workspace.
 *   **Link Command**: 
     ```bash
-    npx github:SouzaEduardoAC/ai-agents link [agent-name] [target-file]
+    npx github:SouzaEduardoAC/tech-agents link [agent-name] [target-file]
     ```
-    *(e.g., `npx github:SouzaEduardoAC/ai-agents link squad .cursorrules`, `link quicky .cursorrules`, or `npx github:SouzaEduardoAC/ai-agents link mcp .clauderules` to link the complete MCP Usage Guide)*
+    *(e.g., `npx github:SouzaEduardoAC/tech-agents link squad .cursorrules`, `link quicky .cursorrules`, or `npx github:SouzaEduardoAC/tech-agents link mcp .clauderules` to link the complete MCP Usage Guide)*
 *   **Usage**: The IDE model immediately inherits that agent's complete persona, skills, and guardrails. Simply reference `@.cursorrules` in your Composer or sidebar chat to execute the flow.
 
 ---
