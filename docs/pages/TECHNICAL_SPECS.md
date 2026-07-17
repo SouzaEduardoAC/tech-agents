@@ -71,6 +71,7 @@
 			- **Agent Hub (Internal)**:
 				- Description:: The core orchestration server developed in this repository.
 				- Interaction:: Provides the `call_agent_command` tool to retrieve raw compiled prompts, and the `run_agent_loop` tool to execute multi-turn agent loops on the server side via client-side sampling.
+				- Loop Completion Rule:: The server-side loop execution terminates ONLY when the agent outputs the `<task_complete>` tag, preventing premature exits on generic words like "complete" or "done".
 				- Link:: [[Internal]] (ref: `index.js`)
 				- **MCP Config Entry (Correct):** `{ "command": "node", "args": ["<ABSOLUTE_PATH>/bin/agent-hub.js", "serve"] }` — points to the CLI wrapper with the `serve` option (using stdin/stdout stream piping to forward JSON-RPC framing to `index.js`).
 				- **Startup Diagnostics:** `index.js` wraps `server.connect(transport)` in a `try/catch`, writing fatal errors to `process.stderr` and calling `process.exit(1)` for visibility to MCP host processes. (ref: `index.js → transport connect`)

@@ -170,8 +170,8 @@ async function runTests() {
             }
 
             const lastMsg = messages[messages.length - 1];
-            if (lastMsg && lastMsg.role === "user" && lastMsg.content.text.includes("File written successfully")) {
-              // Loop turn 2: Send complete
+            if (lastMsg && lastMsg.role === "user" && lastMsg.content.text.includes("written successfully")) {
+              // Loop turn 3: Send complete
               sendRequest(proc2, {
                 jsonrpc: "2.0",
                 id: parsed.id,
@@ -184,8 +184,8 @@ async function runTests() {
                   model: "mock-model"
                 }
               });
-            } else {
-              // Loop turn 1: Emulate file write
+            } else if (lastMsg && lastMsg.role === "user" && lastMsg.content.text.includes("Please continue")) {
+              // Loop turn 2: Emulate file write
               sendRequest(proc2, {
                 jsonrpc: "2.0",
                 id: parsed.id,
@@ -194,6 +194,21 @@ async function runTests() {
                   content: {
                     type: "text",
                     text: "I will write the test file. <write_file path=\"scratch/test-sample.txt\">Hello Sampling Loop</write_file>"
+                  },
+                  model: "mock-model"
+                }
+              });
+            } else {
+              // Loop turn 1: Conversational response containing 'complete' and 'done' without tool execution.
+              // This tests that the server-side loop parser does NOT exit prematurely on these keywords.
+              sendRequest(proc2, {
+                jsonrpc: "2.0",
+                id: parsed.id,
+                result: {
+                  role: "assistant",
+                  content: {
+                    type: "text",
+                    text: "I have completed analyzing the task and I am done planning. I am now ready to write the file."
                   },
                   model: "mock-model"
                 }

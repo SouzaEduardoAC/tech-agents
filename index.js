@@ -932,14 +932,14 @@ RULES:
         const readRegex = /<read_file\s+path=["']([^"']+)["']\s*\/?>/gi;
         const writeRegex = /<write_file\s+path=["']([^"']+)["']\s*>([\s\S]*?)<\/write_file>/gi;
         const commandRegex = /<run_command\s+cmd=["']([^"']+)["']\s*\/?>/gi;
-        const completeRegex = /<task_complete\s+summary=["']([^"']+)["']\s*\/?>/gi;
+        const completeRegex = /<task_complete(?:\s+summary=["']([^"']+)["'])?\s*\/?>/i;
 
         let toolExecuted = false;
         let turnOutput = "";
 
         const completeMatch = completeRegex.exec(assistantText);
         if (completeMatch) {
-          loopResult = completeMatch[1];
+          loopResult = completeMatch[1] || "Task completed successfully.";
           break;
         }
 
@@ -993,10 +993,6 @@ RULES:
         }
 
         if (!toolExecuted) {
-          if (assistantText.includes("complete") || assistantText.includes("done") || assistantText.includes("resolved")) {
-            loopResult = assistantText;
-            break;
-          }
           turnOutput = "Please continue and execute the task or output <task_complete summary=\"...\" /> when finished.";
         }
 

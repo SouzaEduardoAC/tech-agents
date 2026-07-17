@@ -12,6 +12,10 @@
 	- ## Core Infrastructure
 		- status:: [SYNC]
 		- nodes:: [[TECHNICAL_SPECS]], [[BUSINESS_FLOW]], [[code-dna]], [[resilience-policies]], [[AI Interaction Standard]], [[Decoder]], [[squad-docs]], [[Add MCP Sampling to the agent-hub MCP, allowing fallback for clients without sampling support, and release as beta first.-prd]]
+		- ## Bug Fix: MCP Sampling Loop Early Exit & Peer Review SonarQube Reporting (2026-07-17)
+			- status:: [DONE]
+			- ref:: [[TECHNICAL_SPECS]], [[Squad Orchestrator]], [[Backend]], [[Frontend]], [[Mobile]]
+			- summary:: Fixed early exit in server-managed sampling execution loop (`run_agent_loop` in `index.js`) where substring checks for "complete", "done", or "resolved" broke loops prematurely before Git closure steps could execute. Standardized PR review protocol and squad-review commands to explicitly report the unavailability of SonarQube MCP rather than silently suppressing it.
 		- ## Feature: Integrate MCP Sampling into agent-hub MCP (2026-07-10)
 			- status:: [DONE]
 			- ref:: [[Add MCP Sampling to the agent-hub MCP, allowing fallback for clients without sampling support, and release as beta first.-prd]]
