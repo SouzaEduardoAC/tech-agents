@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1](https://github.com/SouzaEduardoAC/tech-agents/compare/v2.0.0...v2.0.1) (2026-07-20)
+
+
+### Bug Fixes
+
+* **mcp:** align package namespace to @souzaeduardoac/tech-agents and … ([6f9c2d9](https://github.com/SouzaEduardoAC/tech-agents/commit/6f9c2d9be20b4ab5550ac8caa8384bbfabf0d3a3))
+* **mcp:** align package namespace to @souzaeduardoac/tech-agents and purge legacy references ([05dbacb](https://github.com/SouzaEduardoAC/tech-agents/commit/05dbacb1e80286cb8550050b4e84ad49a32a8186))
+
 ## [2.0.0](https://github.com/SouzaEduardoAC/tech-agents/compare/v1.18.0...v2.0.0) (2026-07-17)
 
 
