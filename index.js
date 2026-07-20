@@ -75,7 +75,7 @@ async function isInsideHub(projectRoot) {
   if (await fs.pathExists(pkgPath)) {
     try {
       const pkgJson = await fs.readJson(pkgPath);
-      return pkgJson.name === "@souzaeduardoac/ai-agents";
+      return pkgJson.name === "@souzaeduardoac/tech-agents";
     } catch (e) {
       return false;
     }

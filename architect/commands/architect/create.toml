@@ -33,7 +33,7 @@ Mode: [MODE: SQUAD-FLOW]
     - **Write findings to `docs/pages/{{args}}-analysis.md`** starting with Logseq properties:
       - `type:: [[Analysis]]`
       - `status:: [[ACTIVE]]`
-      - `project:: [[ai-agents]]`
+      - `project:: [[tech-agents]]`
       and format using strict outliner bullet syntax (`- ` and spaces).
     - **Gate 0 — MCP Structural Enforcement:** Call `tech_agents:request_approval(gate="discovery", artifact_path="docs/pages/{{args}}-analysis.md", summary="Discovery/analysis phase complete. Architecture decision records are ready for review.")` THEN halt.
 5. **Phase 2: Architectural Intent.**
@@ -41,7 +41,7 @@ Mode: [MODE: SQUAD-FLOW]
     - **Logseq Header Mandate:** Must start with standard Logseq properties:
       - `type:: [[Plan]]`
       - `status:: [[ACTIVE]]`
-      - `project:: [[ai-agents]]`
+      - `project:: [[tech-agents]]`
       prefixed with `- ` and bulleted.
     - **Context7 Citation Mandate:** If the plan involves external libraries/APIs, query the `context7` MCP server to fetch up-to-date documentation. Embed these fetched code blocks directly into a dedicated section of the plan called `## Dependency & API Contracts (Context7)`.
     - **Linking:** Ensure each decision links back to `[[{{args}}-prd]]`.
@@ -53,7 +53,7 @@ Mode: [MODE: SQUAD-FLOW]
     - Must start with:
       - `type:: [[Audit]]`
       - `status:: [[ACTIVE]]`
-      - `project:: [[ai-agents]]`
+      - `project:: [[tech-agents]]`
     - **Gate 2 — MCP Structural Enforcement:** Call `tech_agents:check_gate(gate="plan")` FIRST. Then call `tech_agents:request_approval(gate="audit", artifact_path="docs/pages/{{args}}-audit.md", summary="Post-implementation audit complete. Ready for final approval.")` and halt.
 8. **Phase 5: Post-Sync.** Update `docs/journals/` and `docs/pages/business-rules.md` to reflect the new state.
 9. **Closure.** Summarize results.

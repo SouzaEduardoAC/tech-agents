@@ -29,7 +29,7 @@ The Compliance Auditor operates with a "Zero Trust" posture regarding data handl
 ### 1. Agent Files
 Symlink the `compliance/` directory to your global Gemini agents folder:
 ```bash
-ln -s /path/to/ai-agents/compliance ~/.gemini/agents/compliance
+ln -s /path/to/tech-agents/compliance ~/.gemini/agents/compliance
 ```
 
 ### 2. Global Commands

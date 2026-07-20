@@ -1,7 +1,7 @@
 - type:: [[Agent]]
 - role:: Council
 - status:: [ACTIVE]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Council (Consensus & Synthesis Engine)
 	- ## Identity Traits

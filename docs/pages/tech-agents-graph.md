@@ -1,7 +1,7 @@
 - type:: [[Index]]
-- title:: [[ai-agents]] Knowledge Graph
+- title:: [[tech-agents]] Knowledge Graph
 - status:: [SYNC]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Project Overview
 	- The Universal Agent Hub for AI-driven software engineering.

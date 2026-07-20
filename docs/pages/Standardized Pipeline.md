@@ -7,12 +7,12 @@
 		- 1. **Grounding**: Read `AI Context` or `GEMINI.md`.
 		- 2. **Deep Research**: Autonomously map data flows, dependencies, and side-effects across the codebase.
 		- 3. **Interactive Clarification**: Identify ambiguities in business logic, edge cases, or constraints. **STOP** and ask targeted questions if needed.
-		- 4. **Discovery Artifact**: Write findings and confirmed understanding to `docs/pages/[feature]-discovery.md` (which MUST start with `type:: [[Discovery]]`, `status:: [[ACTIVE]]`, and `project:: [[ai-agents]]` Logseq properties).
+		- 4. **Discovery Artifact**: Write findings and confirmed understanding to `docs/pages/[feature]-discovery.md` (which MUST start with `type:: [[Discovery]]`, `status:: [[ACTIVE]]`, and `project:: [[tech-agents]]` Logseq properties).
 		- 5. **Gate 0 (Human Approval)**: Await explicit user approval of the discovery artifact before drafting the plan. Structurally enforced via `request_approval(gate="discovery")` + `check_gate(gate="discovery")`. (ref: `index.js`)
 	- ## Phase 2: Architectural Planning (Mode: PLAN)
 		- 1. **Load Context**: Read `docs/pages/[feature]-discovery.md` to align with approved understanding.
 		- 2. **Contextualize**: Trace specific logic/dependencies based on the discovery.
-		- 3. **Draft Plan**: Create a detailed Implementation Plan and write to `docs/pages/[feature]-plan.md` (which MUST start with `type:: [[Plan]]`, `status:: [[ACTIVE]]`, and `project:: [[ai-agents]]` Logseq properties).
+		- 3. **Draft Plan**: Create a detailed Implementation Plan and write to `docs/pages/[feature]-plan.md` (which MUST start with `type:: [[Plan]]`, `status:: [[ACTIVE]]`, and `project:: [[tech-agents]]` Logseq properties).
 		- 4. **Gate 1 (Human Approval)**: Await explicit user approval of the plan before proceeding to implementation. Structurally enforced via `request_approval(gate="plan")` + `check_gate(gate="plan")`. (ref: `index.js`)
 	- ## Phase 3: Implementation (Mode: IMPLEMENT)
 		- 1. **Load Contract**: Read `docs/pages/[feature]-plan.md`.

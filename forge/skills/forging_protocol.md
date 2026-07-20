@@ -76,4 +76,4 @@ Represent the new agent as a first-class node in the Logseq documentation graph:
       - **Black Hat** (architecture risks and token cost profile).
       - **Blind Spots** (logical edge cases or dependencies ignored).
 2.  **Update Registry:** Open [`docs/pages/registry.md`](../../docs/pages/registry.md) and append the new agent's node in the Active Features list under the corresponding feature block, preserving indentation integrity.
-3.  **Write Journal Entry:** Create or update the current daily journal page under `docs/journals/YYYY_MM_DD.md` (e.g. `2026_06_20.md`) following standard Logseq properties (`- type:: [[Journal]]`, `- title:: [[YYYY_MM_DD]]`, `- project:: [[ai-agents]]`) and outline the changes/scaffolding executed.
+3.  **Write Journal Entry:** Create or update the current daily journal page under `docs/journals/YYYY_MM_DD.md` (e.g. `2026_06_20.md`) following standard Logseq properties (`- type:: [[Journal]]`, `- title:: [[YYYY_MM_DD]]`, `- project:: [[tech-agents]]`) and outline the changes/scaffolding executed.

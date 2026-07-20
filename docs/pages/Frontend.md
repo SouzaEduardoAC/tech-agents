@@ -1,7 +1,7 @@
 - type:: [[Agent]]
 - role:: UI Specialist
 - status:: [ACTIVE]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Frontend (Deep Specification)
 	- ## Core Mandate

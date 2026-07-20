@@ -1,7 +1,7 @@
 - type:: [[Agent]]
 - role:: Decoder
 - status:: [ACTIVE]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Decoder (Deep Persona)
 	- ## Identity Traits

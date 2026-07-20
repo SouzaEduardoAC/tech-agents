@@ -1,6 +1,6 @@
 - type:: [[Analysis]]
 - status:: [[ACTIVE]]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Architectural Analysis: MCP Sampling Support
 	- ## 1. Problem & Persona Context

@@ -33,7 +33,7 @@ The Backend Agent is designed for rigorous, logic-driven server-side development
 ### 1. Agent Files
 Symlink the `backend/` directory to your global Gemini agents folder:
 ```bash
-ln -s /path/to/ai-agents/backend ~/.gemini/agents/backend
+ln -s /path/to/tech-agents/backend ~/.gemini/agents/backend
 ```
 
 ### 2. Global Commands

@@ -1,6 +1,6 @@
 - type:: [[Business Flow]]
 - status:: [[ACTIVE]]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Business Flow: [Flow Name]
 	- ## 1. Overview

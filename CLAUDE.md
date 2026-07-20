@@ -37,7 +37,7 @@ call_agent_command(agent="squad", command="full-sync", args="Sync codebase docum
 
 ## 🗺 Documentation Map (Logseq Graph)
 The project documentation is managed as a knowledge graph in `docs/pages/`.
-- **Master Graph:** [[ai-agents-graph]]
+- **Master Graph:** [[tech-agents-graph]]
 - **Technical DNA:** [[code-dna]]
 - **Protocols:** [[Engineering Protocol]], [[Logseq Knowledge]]
 - **Specs:** [[TECHNICAL_SPECS]], [[BUSINESS_FLOW]]

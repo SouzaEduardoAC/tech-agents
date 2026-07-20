@@ -68,7 +68,7 @@ Every agent must be mapped as a first-class node inside the Logseq graph:
       - type:: [[Agent]]
       - role:: [Specialized Role]
       - status:: [ACTIVE]
-      - project:: [[ai-agents]]
+      - project:: [[tech-agents]]
       ```
 2.  **Properties Mapping:**
     - Maintain a clear hierarchy: `- # [Agent Name] (Deep Persona) -> - ## Identity -> - ## Commands -> - ## Success Criteria`.

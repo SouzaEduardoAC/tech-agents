@@ -1,7 +1,7 @@
 - type:: [[Agent]]
 - role:: Mobile Specialist
 - status:: [ACTIVE]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Mobile (Deep Specification)
 	- ## Core Mandate

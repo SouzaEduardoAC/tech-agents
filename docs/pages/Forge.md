@@ -1,7 +1,7 @@
 - type:: [[Agent]]
 - role:: Meta-Architect
 - status:: [ACTIVE]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Forge (Deep Persona)
 	- ## Identity Traits

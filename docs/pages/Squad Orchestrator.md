@@ -1,7 +1,7 @@
 - type:: [[Agent]]
 - role:: Squad Leader
 - status:: [ACTIVE]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Squad Orchestrator (Deep Persona)
 	- ## Responsibility Matrix

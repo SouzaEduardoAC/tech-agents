@@ -1,7 +1,7 @@
 - type:: [[Agent]]
 - role:: Implementation Specialist
 - status:: [ACTIVE]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Backend (Deep Specification)
 	- ## Core Mandate

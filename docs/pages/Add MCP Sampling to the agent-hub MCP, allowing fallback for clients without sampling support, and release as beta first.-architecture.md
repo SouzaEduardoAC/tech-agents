@@ -1,6 +1,6 @@
 - type:: [[Plan]]
 - status:: [[ACTIVE]]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 - relates-to:: [[Add MCP Sampling to the agent-hub MCP, allowing fallback for clients without sampling support, and release as beta first.-prd]]
 
 - # Executive Summary

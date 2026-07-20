@@ -7,7 +7,7 @@
    - **Logseq Header Mandate:** The generated file MUST start with the standard Logseq properties:
      - `type:: [[Discovery]]`
      - `status:: [[ACTIVE]]`
-     - `project:: [[ai-agents]]`
+     - `project:: [[tech-agents]]`
      followed by outliner format (every block bulleted with `- ` and hierarchically indented using tabs/spaces).
 * **Validation:** Inform the user the discovery artifact is ready at `docs/pages/[research]-discovery.md` and request approval of the research direction.
    - **HALT:** End session. Do not start full research until the discovery artifact is approved.

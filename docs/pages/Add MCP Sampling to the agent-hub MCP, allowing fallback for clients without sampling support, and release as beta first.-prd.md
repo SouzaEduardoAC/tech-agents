@@ -1,5 +1,5 @@
 - type:: [[PRD]]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 - status:: [[ACTIVE]]
 - version:: 0.1.0-beta
 

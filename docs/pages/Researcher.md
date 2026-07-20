@@ -1,7 +1,7 @@
 - type:: [[Agent]]
 - role:: Strategic Analyst
 - status:: [ACTIVE]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Researcher (Deep Specification)
 	- ## Core Mandate

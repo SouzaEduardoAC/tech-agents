@@ -1,6 +1,6 @@
 - type:: [[Visuals]]
 - status:: [SYNC]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Architectural Diagrams
 	- ## Universal Agent Hub (Hub-and-Spoke)

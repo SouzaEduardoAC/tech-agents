@@ -23,7 +23,7 @@ The Automata Specialist Agent is designed to architect, implement, and optimize 
 ### 1. Agent Files
 Symlink the `automata/` directory to your global Gemini agents folder:
 ```bash
-ln -s /path/to/ai-agents/automata ~/.gemini/agents/automata
+ln -s /path/to/tech-agents/automata ~/.gemini/agents/automata
 ```
 
 ### 2. Global Commands

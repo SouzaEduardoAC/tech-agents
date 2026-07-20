@@ -31,7 +31,7 @@ For EACH entity identified in the manifest, the agent **MUST** execute a separat
     - API endpoints / methods → `technical_endpoint.md`
     - Data schemas / models → `technical_data_model.md`
 3.  Generate the dedicated Logseq page in the workspace's `docs/pages/` folder. The file name must match the entity slug (e.g., `docs/pages/[entity-name-slug].md`).
-4.  Write the properties block first (mandatory: `type::`, `category::`, `status:: [[ACTIVE]]`, `project:: [[ai-agents]]`).
+4.  Write the properties block first (mandatory: `type::`, `category::`, `status:: [[ACTIVE]]`, `project:: [[tech-agents]]`).
 5.  Populate every single template section with high-fidelity, codebase-grounded facts.
 
 ### Step 3: Linkage & Index Reconstruction (The Integration Phase)

@@ -30,7 +30,7 @@ Mode: [MODE: SQUAD-FLOW]
     - **Write findings to `docs/pages/{{args}}-analysis.md`** using standard Logseq properties:
       - `type:: [[Analysis]]`
       - `status:: [[ACTIVE]]`
-      - `project:: [[ai-agents]]`
+      - `project:: [[tech-agents]]`
       prefixed with `- ` and bulleted.
     - **Gate 0 — MCP Structural Enforcement:** Call `tech_agents:request_approval(gate="discovery", artifact_path="docs/pages/{{args}}-analysis.md", summary="Backend discovery/analysis phase complete. Architecture decision records are ready for review.")` THEN halt.
 4. **Phase 2: Architectural Intent.**
@@ -38,7 +38,7 @@ Mode: [MODE: SQUAD-FLOW]
     - **Logseq Header Mandate:** Must start with standard Logseq properties:
       - `type:: [[Plan]]`
       - `status:: [[ACTIVE]]`
-      - `project:: [[ai-agents]]`
+      - `project:: [[tech-agents]]`
       prefixed with `- ` and bulleted.
     - **Context7 Citation Mandate:** If external APIs are involved, query the `context7` MCP server and embed API contracts under `## Dependency & API Contracts (Context7)`.
     - **Gate 1 — MCP Structural Enforcement:** Call `tech_agents:request_approval(gate="plan", artifact_path="docs/pages/{{args}}-architecture.md", summary="Backend architecture plan complete. Ready for implementation approval.")` THEN halt.

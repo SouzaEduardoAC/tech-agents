@@ -1,7 +1,7 @@
 - type:: [[Technical Spec]]
 - category:: [[Endpoint]]
 - status:: [[ACTIVE]]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Technical Spec: API Endpoint / Controller Entry Point
 	- ## 1. Interface Signature

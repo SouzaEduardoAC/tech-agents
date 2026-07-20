@@ -1,6 +1,6 @@
 - type:: [[Knowledge]]
 - status:: [SYNC]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 - tags:: #resilience #stability
 
 - # Stability & Resilience Protocols

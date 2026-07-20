@@ -1,13 +1,13 @@
 # Skill: MCP Usage Guide — Agent Hub Server
 
 ## Purpose
-A foundational reference skill that teaches any LLM how to interact with the Agent Hub MCP server (`@souzaeduardoac/ai-agents`). This guide covers all exposed tools, the full agent catalog, command aliases, and a decision flowchart for selecting the right agent. It should be treated as required reading before making any MCP tool call.
+A foundational reference skill that teaches any LLM how to interact with the Agent Hub MCP server (`@souzaeduardoac/tech-agents`). This guide covers all exposed tools, the full agent catalog, command aliases, and a decision flowchart for selecting the right agent. It should be treated as required reading before making any MCP tool call.
 
 ---
 
 ## 1. Overview
 
-The Agent Hub MCP server exposes **7 tools** for agent discovery, command execution, prompt retrieval, and pipeline management. The package is `@souzaeduardoac/ai-agents`.
+The Agent Hub MCP server exposes **7 tools** for agent discovery, command execution, prompt retrieval, and pipeline management. The package is `@souzaeduardoac/tech-agents`.
 
 **Core principle:** When you call `call_agent_command`, the returned prompt **IS** the agent. You must adopt its persona, follow its instructions, and execute its task. It is not informational — it is an identity transfer.
 

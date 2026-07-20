@@ -1,7 +1,7 @@
 - type:: [[Agent]]
 - role:: Systems Architect
 - status:: [ACTIVE]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Architect (Deep Specification)
 	- ## Core Mandate

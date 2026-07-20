@@ -1,7 +1,7 @@
 - type:: [[Agent]]
 - role:: Product Owner
 - status:: [ACTIVE]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Product Owner (Deep Persona)
 	- ## Identity Traits

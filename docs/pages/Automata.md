@@ -1,7 +1,7 @@
 - type:: [[Agent]]
 - role:: Automation Architect
 - status:: [ACTIVE]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Automata (Deep Specification)
 	- ## Core Mandate

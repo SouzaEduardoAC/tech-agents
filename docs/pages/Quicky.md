@@ -1,7 +1,7 @@
 - type:: [[Agent]]
 - role:: Minor Fixes and Tweaks Specialist
 - status:: [ACTIVE]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Quicky (Deep Persona)
 	- ## Identity Traits

@@ -13,7 +13,7 @@ The Automata Specialist Agent follows a structured approach to workflow developm
    - **Logseq Header Mandate:** The generated file MUST start with the standard Logseq properties:
      - `type:: [[Discovery]]`
      - `status:: [[ACTIVE]]`
-     - `project:: [[ai-agents]]`
+     - `project:: [[tech-agents]]`
      followed by outliner format (every block bulleted with `- ` and hierarchically indented using tabs/spaces).
 * **Validation:** Inform the user the discovery artifact is ready at `docs/pages/[workflow]-discovery.md` and request approval of your understanding.
    - **HALT:** End session. Do not write implementation plan until discovery is approved.
@@ -32,7 +32,7 @@ The Automata Specialist Agent follows a structured approach to workflow developm
    - **Logseq Header Mandate:** The generated file MUST start with the standard Logseq properties:
      - `type:: [[Plan]]`
      - `status:: [[ACTIVE]]`
-     - `project:: [[ai-agents]]`
+     - `project:: [[tech-agents]]`
      followed by outliner format (every block bulleted with `- ` and hierarchically indented using tabs/spaces).
 
 ### Step 3: Design & Implementation (JSON Generation)

@@ -6,7 +6,7 @@ This repository is a **Specialized Tech Agents** platform designed for high-fide
 
 ## 🗺 Documentation Map (Logseq Graph)
 The project documentation is managed as a knowledge graph in `docs/pages/`.
-- **Master Graph:** [[ai-agents-graph]]
+- **Master Graph:** [[tech-agents-graph]]
 - **Technical DNA:** [[code-dna]]
 - **Protocols:** [[Engineering Protocol]], [[Logseq Knowledge]]
 - **Specs:** [[TECHNICAL_SPECS]], [[BUSINESS_FLOW]]
@@ -39,6 +39,7 @@ The project documentation is managed as a knowledge graph in `docs/pages/`.
 - DONE: Implement structural MCP-level human approval gate system (`pipeline_start`, `request_approval`, `check_gate`, `pipeline_approve` tools + `/squad:approve` command) to make it physically impossible for LLM orchestrators to auto-approve pipeline phase transitions. (ref: `index.js`, `.squad-state-*.json`, `squad/commands/squad/approve.toml`, `[[TECHNICAL_SPECS]]`)
 - DONE: Implement MCP usage guide skill and serve it dynamically via list_agents tool. (ref: `common/skills/mcp_usage_guide.md`, `index.js`, `bin/tech-agents.js`, `[[TECHNICAL_SPECS]]`)
 - DONE: Implement server-side managed execution loop via MCP Sampling (`run_agent_loop` tool), supporting local XML action execution (filesystem, terminal commands) and fallback logic. (ref: `index.js`, `test/mcp-sampling-test.js`, `[[TECHNICAL_SPECS]]`)
+- DONE: Align package name to `@souzaeduardoac/tech-agents` and update global MCP configurations to use `npx serve`. (ref: `package.json`, `bin/tech-agents.js`)
 - TODO: Implement automated AST-sync for [[Mobile]] widget trees.
 
 #AMD #UniversalHub #AgenticFramework #Logseq

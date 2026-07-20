@@ -227,24 +227,19 @@ program
         delete mcpServers["agent-hub"];
         updated = true;
       }
-      const correctTechAgentsEntry = isLocalClone
-        ? {
-            command: "node",
-            args: [path.join(ROOT, "index.js")]
-          }
-        : {
-            command: "npx",
-            args: [
-              "-y",
-              "--prefer-online",
-              "https://github.com/SouzaEduardoAC/tech-agents",
-              "serve"
-            ]
-          };
+      const correctTechAgentsEntry = {
+        command: "npx",
+        args: [
+          "-y",
+          "@souzaeduardoac/tech-agents",
+          "serve"
+        ]
+      };
       const existingHub = mcpServers["tech-agents"];
       const needsUpdate = !existingHub ||
-        (isLocalClone && (existingHub.command !== "node" || !Array.isArray(existingHub.args) || existingHub.args[0] !== path.join(ROOT, "index.js"))) ||
-        (!isLocalClone && (existingHub.command !== "npx" || !Array.isArray(existingHub.args) || existingHub.args.length < 4 || existingHub.args[2] !== "https://github.com/SouzaEduardoAC/tech-agents"));
+        existingHub.command !== "npx" ||
+        !Array.isArray(existingHub.args) ||
+        existingHub.args.join(" ") !== "-y @souzaeduardoac/tech-agents serve";
       if (needsUpdate) {
         mcpServers["tech-agents"] = correctTechAgentsEntry;
         updated = true;
@@ -352,20 +347,14 @@ program
       path.join(os.homedir(), "Library", "Application Support", "Claude", "claude_desktop_config.json"), // Claude Desktop (macOS)
     ];
 
-    const HUB_MCP_ENTRY = isLocalClone
-      ? {
-          command: "node",
-          args: [path.join(ROOT, "index.js")]
-        }
-      : {
-          command: "npx",
-          args: [
-            "-y",
-            "--prefer-online",
-            "https://github.com/SouzaEduardoAC/tech-agents",
-            "serve"
-          ],
-        };
+    const HUB_MCP_ENTRY = {
+      command: "npx",
+      args: [
+        "-y",
+        "@souzaeduardoac/tech-agents",
+        "serve"
+      ]
+    };
 
     let claudeConfigured = false;
     for (const claudePath of CLAUDE_CONFIG_PATHS) {

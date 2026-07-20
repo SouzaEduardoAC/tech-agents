@@ -48,7 +48,7 @@ Before modification, the agent **MUST** classify the environment:
 *   **README Sync Mandate:** The root `README.md` must be updated to serve as the "Surface Layer" of the graph. It MUST include:
     - **Graph-First Declaration:** Explicitly state that documentation is optimized for AI via Logseq Graph Mode to minimize token consumption while maximizing signal precision.
     - **Installation & Updates:** Clear `npx` commands for `serve`, `bootstrap`, and `link`.
-    - **Contribution & Standards:** Links to `[[ai-agents-graph]]`, `[[code-dna]]`, and project guidelines.
+    - **Contribution & Standards:** Links to `[[tech-agents-graph]]`, `[[code-dna]]`, and project guidelines.
 *   **Forensic Extraction (Parity with doc_maintainer):**
     *   **Boundary Audit:** Identify if "Infrastructure" is leaking into "Domain" (ref: `doc_maintainer` §3A).
     *   **Auth & Role Mapping:** Trace `@authorized` or conditional roles to entry points.

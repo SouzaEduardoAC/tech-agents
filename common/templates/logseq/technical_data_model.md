@@ -1,7 +1,7 @@
 - type:: [[Technical Spec]]
 - category:: [[Data Model]]
 - status:: [[ACTIVE]]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Technical Spec: Data Model / Schema Spec
 	- ## 1. Model Definition

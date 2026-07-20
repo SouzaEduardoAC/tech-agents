@@ -32,7 +32,7 @@ The Frontend Agent is designed for building accessible, high-performance user in
 ### 1. Agent Files
 Symlink the `frontend/` directory to your global Gemini agents folder:
 ```bash
-ln -s /path/to/ai-agents/frontend ~/.gemini/agents/frontend
+ln -s /path/to/tech-agents/frontend ~/.gemini/agents/frontend
 ```
 
 ### 2. Global Commands

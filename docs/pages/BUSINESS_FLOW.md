@@ -1,6 +1,6 @@
 - type:: [[Business Flow]]
 - status:: [SYNC]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Value Proposition
 	- A universal, portable framework for orchestrating specialized AI Agents.

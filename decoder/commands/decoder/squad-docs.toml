@@ -32,7 +32,7 @@ Mode: [MODE: SQUAD-DOCUMENTATION]
 3. **Phase 2: Business Translation & Exports.**
     - For each technical specification in the manifest: Apply the **Business Synthesis Protocol** (ref: `common/skills/business_synthesis.md`) to strip technical complexity (like AST citations, class properties, and JSON shapes) and convert the specifications into plain-English business rules and tabular workflow logic.
     - Generate/update business specification exports under `docs/exports/[flow-name-slug]_BUSINESS_SPEC.md`.
-    - Create/update `docs/pages/ai-agents-graph.md` to map out the master business overview and flow directories.
-4. **Phase 3: README Sync.** Update the root `README.md` to act as the "Surface Layer" of the graph, detailing the Graph-First declaration and linking to `[[ai-agents-graph]]` and the main index pages.
+    - Create/update `docs/pages/tech-agents-graph.md` to map out the master business overview and flow directories.
+4. **Phase 3: README Sync.** Update the root `README.md` to act as the "Surface Layer" of the graph, detailing the Graph-First declaration and linking to `[[tech-agents-graph]]` and the main index pages.
 5. **Phase 4: Registration & Anchors.** Register all new nodes in `docs/pages/registry.md` and update triple-anchors (`AGENTS.md`, `GEMINI.md`, `CLAUDE.md`).
 """

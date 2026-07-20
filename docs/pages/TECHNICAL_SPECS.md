@@ -1,6 +1,6 @@
 - type:: [[Technical Specification]]
 - status:: [SYNC]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Core Infrastructure: Universal Agent Hub (Deep Specification)
 	- ## Entry Point Logic (Binary Execution)

@@ -13,7 +13,7 @@ The primary entry points for AI agents are the **[[AGENTS.md]]** (Universal), **
 This project utilizes a **Logseq-powered Knowledge Graph** for its documentation. 
 - **Efficiency**: Optimized for AI consumption to minimize token overhead while maximizing signal precision.
 - **Traceability**: Every technical claim is linked to an AST citation `(ref: symbol)`.
-- **Navigation**: Start at the **[[ai-agents-graph]]** node for a full architectural deep-dive.
+- **Navigation**: Start at the **[[tech-agents-graph]]** node for a full architectural deep-dive.
 
 ---
 
@@ -32,7 +32,7 @@ mcp add tech-agents -- npx -y github:SouzaEduardoAC/tech-agents serve
 ```
 
 #### B. Claude Desktop
-Add this to your configuration file (see locations in [CLAUDE.md](file:///home/ecoza/Projects/ai-agents/CLAUDE.md)):
+Add this to your configuration file (see locations in [CLAUDE.md](file:///home/ecoza/Projects/tech-agents/CLAUDE.md)):
 ```json
 {
   "mcpServers": {
@@ -152,7 +152,7 @@ We maintain a "Zero Trust" model for code and documentation integrity.
 ---
 
 ## 📂 Documentation Suite (Graph Nodes)
-- **[[ai-agents-graph]]**: The master entry point.
+- **[[tech-agents-graph]]**: The master entry point.
 - **[[TECHNICAL_SPECS]]**: Internal logic, MCP tools, and runtime specs.
 - **[[BUSINESS_FLOW]]**: Use cases and global business rules.
 - **[[Standardized Pipeline]]**: Our autonomous engineering lifecycle.

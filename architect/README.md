@@ -33,7 +33,7 @@ The Architect Agent is designed for rigorous, design-driven development. It oper
 ### 1. Agent Files
 Symlink the `architect/` directory to your global Gemini agents folder:
 ```bash
-ln -s /path/to/ai-agents/architect ~/.gemini/agents/architect
+ln -s /path/to/tech-agents/architect ~/.gemini/agents/architect
 ```
 
 ### 2. Global Commands

@@ -1,7 +1,7 @@
 - type:: [[Agent]]
 - role:: Privacy Auditor
 - status:: [ACTIVE]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Compliance (Deep Specification)
 	- ## Core Mandate

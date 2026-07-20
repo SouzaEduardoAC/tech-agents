@@ -36,7 +36,7 @@ Mode: [MODE: DISCOVERY]
     - The file MUST start with the standard Logseq properties:
       - `type:: [[PRD]]`
       - `status:: [[ACTIVE]]`
-      - `project:: [[ai-agents]]`
+      - `project:: [[tech-agents]]`
     - The PRD must use Logseq outliner format (every block bulleted with `- ` and hierarchically indented using spaces).
     - Use bidirectional links `[[Like This]]` for key concepts and requirements.
     - Include:

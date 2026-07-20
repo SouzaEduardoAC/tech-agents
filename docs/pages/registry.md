@@ -1,7 +1,7 @@
 - type:: [[Index]]
 - title:: [[Global Symbol Registry]]
 - status:: [[ACTIVE]]
-- project:: [[ai-agents]]
+- project:: [[tech-agents]]
 
 - # Project Genome
 	- This registry is the central nervous system for all feature documentation. It provides a token-efficient map for cross-agent synchronization and stakeholder reporting.

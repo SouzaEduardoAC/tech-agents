@@ -24,7 +24,7 @@ The Researcher agent operates with a clinical, objective, and intellectually hon
 ### 1. Agent Files
 Symlink the `researcher/` directory to your global Gemini agents folder:
 ```bash
-ln -s /path/to/ai-agents/researcher ~/.gemini/agents/researcher
+ln -s /path/to/tech-agents/researcher ~/.gemini/agents/researcher
 ```
 
 ### 2. Global Commands

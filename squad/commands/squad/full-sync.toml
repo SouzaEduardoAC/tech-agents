@@ -37,7 +37,7 @@ Mode: [MODE: SQUAD-DOCUMENTATION]
 
 ### Phase 4: Meta-Registry & Top-Level Files
 - Call **Forge** (`/forge:squad-docs`) to map the Project Genome/Symbol Registry and update meta-anchors (`AGENTS.md`, `GEMINI.md`, `CLAUDE.md`).
-- Call **Decoder** (`/decoder:squad-docs`) to read the generated technical documentation and translate it into business summaries on the Master Graph (e.g., `docs/pages/ai-agents-graph.md`), generate exports in `docs/exports/`, and map it back to `README.md`.
+- Call **Decoder** (`/decoder:squad-docs`) to read the generated technical documentation and translate it into business summaries on the Master Graph (e.g., `docs/pages/tech-agents-graph.md`), generate exports in `docs/exports/`, and map it back to `README.md`.
 
 ## Output:
 Once all phases are completed, summarize all files that were created or rewritten.
