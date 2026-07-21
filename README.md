@@ -69,12 +69,6 @@ You can also link the complete MCP Usage Guide to configure the client LLM with 
 npx github:SouzaEduardoAC/tech-agents link mcp .clauderules # (or .cursorrules, .windsurfrules)
 ```
 
-### 3. Legacy Slash Commands Setup (Optional)
-If you require terminal-native slash commands (e.g. `/squad:run`, `/architect:create`) inside Gemini CLI/AntiGravity, run the bootstrap installer locally:
-```bash
-npx github:SouzaEduardoAC/tech-agents bootstrap
-```
-
 ### 🔄 Keeping it Current (Automatic Updates)
 When registered via `npx`, updates are fetched dynamically on launch. To force-update the server to the latest version, run the server with the `--prefer-online` flag:
 ```bash
@@ -89,10 +83,10 @@ git pull && npm install
 
 ## 🎮 How to Call Agents (Usage per LLM Environment)
 
-Depending on your active LLM interface, calling and orchestrating the agents is standardized across three primary execution modes:
+Depending on your active LLM interface, calling and orchestrating the agents is standardized via MCP tool calls:
 
-### 1. AntiGravity CLI & Gemini CLI (Slash Commands)
-After running the `bootstrap` command, all agents register custom **slash commands** and **personas** directly in your CLI environment.
+### 1. Codex App/CLI, Gemini App/CLI & Claude Code (MCP)
+Agents are executed dynamically via MCP tools (`list_agents`, `call_agent_command`, `get_agent_prompt`, `run_agent_loop`). Simply speak to your assistant in natural language or call commands via MCP:
 *   **Format**: `/[agent]:[command] [your goal]`
 *   **Key Examples**:
     *   **Squad Orchestrator**: `/squad:run "Implement JWT authentication flow"`

@@ -12,6 +12,10 @@
 	- ## Core Infrastructure
 		- status:: [SYNC]
 		- nodes:: [[TECHNICAL_SPECS]], [[BUSINESS_FLOW]], [[code-dna]], [[resilience-policies]], [[AI Interaction Standard]], [[Decoder]], [[squad-docs]], [[Add MCP Sampling to the agent-hub MCP, allowing fallback for clients without sampling support, and release as beta first.-prd]]
+		- ## Feature: Deprecate Bootstrap in Favor of Self-Contained MCP Serve (2026-07-21)
+			- status:: [DONE]
+			- ref:: [[TECHNICAL_SPECS]], [[README]], [[GEMINI]], [[AGENTS]], `bin/tech-agents.js`
+			- summary:: Deprecated the legacy `bootstrap` command and removed heavy home-directory file-copying/symlinking logic. The MCP server (`serve` via `index.js`) is now 100% self-contained and serves personas, skills, and commands dynamically from package root. Updated all documentation to standardize single-command MCP onboarding via `mcp add npx github:SouzaEduardoAC/tech-agents serve`.
 		- ## Feature: Rename MCP Server and CLI to tech-agents (2026-07-17)
 			- status:: [DONE]
 			- ref:: [[TECHNICAL_SPECS]], [[code-dna]], [[CLAUDE]], [[README]], [[GEMINI]], [[AGENTS]]

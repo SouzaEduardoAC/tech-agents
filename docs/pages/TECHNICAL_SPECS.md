@@ -10,26 +10,10 @@
 			- Function:: Spawns the Hub server (ref: `index.js`) as a child process.
 			- Transport:: Uses `StdioServerTransport` on `index.js`. The wrapper uses `stdio: "pipe"` + explicit stream forwarding (`process.stdin → child.stdin`, `child.stdout → process.stdout`) to preserve MCP JSON-RPC framing. Using `stdio: "inherit"` is a **known anti-pattern** here — it attaches child fds to the wrapper's already-open descriptors, causing the MCP client to never reach the `StdioServerTransport`. (ref: `bin/tech-agents.js → serve`)
 			- **Direct Invocation (Preferred for MCP clients):** Configure `mcp_config.json` to point directly to `index.js`, bypassing the wrapper entirely.
-		- **Command: `bootstrap` (Environment Initialization)**: 
-			- Function:: One-time local environment setup for Gemini CLI, AntiGravity, and Claude Code.
-			- **Step 0: Gemini MCP Configuration**:
-				- Path:: `~/.gemini/settings.json` and `~/.gemini/antigravity/mcp_config.json`
-				- Logic:: Dynamically injects `filesystem`, `context7`, and `tech-agents` MCP server configurations if missing.
-				- **tech-agents MCP Entry:** Registered as `{ command: "node", args: ["<ROOT>/index.js"] }` — points directly to the MCP server, not the CLI wrapper, to ensure correct stdio handshake.
-			- **Step 1: Gemini Slash Commands**:
-				- Source:: `[agent]/commands/[agent]/*.toml`
-				- Target:: `~/.gemini/commands/[agent]/`
-				- Logic:: Performs path reconciliation, replacing `~/.gemini/agents` and relative paths with the absolute Hub root. (ref: `bin/tech-agents.js -> bootstrap`)
-			- **Step 2: AntiGravity Personas**:
-				- Source:: `[agent]/brain/persona.md`
-				- Target:: `~/.gemini/antigravity/brain/[agent].md`
-				- Logic:: Physical copy of persona files for native AntiGravity orchestration.
-			- **Step 3: Claude Code & Claude Desktop Integration (v2026 Upgrades)**:
-				- Path:: Auto-detects Claude Desktop configurations dynamically across all platforms (Windows, macOS, Linux).
-				- Logic:: Automatically writes the MCP entry for `tech-agents` to `claude_desktop_config.json` if the config directory is found.
-				- Fallback:: Always outputs the exact, copy-pasteable `mcp add` command as a fallback for Claude CLI users.
+		- **Command: `bootstrap` (Deprecated)**: 
+			- Function:: Deprecated legacy setup tool. The platform is now fully self-contained through `serve`. Running `bootstrap` emits a deprecation warning guiding users to `mcp add npx github:SouzaEduardoAC/tech-agents serve`.
 		- **Command: `link <agent> <target>`**: 
-			- Function:: Creates a hard filesystem symlink between the agent's core `persona.md` and a project-specific instruction file (e.g., `.cursorrules`).
+			- Function:: Creates a hard filesystem symlink between the agent's core `persona.md` (or MCP usage guide) and a project-specific instruction file (e.g., `.cursorrules`, `.clauderules`).
 	- ## The Orchestration Engine (The Bridge)
 		- **Logic Mixing & Prompt Optimization (AMD Core)**: 
 			- The Hub server performs a multi-stage optimized prompt assembly.

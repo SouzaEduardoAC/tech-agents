@@ -2,7 +2,7 @@
 **Stack:** Markdown, TOML, [[Gemini CLI]], Logseq Graph.
 
 ## 🧠 Gemini Integration
-This repository is optimized for **Gemini CLI**. It uses a specialized `bootstrap` command to inject custom slash commands into the Gemini environment, enabling high-performance agentic workflows.
+This repository is optimized for **Gemini CLI** and **Codex App/CLI**. It exposes a self-contained Model Context Protocol (MCP) server via `tech-agents serve` to run high-performance agentic workflows directly through MCP tool calls and MCP sampling loops.
 
 ## 🗺 Documentation Map (Logseq Graph)
 - **Master Graph:** [[tech-agents-graph]]
@@ -12,8 +12,8 @@ This repository is optimized for **Gemini CLI**. It uses a specialized `bootstra
 ## 📜 Documentation Protocol Integrity
 **CRITICAL MANDATE:** You MUST always respect and update the entire documentation protocol of all agents (such as journals, registry, and graphs) when modifying the repository, EVEN if you are not currently operating as the specific agent responsible for that domain. Code changes without corresponding protocol updates are strictly prohibited.
 
-## 🛠 Gemini Commands
-The following namespaces are registered via `/bin/tech-agents bootstrap`:
+## 🛠 Available Agent Namespaces
+The following namespaces are dynamically available via `tech-agents serve` (`list_agents`, `call_agent_command`):
 - `/squad:*`: Multi-agent pipeline orchestration and full documentation sync.
 - `/architect:*`: Systems design and auditing.
 - `/po:*`: Discovery and PRD generation.
