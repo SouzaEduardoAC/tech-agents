@@ -231,7 +231,7 @@ program
         command: "npx",
         args: [
           "-y",
-          "@souzaeduardoac/tech-agents",
+          "github:SouzaEduardoAC/tech-agents",
           "serve"
         ]
       };
@@ -239,7 +239,7 @@ program
       const needsUpdate = !existingHub ||
         existingHub.command !== "npx" ||
         !Array.isArray(existingHub.args) ||
-        existingHub.args.join(" ") !== "-y @souzaeduardoac/tech-agents serve";
+        existingHub.args.join(" ") !== "-y github:SouzaEduardoAC/tech-agents serve";
       if (needsUpdate) {
         mcpServers["tech-agents"] = correctTechAgentsEntry;
         updated = true;
@@ -351,7 +351,7 @@ program
       command: "npx",
       args: [
         "-y",
-        "@souzaeduardoac/tech-agents",
+        "github:SouzaEduardoAC/tech-agents",
         "serve"
       ]
     };
