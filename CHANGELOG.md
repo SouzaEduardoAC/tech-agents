@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.0](https://github.com/SouzaEduardoAC/tech-agents/compare/v2.1.0...v2.2.0) (2026-08-21)
+
+
+### Features
+
+* **council:** expand dialectical debate to 5 agents including resear… ([043c7f2](https://github.com/SouzaEduardoAC/tech-agents/commit/043c7f26d9d56effa9d96f59f2257edeb0c18083))
+* **council:** expand dialectical debate to 5 agents including researcher and automata ([e45a5f6](https://github.com/SouzaEduardoAC/tech-agents/commit/e45a5f68f4a74da85153a9029e49a27ebc135ad5))
+
 ## [2.1.0](https://github.com/SouzaEduardoAC/tech-agents/compare/v2.0.2...v2.1.0) (2026-07-21)
 
 
