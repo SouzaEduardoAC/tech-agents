@@ -136,7 +136,7 @@ Updates the gate status to `approved` in the branch-scoped state file. Uses `cwd
 - **Triggers:** "run a compliance audit", "check GDPR", "audit for HIPAA"
 
 ### Council (`council`)
-- **Description:** Multi-perspective debate engine (PO + Architect + Privacy Auditor)
+- **Description:** 5-perspective dialectical debate engine (PO + Researcher + Architect + Automata + Privacy Auditor)
 - **Commands:** `debate` (symmetrical design debate and synthesis)
 - **Triggers:** "debate this", "call the council", "multi-perspective review"
 
