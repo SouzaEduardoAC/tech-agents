@@ -119,8 +119,11 @@
 			| Agent | Gate Key | Phase Entry (`check_gate`) | Phase Exit (`request_approval`) |
 			|-------|----------|---------------------------|--------------------------------|
 			| Squad `run.toml` | `prd` | Phase 2 start | Phase 1 end |
-			| Squad `run.toml` | `plan` | Phase 3/4 start | Phase 2 end |
+			| Squad `run.toml` | `discovery` | Phase 2b start | Phase 2a end |
+			| Squad `run.toml` | `plan` | Phase 3/4 start | Phase 2b end |
 			| Squad `run.toml` | `compliance` | Phase 4 start | Phase 3 end |
+			| Squad `run.toml` | `execution` | Phase 5 start | Phase 4.5 end |
+			| Squad `run.toml` | `acceptance` | Phase 6 start | Phase 5 end |
 			| Architect `create.toml` | `discovery` | Phase 2 start | Phase 1 end |
 			| Architect `create.toml` | `plan` | Phase 4 start | Phase 2 end |
 			| Architect `create.toml` | `audit` | — | Phase 4 end |
@@ -133,6 +136,15 @@
 			| Researcher `investigate.toml` | `discovery` | — | Phase 1 end |
 			| Researcher `report.toml` | `discovery` | Phase 2 start | Phase 1 end |
 			| PO `discovery.toml` | `prd` | — | Step 5 end |
+			| PO `squad-validate.toml` | `acceptance` | — | Step 6 end |
+	- ## Product Acceptance Validation Protocol (v2026)
+		- **Purpose:** Enforces the V-Model feedback loop in the Squad Orchestrator pipeline. While peer review and SonarQube verify technical code correctness and test passes, the Product Owner confronts the actual implementation against the original PRD to guarantee business alignment.
+		- **Confrontation Vectors:**
+			- **Given-When-Then Mapping:** Evaluates each Gherkin acceptance criterion against actual test suites and code logic.
+			- **MoSCoW Audit:** Requires 100% compliance for all `Must Have` scope items.
+			- **Edge Case Resolution:** Inspects fallback logic against Section 7 edge cases in the PRD.
+		- **Feedback Reversal Loop:** If `REJECT` is emitted, the orchestrator reverts to Developer (Phase 4) with the remediation backlog; upon `ACCEPT`, gate `acceptance` is requested for human sign-off.
+		- (ref: `po/skills/acceptance_validation.md`, `po/templates/acceptance_report.md`, `po/commands/po/squad-validate.toml`)
 	- ## Full-Sync Deep Documentation Protocol (v2026)
 		- **Purpose:** Mandates that a project-wide documentation sync (`/squad:full-sync`) produces high-fidelity, use-case-by-use-case and component-by-component deep specifications, rather than shallow index pages.
 		- **Command Isolation:** Separate, dedicated `squad-docs` commands are created for each of the 8 participating agents (PO, Researcher, Architect, Backend, Frontend, Mobile, Forge, Decoder) to isolate full-sync documentation rules from normal development-time workflows.

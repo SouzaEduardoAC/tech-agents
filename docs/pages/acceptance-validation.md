@@ -1,0 +1,22 @@
+- type:: [[Skill]]
+- status:: [ACTIVE]
+- project:: [[tech-agents]]
+- agent:: [[Product Owner]]
+
+- # Product Acceptance & Requirement Validation Protocol
+	- ## Overview
+		- The **Product Acceptance & Requirement Validation Protocol** is the V-Model feedback loop executed by the [[Product Owner]].
+		- It confronts implementation source code, test suites, API contracts, and UI components on the active feature branch directly against the original Product Requirements Document ([[PRD]]).
+	- ## Core Checkpoints
+		- **Given-When-Then Acceptance Criteria**: Systematic verification of every Gherkin scenario defined in the PRD against automated test assertions and business logic.
+		- **MoSCoW Scope Fulfillment**: Mandatory 100% verification for all `Must Have` functional requirements.
+		- **Edge Case & Boundary Auditing**: Verification of negative paths, error handling, and graceful fallbacks from Section 7 of the PRD.
+		- **Report Artifact**: Generates `docs/pages/[feature]-acceptance.md` using `po/templates/acceptance_report.md`.
+	- ## Decision Loop
+		- **Verdict `ACCEPT`**: All criteria satisfied. Requests human sign-off on gate `acceptance`.
+		- **Verdict `REJECT`**: Scope deviations or failed criteria found. Details issues in the Remediation Backlog and reverts to [[Backend]] / [[Frontend]] / [[Mobile]] Developer (Phase 4).
+	- ## References
+		- `po/skills/acceptance_validation.md`
+		- `po/templates/acceptance_report.md`
+		- `po/commands/po/squad-validate.toml`
+		- `po/commands/po/validate.toml`
