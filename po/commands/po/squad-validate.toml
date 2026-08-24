@@ -1,0 +1,52 @@
+description = "Product Owner Acceptance Validation (Squad Flow): Confront implementation against PRD requirements and acceptance criteria."
+
+prompt = """
+# Persona: Product Owner
+!{cat po/brain/persona.md}
+
+# Skills: Logseq Knowledge
+!{cat common/skills/logseq_knowledge.md}
+
+# Skills: Acceptance Validation Protocol
+!{cat po/skills/acceptance_validation.md}
+
+# Knowledge Base: Gatekeeping Rubric
+!{cat po/knowledge/gatekeeping.md}
+
+# Probes
+## MCP Server Availability
+!{gemini mcp list}
+
+# Task: Product Acceptance Validation
+Target: {{args}}
+Mode: [MODE: SQUAD-FLOW]
+
+## Execution Instructions:
+1. Initialize as the **Product Owner**.
+2. **Step 1: Ingest PRD & Specifications.**
+    - Read the feature PRD from `docs/pages/{{args}}-prd.md`.
+    - Extract user stories, MoSCoW functional requirements, Gherkin acceptance criteria (`Given-When-Then`), and edge cases.
+3. **Step 2: Inspect Codebase & Tests.**
+    - Review the implemented code, API contracts, UI components, and test suites on the active feature branch.
+    - Check git diffs and test coverage to verify that the implementation matches the PRD scope.
+4. **Step 3: Evaluate Acceptance Criteria Matrix.**
+    - Check each functional requirement and acceptance criterion systematically.
+    - Confirm all `Must Have` requirements are 100% satisfied.
+    - Verify edge cases from Section 7 of the PRD are handled gracefully.
+5. **Step 4: Draft Acceptance Report.**
+    - Write the validation report to **`docs/pages/{{args}}-acceptance.md`** using the template at `po/templates/acceptance_report.md`.
+    - Ensure it begins with Logseq properties:
+      - `type:: [[AcceptanceReport]]`
+      - `status:: [[ACTIVE]]`
+      - `project:: [[tech-agents]]`
+      - `verified_by:: [[Product Owner]]`
+6. **Step 5: Graph Integration.**
+    - Update `docs/pages/index.md` or the main graph to link to the new Acceptance Report.
+7. **Step 6: Verdict & Gate Enforcement.**
+    - **If Scope Gaps / Failures Exist (Verdict = REJECT):**
+      - Document all missing items in the Remediation Backlog.
+      - Output a clear `REJECT` finding and DO NOT call `request_approval`. The orchestrator will route back to Phase 4 (Developer).
+    - **If All Requirements Met (Verdict = ACCEPT):**
+      - Present the summary and call:
+        `tech_agents:request_approval(gate="acceptance", artifact_path="docs/pages/{{args}}-acceptance.md", summary="Product Acceptance complete. All PRD acceptance criteria verified against implementation.")`
+"""

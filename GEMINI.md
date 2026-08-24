@@ -49,6 +49,7 @@ The following namespaces are dynamically available via `tech-agents serve` (`lis
 - DONE: Implement MCP usage guide skill and serve it dynamically via list_agents tool. (ref: `common/skills/mcp_usage_guide.md`, `index.js`, `bin/tech-agents.js`, `[[TECHNICAL_SPECS]]`)
 - DONE: Implement server-side managed execution loop via MCP Sampling (`run_agent_loop` tool), supporting local XML action execution (filesystem, terminal commands) and fallback logic. (ref: `index.js`, `test/mcp-sampling-test.js`, `[[TECHNICAL_SPECS]]`)
 - DONE: Align package name to `@souzaeduardoac/tech-agents` and update global MCP configurations to use `npx serve`. (ref: `package.json`, `bin/tech-agents.js`)
+- DONE: Implement Phase 5 Product Acceptance & Requirement Validation in Squad pipeline and PO agent (`/po:validate`, `/po:squad-validate`, `acceptance_validation.md`, `acceptance` gate). (ref: `po/commands/po/squad-validate.toml`, `squad/commands/squad/run.toml`, `[[TECHNICAL_SPECS]]`)
 - TODO: Implement automated AST-sync for [[Mobile]] widget trees.
 
 #AMD #GeminiCLI #AgenticFramework #Logseq

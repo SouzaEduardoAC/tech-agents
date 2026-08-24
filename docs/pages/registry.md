@@ -82,7 +82,11 @@
 			- summary:: Upgraded the Squad full-sync protocol to produce PRD-level detailed, template-compliant documentation (for business flows, API endpoints, data models) in Logseq vectorial format. Introduced a new isolated command `squad-docs` for all 8 agents (PO, Researcher, Architect, Backend, Frontend, Mobile, Forge, Decoder) and a shared skill `common/skills/squad_docs.md` to map out the manifest-first scanning pattern and per-entity iteration rules, leaving regular development-time documentation workflows untouched. (ref: `common/skills/squad_docs.md`, `squad/commands/squad/full-sync.toml`, `po/commands/po/squad-docs.toml`, `architect/commands/architect/squad-docs.toml`, `backend/commands/backend/squad-docs.toml`, `frontend/commands/frontend/squad-docs.toml`, `mobile/commands/mobile/squad-docs.toml`, `researcher/commands/researcher/squad-docs.toml`, `forge/commands/forge/squad-docs.toml`, `decoder/commands/decoder/squad-docs.toml`)
 	- ## Product Elicitation & PO Framework
 		- status:: [ACTIVE]
-		- nodes:: [[Product Owner]], [[prioritization-framework]], [[product-interview]]
+		- nodes:: [[Product Owner]], [[prioritization-framework]], [[product-interview]], [[acceptance-validation]]
+		- ## Feature: Product Acceptance & Requirement Validation Phase (2026-08-24)
+			- status:: [DONE]
+			- ref:: [[Product Owner]], [[Squad Orchestrator]], [[TECHNICAL_SPECS]], `po/skills/acceptance_validation.md`, `po/templates/acceptance_report.md`, `po/commands/po/squad-validate.toml`, `po/commands/po/validate.toml`
+			- summary:: Integrated Phase 5 Product Acceptance & Requirement Validation into the Squad Orchestrator pipeline and created `/po:validate` and `/po:squad-validate` commands. The Product Owner now confronts committed feature code and test suites directly against the original PRD acceptance criteria (Given-When-Then), MoSCoW priorities, and edge cases, producing `docs/pages/[feature]-acceptance.md` and gating progression via the `acceptance` approval gate.
 	- ## Meta-Orchestration & Self-Evolution
 		- status:: [ACTIVE]
 		- nodes:: [[Forge]], [[agent-standards]], [[forging-protocol]], [[auditing-protocol]], [[Quicky]]

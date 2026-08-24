@@ -12,6 +12,7 @@
 		- **PRD Transformation**: Convert vague business ideas into high-fidelity Product Requirements Documents.
 		- **Sanity Check & Pushback**: Identifying logical flaws, over-complexity, or lack of ROI via the **Gatekeeping Rubric**.
 		- **Blind Spot Detection**: Mapping ignored variables and downstream consequences.
+		- **Product Acceptance & Requirement Validation**: Confronting code, test suites, and API contracts against PRD acceptance criteria and user stories.
 	- ## Gatekeeping Standards (Note vs. Halt)
 		- **Strategic Note**: For suboptimal patterns or design deviations; proceeds with velocity.
 		- **Halt Condition**: For logical incoherence, missing critical variables, or security risks; stops implementation.
@@ -26,6 +27,15 @@
 			- Phase 3:: Technical & Integrations Constraints (identify data targets, API dependencies).
 			- Phase 4:: Financials & RICE Prioritization (obtain Reach, Impact, Effort inputs).
 			- Phase 5:: Success Metrics & KPIs.
+	- ## Product Acceptance & Requirement Validation [NEW]
+		- **Commands**: `/po:validate`, `po:squad-validate`
+		- **Protocol**: Standardized **Product Acceptance Testing (PAT)** Protocol (ref: `po/skills/acceptance_validation.md`).
+		- **Outputs**: Generates `docs/pages/[feature]-acceptance.md` using `po/templates/acceptance_report.md`.
+		- **Validation Checks**:
+			- Acceptance Criteria Matrix mapping all Given-When-Then scenarios to test coverage.
+			- MoSCoW Scope Fulfillment (100% verification of Must-Have requirements).
+			- Edge Case and boundary resolution auditing.
+			- Feedback Loop: Emits `REJECT` (reverts to Dev Phase 4) or `ACCEPT` (requests Gate `acceptance`).
 	- ## Prioritization & Business ROI Framework [NEW]
 		- **Standards**: Math-based prioritization and financial validation (ref: `po/knowledge/prioritization_framework.md`).
 		- **Heuristics**:
@@ -46,10 +56,20 @@
 	- ## Commands
 		- **`po:discovery`**: Transform ideas into a validated Logseq PRD. (ref: `po/commands/po/discovery.toml`)
 		- **`po:interview`**: Interactive 5-phase stakeholder elicitation loop. (ref: `po/commands/po/interview.toml`)
+		- **`po:validate`**: Standalone product acceptance verification against PRD. (ref: `po/commands/po/validate.toml`)
+		- **`po:squad-validate`**: Squad Phase 5 acceptance validation and gate management. (ref: `po/commands/po/squad-validate.toml`)
 		- **`po:squad-docs`**: Deeply document every discovered business flow, use case, and journey in the active workspace. (ref: `po/commands/po/squad-docs.toml`)
 		- **`po:analyze`**: Read-only behavioral simulation. Traces data scenarios against business rules and acceptance criteria. Opportunistically loads a PRD for context if one exists. No artifacts, no implementation. (ref: `po/commands/po/analyze.toml`, `common/skills/investigation.md`)
 	- ## Success Criteria (Definition of PRD)
 		- Every functional requirement MUST have nested Gherkin-style **Given-When-Then** Acceptance Criteria.
-		- Every requirement carries a explicit **MoSCoW** priority property.
+		- Every requirement carries an explicit **MoSCoW** priority property.
 		- User Stories follow: `As a [Role], I want [Action] so that [Value]`.
 		- (ref: `common/skills/logseq_knowledge.md -> Phase 1`)
+	- ## Dialectical Critique (Architecture Validation)
+		- **Yellow Hat (Resilience)**:
+			- End-to-end V-Model loop guarantees that passed unit tests are confronted directly against real business acceptance criteria before pipeline sign-off.
+			- Dedicated `squad-validate` command operates on frozen branch diffs, preventing uncommitted or stale state evaluation.
+		- **Black Hat (Technical Debt & Risks)**:
+			- If PRD acceptance criteria were underspecified in Phase 1, Phase 5 validation will require subjective reasoning; mitigated by Phase 1 mandatory Gherkin format enforcement.
+		- **Blind Spots**:
+			- Large monolith features may produce voluminous diffs; addressed by chunked inspection and file-scoped criteria mapping in `acceptance_validation.md`.

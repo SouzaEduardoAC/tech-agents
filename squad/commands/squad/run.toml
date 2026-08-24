@@ -22,7 +22,7 @@ Mode: [MODE: SQUAD-ORCHESTRATOR]
 ```
 tech_agents:pipeline_start(
   goal="{{args}}",
-  gates=["prd", "discovery", "plan", "compliance", "execution"]
+  gates=["prd", "discovery", "plan", "compliance", "execution", "acceptance"]
 )
 ```
 This registers the session and locks all gates. You MUST do this before any other pipeline action.
@@ -153,7 +153,53 @@ If the gate is not approved, STOP IMMEDIATELY.
      )
      ```
 
-### Phase 5 — Synthesis & Export (Optional)
+---
+⚠️ MANDATORY HUMAN CHECKPOINT — PIPELINE PAUSED AFTER PHASE 4.5 (Execution & Peer Review)
+The MCP tool `request_approval` has set gate 'execution' to PENDING.
+Present the Implementation and Peer Review summary to the user and WAIT for their explicit written approval before calling the Product Owner for acceptance validation.
+Do NOT auto-approve. Do NOT proceed autonomously. Do NOT call the PO or Decoder.
+The pipeline is BLOCKED until the human runs `/squad:approve execution`.
+---
+
+### Phase 5 — Product Acceptance & Requirement Validation (PO)
+**FIRST**, verify approval exists by calling:
+```
+tech_agents:check_gate(gate="execution")
+```
+If the gate is not approved, STOP IMMEDIATELY and inform the user that `/squad:approve execution` must be run first.
+
+(Proceed ONLY after check_gate returns approved:true for 'execution'.)
+- Call `tech_agents:call_agent_command(agent="po", command="squad-validate", args="{{args}}")`.
+- Adopt the Product Owner persona. The PO will:
+  1. Read the feature PRD (`docs/pages/{{args}}-prd.md`), specifically user stories, MoSCoW priorities, and Gherkin acceptance criteria (`Given-When-Then`).
+  2. Inspect the committed implementation on the feature branch, test suites, and API/UI contracts.
+  3. Build the Acceptance Criteria Verification Matrix and audit MoSCoW scope fulfillment.
+  4. Write the Product Acceptance Report to `docs/pages/{{args}}-acceptance.md`.
+  5. **Audit Loop & Reversal:** If any `Must Have` acceptance criteria fail or scope gaps are found (verdict `REJECT`), the orchestrator **MUST revert** to the developer agent (Phase 4) with the remediation backlog. The developer fixes the gaps, and the review and validation phases repeat.
+  6. **Acceptance Sign-off:** Once the verdict is `ACCEPT`, the PO calls:
+     ```
+     tech_agents:request_approval(
+       gate="acceptance",
+       artifact_path="docs/pages/{{args}}-acceptance.md",
+       summary="Product Acceptance verification completed successfully. All PRD user stories and acceptance criteria fulfilled."
+     )
+     ```
+
+---
+⚠️ MANDATORY HUMAN CHECKPOINT — PIPELINE PAUSED AFTER PHASE 5 (Product Acceptance)
+The MCP tool `request_approval` has set gate 'acceptance' to PENDING.
+Present the Product Acceptance Report (`docs/pages/{{args}}-acceptance.md`) to the user and WAIT for their explicit written approval before concluding the pipeline or calling Decoder.
+Do NOT auto-approve. Do NOT proceed autonomously.
+The pipeline is BLOCKED until the human runs `/squad:approve acceptance`.
+---
+
+### Phase 6 — Synthesis & Export (Optional)
+**FIRST**, verify approval exists by calling:
+```
+tech_agents:check_gate(gate="acceptance")
+```
+If the gate is not approved, STOP IMMEDIATELY.
+
 - If requested by the human or stakeholders, call `tech_agents:call_agent_command(agent="decoder", command="export", args="{{args}}")` for stakeholder reporting.
 
 ---
