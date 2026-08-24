@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.3.0](https://github.com/SouzaEduardoAC/tech-agents/compare/v2.2.0...v2.3.0) (2026-08-24)
+
+
+### Features
+
+* **squad,po:** implement product acceptance and requirement validati… ([76bce6d](https://github.com/SouzaEduardoAC/tech-agents/commit/76bce6d4a13b7454c62d2b456c0f54f0e431e3ad))
+* **squad,po:** implement product acceptance and requirement validation phase ([df2a35f](https://github.com/SouzaEduardoAC/tech-agents/commit/df2a35fcb8855856bc7de6f02950ad6120a9f5eb))
+
 ## [2.2.0](https://github.com/SouzaEduardoAC/tech-agents/compare/v2.1.0...v2.2.0) (2026-08-21)
 
 
