@@ -159,5 +159,9 @@
 			- status:: [DONE]
 			- ref:: [[Council]], [[Researcher]], [[Automata]], [[Product Owner]], [[Architect]], [[Compliance]], [[Forge]], [[TECHNICAL_SPECS]]
 			- summary:: Upgraded the Council agent using the Forge meta-architect protocol to expand the dialectical debate simulation from 3 to 5 operational perspectives: Product Owner (ENTP), Strategic Researcher (INTJ-A), Systems Architect (INTJ), Automata Workflow Engineer (INTP), and Privacy Auditor (ISTJ). Upgraded the debate protocol to a 7-phase orchestration loop, enriched the output template (`debate_report.md`) with workflow automation topologies, empirical sanity checks, and an expanded 5-pillar Technical Matrix. (ref: `council/brain/persona.md`, `council/skills/debate_protocol.md`, `council/templates/debate_report.md`, `council/commands/council/debate.toml`, `council/README.md`, `docs/pages/Council.md`)
+		- ## Feature: V3 Hybrid Architecture Specification (2026-09-24)
+			- status:: [IN_PROGRESS]
+			- ref:: [[v3-architecture-spec]], `V3_ARCHITECTURE_SPEC.md`
+			- summary:: Designed and specified the V3 Hybrid Architecture transitioning from v2 prompt-compiler / persona cosplay to an Agentic Engineering Harness based on four orthogonal primitives: Playbooks (DAG workflows), Cognitive Lenses (2-3 sentence domain stances), Toolboxes (scoped capability sets), and Checks & Gates (deterministic local test/lint exit-code execution and machine-enforced approval gates). Detailed file disposition matrix, mechanics, and transition plan established.
 
 
