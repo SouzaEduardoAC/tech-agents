@@ -1,0 +1,15 @@
+id: consultation
+name: Strategic Consultation & Debate Pipeline
+description: Non-coding exploratory pipeline for architecture brainstorming, requirements discovery, and dialectic tension synthesis.
+default_gates: []
+
+steps:
+  - id: dialectic_debate
+    name: Multi-Perspective Trade-off Evaluation
+    lens: lenses/council.md
+    toolbox:
+      - fs_read
+      - search_web
+    standards:
+      - knowledge/testing_standard.md
+    gate: null

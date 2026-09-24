@@ -1,0 +1,32 @@
+id: security_audit
+name: Security & Regulatory Compliance Audit Pipeline
+description: Comprehensive security and compliance auditing workflow combining automated static vulnerability scanning with threat modeling.
+default_gates:
+  - audit_approval
+
+steps:
+  - id: automated_scan
+    name: Static Vulnerability & Dependency Scan
+    lens: lenses/compliance.md
+    toolbox:
+      - fs_read
+      - verification
+    hard_checks:
+      - cmd: npm audit --audit-level=high || true
+    gate: null
+
+  - id: threat_modeling
+    name: Threat Modeling & Regulatory Assessment
+    lens: lenses/compliance.md
+    toolbox:
+      - fs_read
+      - fs_write
+    standards:
+      - knowledge/gdpr.md
+      - knowledge/hipaa.md
+      - knowledge/lgpd.md
+      - knowledge/auth_standard.md
+    output_artifact: docs/pages/{{args}}-security-audit.md
+    soft_checks:
+      - checks/schemas/audit_schema.json
+    gate: audit_approval

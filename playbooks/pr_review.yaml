@@ -1,0 +1,27 @@
+id: pr_review
+name: Pull Request Peer Review Pipeline
+description: Multi-perspective PR review pipeline analyzing diffs against technology stack guidelines, testing standards, and git commit conventions.
+default_gates:
+  - review_signoff
+
+steps:
+  - id: diff_inspection
+    name: Diff Acquisition & Stack Mapping
+    lens: lenses/architect.md
+    toolbox:
+      - git
+      - fs_read
+    gate: null
+
+  - id: peer_review
+    name: Implementation & Security Review
+    lens: lenses/backend.md
+    toolbox:
+      - fs_read
+      - verification
+    standards:
+      - knowledge/testing_standard.md
+      - knowledge/git_standard.md
+      - knowledge/auth_standard.md
+    output_artifact: docs/pages/pr-review-{{args}}.md
+    gate: review_signoff

@@ -1,0 +1,44 @@
+id: bug_fix
+name: Rapid Bug Fix & Regression Avoidance Pipeline
+description: Targeted minimal-diff bug fix workflow with mandatory reproduction and automated regression test verification.
+default_gates:
+  - fix_verification
+
+steps:
+  - id: analyze_and_reproduce
+    name: Problem Analysis & Test Reproduction
+    lens: lenses/qa.md
+    toolbox:
+      - fs_read
+      - verification
+    standards:
+      - knowledge/testing_standard.md
+    gate: null
+
+  - id: apply_patch
+    name: Surgical Minimal-Diff Patch
+    lens: lenses/quicky.md
+    toolbox:
+      - fs_read
+      - fs_write
+      - verification
+      - git
+    standards:
+      - knowledge/git_standard.md
+      - knowledge/testing_standard.md
+    hard_checks:
+      - auto_detect: true
+        fallback: npm test
+    gate: fix_verification
+
+  - id: commit_and_close
+    name: Commit & Status Update
+    lens: lenses/quicky.md
+    toolbox:
+      - git
+      - fs_read
+    standards:
+      - knowledge/git_standard.md
+    hard_checks:
+      - cmd: git status --porcelain
+    gate: null

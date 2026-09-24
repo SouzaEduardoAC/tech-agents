@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AcceptanceValidationSchema",
+  "type": "object",
+  "required": [
+    "feature_name",
+    "evaluated_scenarios",
+    "moscow_compliance",
+    "verdict"
+  ],
+  "properties": {
+    "feature_name": { "type": "string" },
+    "evaluated_scenarios": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["scenario", "criteria_met", "evidence"],
+        "properties": {
+          "scenario": { "type": "string" },
+          "criteria_met": { "type": "boolean" },
+          "evidence": { "type": "string" }
+        }
+      }
+    },
+    "moscow_compliance": {
+      "type": "object",
+      "required": ["must_have_percent", "should_have_percent"],
+      "properties": {
+        "must_have_percent": { "type": "number", "minimum": 0, "maximum": 100 },
+        "should_have_percent": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["ACCEPT", "REJECT"]
+    }
+  }
+}

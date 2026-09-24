@@ -1,0 +1,117 @@
+id: feature_dev
+name: Full Cycle Feature Development Pipeline
+description: End-to-end SDLC pipeline from product discovery, architecture design, and compliance audit to implementation, acceptance validation, and pull request.
+default_gates:
+  - prd
+  - discovery
+  - plan
+  - compliance
+  - execution
+  - acceptance
+
+steps:
+  - id: discovery
+    name: Product Elicitation & Requirements (PO)
+    lens: lenses/po.md
+    toolbox:
+      - fs_read
+      - search_web
+      - fs_write
+    standards:
+      - knowledge/testing_standard.md
+    output_artifact: docs/pages/{{args}}-prd.md
+    soft_checks:
+      - checks/schemas/prd_schema.json
+    gate: prd
+
+  - id: analysis
+    name: Technical Analysis & Feasibility (Architect)
+    lens: lenses/architect.md
+    toolbox:
+      - fs_read
+      - analysis
+      - fs_write
+    input_artifacts:
+      - docs/pages/{{args}}-prd.md
+    output_artifact: docs/pages/{{args}}-analysis.md
+    gate: discovery
+
+  - id: architecture
+    name: Architecture & System Design (Architect)
+    lens: lenses/architect.md
+    toolbox:
+      - fs_read
+      - analysis
+      - fs_write
+    standards:
+      - knowledge/auth_standard.md
+    input_artifacts:
+      - docs/pages/{{args}}-prd.md
+      - docs/pages/{{args}}-analysis.md
+    output_artifact: docs/pages/{{args}}-architecture.md
+    soft_checks:
+      - checks/schemas/adr_schema.json
+    gate: plan
+
+  - id: compliance
+    name: Security & Regulatory Audit (Compliance)
+    lens: lenses/compliance.md
+    toolbox:
+      - fs_read
+      - verification
+      - fs_write
+    standards:
+      - knowledge/gdpr.md
+      - knowledge/hipaa.md
+      - knowledge/auth_standard.md
+    input_artifacts:
+      - docs/pages/{{args}}-architecture.md
+    output_artifact: docs/pages/{{args}}-audit.md
+    soft_checks:
+      - checks/schemas/audit_schema.json
+    gate: compliance
+
+  - id: implementation
+    name: Code Implementation & Verification (Developer)
+    lens: lenses/backend.md
+    toolbox:
+      - fs_read
+      - fs_write
+      - verification
+      - git
+    standards:
+      - knowledge/testing_standard.md
+      - knowledge/git_standard.md
+    input_artifacts:
+      - docs/pages/{{args}}-prd.md
+      - docs/pages/{{args}}-architecture.md
+    hard_checks:
+      - auto_detect: true
+        fallback: npm test
+    gate: execution
+
+  - id: acceptance
+    name: Product Acceptance & Requirement Validation (PO)
+    lens: lenses/po.md
+    toolbox:
+      - fs_read
+      - verification
+      - fs_write
+    input_artifacts:
+      - docs/pages/{{args}}-prd.md
+    output_artifact: docs/pages/{{args}}-acceptance.md
+    soft_checks:
+      - checks/schemas/acceptance_schema.json
+    gate: acceptance
+
+  - id: pull_request
+    name: Pull Request Finalization (Tech Lead)
+    lens: lenses/architect.md
+    toolbox:
+      - git
+      - fs_read
+    standards:
+      - knowledge/git_standard.md
+    hard_checks:
+      - cmd: git status --porcelain
+    gate: null

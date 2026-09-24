@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PRDSchema",
+  "type": "object",
+  "required": [
+    "feature_name",
+    "problem_statement",
+    "user_stories",
+    "acceptance_criteria",
+    "moscow_prioritization",
+    "edge_cases"
+  ],
+  "properties": {
+    "feature_name": { "type": "string", "minLength": 3 },
+    "problem_statement": { "type": "string", "minLength": 20 },
+    "user_stories": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["scenario", "given", "when", "then"],
+        "properties": {
+          "scenario": { "type": "string" },
+          "given": { "type": "string" },
+          "when": { "type": "string" },
+          "then": { "type": "string" }
+        }
+      }
+    },
+    "moscow_prioritization": {
+      "type": "object",
+      "required": ["must_have", "should_have"],
+      "properties": {
+        "must_have": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "should_have": { "type": "array", "items": { "type": "string" } },
+        "could_have": { "type": "array", "items": { "type": "string" } },
+        "wont_have": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "edge_cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    }
+  }
+}
