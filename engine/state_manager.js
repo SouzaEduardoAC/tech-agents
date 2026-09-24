@@ -101,9 +101,9 @@ export async function getComplianceMandate(projectRoot) {
 /**
  * Initialize a new pipeline session with locked gates.
  */
-export async function initPipelineSession({ goal, gates, cwd, playbookId = null }) {
-  if (!goal || !Array.isArray(gates) || gates.length === 0) {
-    throw new Error("initPipelineSession requires 'goal' (string) and 'gates' (non-empty array of strings).");
+export async function initPipelineSession({ goal, gates = [], cwd, playbookId = null }) {
+  if (!goal || !Array.isArray(gates)) {
+    throw new Error("initPipelineSession requires 'goal' (string) and 'gates' (array).");
   }
 
   const hash = crypto.createHash("sha256").update(goal).digest("hex").slice(0, 8);

@@ -26,6 +26,15 @@ import {
   compileLegacyCommandPrompt,
   compileStepPrompt,
 } from "./engine/prompt_compiler.js";
+import {
+  listPlaybooks,
+  loadPlaybook,
+  startPlaybook,
+  getActiveStep,
+  runActiveStepChecks,
+  advanceStep,
+  getPlaybookStatus,
+} from "./engine/playbook_runner.js";
 
 const pkg = fs.readJsonSync(path.join(AGENTS_ROOT, "package.json"));
 
@@ -172,6 +181,64 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             cwd: { type: "string", description: "Optional. The current working directory of the active project. Enforces project-level isolation when running under a global MCP daemon." },
           },
           required: ["gate"],
+        },
+      },
+      {
+        name: "playbook_list",
+        description: "List all available SDLC playbooks (e.g. feature_dev, bug_fix, security_audit, pr_review, consultation, full_sync).",
+        inputSchema: { type: "object", properties: {} },
+      },
+      {
+        name: "playbook_start",
+        description: "Start a structured, state-machine driven SDLC playbook. Initializes session, locks approval gates, and sets active step.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            playbook: { type: "string", description: "The playbook identifier (e.g. feature_dev, bug_fix, security_audit, pr_review, consultation, full_sync)." },
+            goal: { type: "string", description: "The high-level goal or task to execute." },
+            cwd: { type: "string", description: "Optional workspace root directory." },
+          },
+          required: ["playbook", "goal"],
+        },
+      },
+      {
+        name: "playbook_step",
+        description: "Get the active step context, compiled prompt, cognitive lens, and scoped toolbox permissions for the current playbook session.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            cwd: { type: "string", description: "Optional workspace root directory." },
+          },
+        },
+      },
+      {
+        name: "playbook_run_checks",
+        description: "Execute the configured hard checks (test suites, linters, static scanners) locally for the active playbook step.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            cwd: { type: "string", description: "Optional workspace root directory." },
+          },
+        },
+      },
+      {
+        name: "playbook_advance",
+        description: "Advance to the next playbook step. Strictly enforces that configured hard checks have passed and human gates are approved.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            cwd: { type: "string", description: "Optional workspace root directory." },
+          },
+        },
+      },
+      {
+        name: "playbook_status",
+        description: "Get the current status, active step, completed history, and gate states for the active playbook session.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            cwd: { type: "string", description: "Optional workspace root directory." },
+          },
         },
       },
     ],
@@ -609,6 +676,96 @@ ${knowledge}
         content: [{
           type: "text",
           text: `✅ Gate '${gate}' approved at ${state.gates[gate].approved_at}. The pipeline is now unblocked. The agent may proceed to the next phase.`,
+        }],
+      };
+    }
+
+    if (name === "playbook_list") {
+      const playbooks = await listPlaybooks();
+      return {
+        content: [{
+          type: "text",
+          text: JSON.stringify(playbooks, null, 2),
+        }],
+      };
+    }
+
+    if (name === "playbook_start") {
+      const { playbook, goal, cwd } = args;
+      if (!playbook || !goal) {
+        throw new Error("playbook_start requires 'playbook' and 'goal'.");
+      }
+      const result = await startPlaybook({ playbookId: playbook, goal, cwd });
+      return {
+        content: [{
+          type: "text",
+          text: [
+            `✅ Playbook '${result.playbook_name || result.playbook_id}' started.`,
+            `Session ID: ${result.session_id}`,
+            `Goal: ${goal}`,
+            `Total steps: ${result.total_steps}`,
+            `Active step: 1/${result.total_steps} (${result.active_step?.id || "none"}) - ${result.active_step?.name || ""}`,
+            `State file: ${result.statePath}`,
+            ``,
+            `Call 'playbook_step' to inspect active instructions, lens, and tools.`,
+          ].join("\n"),
+        }],
+      };
+    }
+
+    if (name === "playbook_step") {
+      const { cwd } = args || {};
+      const stepInfo = await getActiveStep(cwd);
+      if (stepInfo.completed) {
+        return {
+          content: [{
+            type: "text",
+            text: `🎉 Playbook completed all steps. Session ID: ${stepInfo.session_id}`,
+          }],
+        };
+      }
+      return {
+        content: [{
+          type: "text",
+          text: stepInfo.compiledPrompt,
+        }],
+      };
+    }
+
+    if (name === "playbook_run_checks") {
+      const { cwd } = args || {};
+      const checkResults = await runActiveStepChecks(cwd);
+      return {
+        content: [{
+          type: "text",
+          text: JSON.stringify(checkResults, null, 2),
+        }],
+      };
+    }
+
+    if (name === "playbook_advance") {
+      const { cwd } = args || {};
+      const advanceResult = await advanceStep(cwd);
+      return {
+        content: [{
+          type: "text",
+          text: advanceResult.completed
+            ? `🎉 Playbook completed successfully!`
+            : [
+                `✅ Advanced to step ${advanceResult.step_index + 1}/${advanceResult.total_steps}: ${advanceResult.active_step?.id} (${advanceResult.active_step?.name})`,
+                `Call 'playbook_step' to retrieve active instructions.`,
+              ].join("\n"),
+        }],
+      };
+    }
+
+    if (name === "playbook_status") {
+      const { cwd } = args || {};
+      const status = await getPlaybookStatus(cwd);
+      return {
+        content: [{
+          type: "text",
+          text: JSON.stringify(status, null, 2),
         }],
       };
     }
