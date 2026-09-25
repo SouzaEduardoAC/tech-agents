@@ -1,5 +1,8 @@
 id: deep_research
 name: Deep Technology Research & Synthesis Pipeline
+category: Research
+role: Researcher
+when_to_use: Conduct deep empirical research, comparative technology benchmarking, or vendor/tooling trade-off evaluation with primary citations
 description: Empirical research pipeline covering problem framing, comparative benchmarking, architectural trade-off evaluation, and executive synthesis.
 default_gates:
   - scope

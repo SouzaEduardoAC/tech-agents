@@ -1,5 +1,8 @@
 id: pr_review
 name: Pull Request Peer Review Pipeline
+category: Quality
+role: Reviewer
+when_to_use: Conduct a thorough git diff code review for architectural patterns, test coverage, and regression risks before merging a PR
 description: Multi-perspective PR review pipeline analyzing diffs against technology stack guidelines, testing standards, and git commit conventions.
 default_gates:
   - review_signoff

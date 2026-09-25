@@ -1,5 +1,8 @@
 id: component_scaffold
 name: Rapid Component & Module Scaffolding
+category: Development
+role: Developer
+when_to_use: Quickly build a single isolated endpoint, service, or UI component with automated test verification without running a full 7-step SDLC
 description: Fast-path engineering pipeline for implementing a single isolated module, API endpoint, or UI component directly with automated test verification.
 default_gates:
   - execution

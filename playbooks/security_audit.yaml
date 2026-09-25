@@ -1,5 +1,8 @@
 id: security_audit
 name: Security & Regulatory Compliance Audit Pipeline
+category: Security
+role: Compliance Auditor
+when_to_use: Perform a regulatory compliance audit (GDPR, LGPD, HIPAA, SOC2) and dependency vulnerability scan across the codebase
 description: Comprehensive security and compliance auditing workflow combining automated static vulnerability scanning with threat modeling.
 default_gates:
   - audit_approval

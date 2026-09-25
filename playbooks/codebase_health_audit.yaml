@@ -1,5 +1,8 @@
 id: codebase_health_audit
 name: Codebase Health & Technical Debt Audit Pipeline
+category: Architecture
+role: Tech Lead
+when_to_use: Audit whole-codebase technical debt, execute local test/linter runners, evaluate security boundaries, and produce a prioritized remediation plan
 description: Multi-layer diagnostic pipeline running local static analysis, test suites, security boundary scans, and dependency auditing to produce a prioritized remediation report.
 default_gates:
   - health_report

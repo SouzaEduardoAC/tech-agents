@@ -155,6 +155,65 @@ git pull && npm install
 
 ---
 
+## 📖 How to Use: Playbook Selection & Workflow Guide
+
+### Interaction Modes
+
+You can run `@souzaeduardoac/tech-agents` via two primary interaction models:
+
+1. **Deterministic State Machine (Recommended for Agents & MCP Clients)**:
+   Your client (AntiGravity, Gemini CLI, Claude Code, Codex) calls `playbook_start` with the selected playbook ID and goal. The workflow progresses step-by-step through `playbook_step`, automatically runs local tests via `playbook_run_checks`, and advances via `playbook_advance` when hard checks pass and human gates are approved.
+2. **Natural Language Prompting (Conversational)**:
+   Directly prompt the assistant in your chat UI:
+   * *"Run the `product_discovery` playbook for 'SSO login with Okta'"*
+   * *"Run the `technical_refinement` playbook on this Azure Boards backlog card"*
+   * *"Run `bug_fix` on the token expiration timeout issue"*
+
+---
+
+### Which Playbook to Call? (The Decision Matrix)
+
+#### A. Decision Flowchart
+
+```
+User Prompt / Goal Ingestion
+│
+├── 📋 Product Management & Requirements (No code)
+│   ├── Interactive interview to write a PRD for Jira/Azure Boards? ──> product_discovery
+│   └── Translate complex tech/API specs for business executives?   ──> business_synthesis
+│
+├── 🏛️ Architecture & Refinement Meetings
+│   ├── Confronting a backlog card with the codebase for task sizing?──> technical_refinement
+│   ├── Symmetrical debate over competing architecture options?     ──> council_debate
+│   ├── Auditing code quality, test suites, and technical debt?     ──> codebase_health_audit
+│   ├── Deep empirical research into a library or vendor trade-off? ──> deep_research
+│   └── Single-topic architectural consultation or advisory?        ──> consultation
+│
+├── 💻 Development & Engineering
+│   ├── Scaffolding a single isolated module, endpoint, or UI?      ──> component_scaffold
+│   ├── Reproducing and fixing a bug with automated test checks?    ──> bug_fix
+│   ├── Reviewing a Pull Request or git diff for quality/security?  ──> pr_review
+│   └── Designing an automation workflow (webhooks, n8n, DAGs)?     ──> workflow_dev
+│
+└── 🚀 Full-Cycle & Documentation
+    ├── End-to-end SDLC from PRD to production-ready Pull Request?  ──> feature_dev
+    └── Synchronizing Logseq knowledge graph and documentation?     ──> full_sync
+```
+
+#### B. Sprint Rituals & Triggers
+
+| Sprint Ritual / Trigger | Recommended Playbook | Execution Behavior |
+|---|---|---|
+| **Backlog Grooming** | `product_discovery` | PM is grilled by the PO lens (5-phase interview); outputs schema-compliant PRD ready for Azure Boards/Jira. |
+| **Technical Refinement** | `technical_refinement` | Tech Lead confronts PRD with existing code; inspects models/APIs and outputs an implementation plan & task breakdown. |
+| **Architectural Fork** | `council_debate` | Multi-perspective debate: Architect (Thesis) vs Security (Antithesis) $\to$ PO synthesizes balanced ADR. |
+| **Sprint Sprinting (Feature)** | `component_scaffold` or `feature_dev` | Dev implements either an isolated component (`component_scaffold`) or full 7-step pipeline (`feature_dev`). |
+| **Defect Triage** | `bug_fix` | Reproduces bug with a failing test, applies minimal patch, verifies tests pass, commits clean. |
+| **PR Review / CI** | `pr_review` | Inspects git diff, verifies test coverage, flags regressions or anti-patterns. |
+| **Tech Debt Sprint** | `codebase_health_audit` | Scans dependencies, runs all linters, evaluates security boundaries, outputs prioritized remediation plan. |
+
+---
+
 ## 🎮 How to Call Agents (Usage per LLM Environment)
 
 ### Native V3 Playbook MCP Tools

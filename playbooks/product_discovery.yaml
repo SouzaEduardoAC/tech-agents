@@ -1,5 +1,8 @@
 id: product_discovery
 name: Product Discovery & PRD Formulation
+category: Requirements
+role: Product Manager
+when_to_use: Brainstorm, interview, clarify requirements & create a validated PRD for Azure Boards/Jira/Linear without code generation
 description: Interactive requirements elicitation and rigorous PRD formulation for Product Managers without code generation. Prepares validated user stories and acceptance criteria for backlog tracking (Azure Boards, Jira, Linear).
 default_gates:
   - prd

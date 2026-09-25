@@ -33,6 +33,9 @@ export async function listPlaybooks() {
         playbooks.push({
           id: data.id,
           name: data.name || data.id,
+          category: data.category || "General",
+          role: data.role || "Any",
+          when_to_use: data.when_to_use || data.description || "",
           description: data.description || "",
           stepCount: Array.isArray(data.steps) ? data.steps.length : 0,
           gates: data.default_gates || [],

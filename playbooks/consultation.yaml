@@ -1,5 +1,8 @@
 id: consultation
 name: Strategic Consultation & Debate Pipeline
+category: Advisory
+role: Advisor
+when_to_use: Non-coding open-ended architectural consultation, technology advice, or exploring technical trade-offs
 description: Non-coding exploratory pipeline for architecture brainstorming, requirements discovery, and dialectic tension synthesis.
 default_gates: []
 

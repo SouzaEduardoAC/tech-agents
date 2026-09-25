@@ -1,5 +1,8 @@
 id: feature_dev
 name: Full Cycle Feature Development Pipeline
+category: Full-Cycle
+role: Squad Leader
+when_to_use: End-to-end SDLC taking a feature from initial concept/PRD through architecture design, compliance audit, coding, acceptance testing, to production pull request
 description: End-to-end SDLC pipeline from product discovery, architecture design, and compliance audit to implementation, acceptance validation, and pull request.
 default_gates:
   - prd

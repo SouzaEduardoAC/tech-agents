@@ -1,5 +1,8 @@
 id: business_synthesis
 name: Technical to Business Synthesis Pipeline
+category: Requirements
+role: Product Owner
+when_to_use: Translate technical architecture, API schemas, or engineering specifications into executive summaries, business value impacts, and non-technical stakeholder documents
 description: Translates technical architectures, API specs, database schemas, and engineering designs into executive summaries and stakeholder business requirements under the Product Owner lens.
 default_gates:
   - stakeholder_review

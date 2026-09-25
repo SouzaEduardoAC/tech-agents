@@ -1,244 +1,161 @@
-# Skill: MCP Usage Guide — Agent Hub Server
+# Skill: MCP Usage Guide — Agent Hub Server (v2026)
 
 ## Purpose
-A foundational reference skill that teaches any LLM how to interact with the Agent Hub MCP server (`@souzaeduardoac/tech-agents`). This guide covers all exposed tools, the full agent catalog, command aliases, and a decision flowchart for selecting the right agent. It should be treated as required reading before making any MCP tool call.
+A foundational reference skill that teaches any LLM how to interact with the Agent Hub MCP server (`@souzaeduardoac/tech-agents`). This guide covers both the **V3 Agentic Engineering Harness** (Declarative Playbooks & Deterministic Checks) and the legacy command catalog, complete with a decision flowchart and role-based matrix for selecting the right playbook.
 
 ---
 
-## 1. Overview
+## 1. Overview & Architecture
 
-The Agent Hub MCP server exposes **7 tools** for agent discovery, command execution, prompt retrieval, and pipeline management. The package is `@souzaeduardoac/tech-agents`.
+The Agent Hub MCP server exposes **12 tools**:
+- **V3 Playbook Tools (Recommended)**: `playbook_list`, `playbook_start`, `playbook_step`, `playbook_run_checks`, `playbook_advance`, `playbook_status`.
+- **Legacy Agent Tools (100% Backward Compatible)**: `list_agents`, `call_agent_command`, `run_agent_loop`, `get_agent_prompt`, `pipeline_start`, `request_approval`, `check_gate`, `pipeline_approve`.
 
-**Core principle:** When you call `call_agent_command`, the returned prompt **IS** the agent. You must adopt its persona, follow its instructions, and execute its task. It is not informational — it is an identity transfer.
-
----
-
-## 2. MCP Tools Reference
-
-### Tool 1: `list_agents`
-
-| Property | Value |
-|---|---|
-| Parameters | None |
-| Returns | All available agents and their registered commands |
-| When to use | Call this **FIRST** when unsure which agent or command to use. This is the discovery tool. |
+**Core Principle:** 
+- In **V3**, execution is driven by finite state machine DAGs (`playbooks/*.yaml`). The server enforces scoped tool permissions (`toolboxes.js`), lightweight professional stances (`lenses/*.md`), and deterministic hard checks (local tests/linters) and human approval gates (`.squad-state-[branch].json`). Hallucinated progression is physically impossible.
+- In **V2**, `call_agent_command` returns the compiled persona BIOS, skills, and knowledge for full prompt injection.
 
 ---
 
-### Tool 2: `call_agent_command`
+## 2. Which Playbook to Call? (The Decision Matrix)
 
-| Property | Value |
-|---|---|
-| Parameters | `agent` (string), `command` (string), `args` (string) |
-| Returns | The fully assembled agent prompt with persona, skills, and knowledge |
-| When to use | When the user explicitly requests an agent, or when the task naturally maps to a specialized domain |
-
-**Key behaviors:**
-- The returned prompt IS the agent — adopt its persona and execute its instructions.
-- Command aliases exist (e.g., `run` for squad maps to the actual command). The MCP handles alias resolution automatically.
-- The `args` parameter should contain the full task description — be specific, as it becomes the agent's primary objective.
-
----
-
-### Tool 3: `get_agent_prompt`
-
-| Property | Value |
-|---|---|
-| Parameters | `agent` (string) |
-| Returns | The full identity, persona, and knowledge base for an agent WITHOUT executing a command |
-| When to use | To preview or understand an agent's capabilities before committing to a command |
-
----
-
-### Tool 4: `pipeline_start`
-
-| Property | Value |
-|---|---|
-| Parameters | `goal` (string), `gates` (array of strings), `cwd` (optional string) |
-| Returns | Session ID, confirmation, and registered gates |
-| When to use | Only at the beginning of a Squad `run` pipeline |
-
-Creates a branch-scoped `.squad-state-[branch].json` file with all gates set to `locked`. Automatically appends `.squad-state-*.json` to `.gitignore`. If `cwd` is supplied, resolves the project root relative to it (enabling project isolation under global daemons). Must be called before `request_approval` or `check_gate`.
-
----
-
-### Tool 5: `request_approval`
-
-| Property | Value |
-|---|---|
-| Parameters | `gate` (string), `artifact_path` (optional string), `summary` (string), `cwd` (optional string) |
-| Returns | A hard STOP message |
-| When to use | After completing a pipeline phase. Only within Squad pipelines. |
-
-⚠️ CRITICAL: This is a HARD STOP. Do NOT call any further agent tools or continue pipeline work after this tool returns. Wait for human approval. Uses `cwd` to find the project root and branch-scoped state file.
-
----
-
-### Tool 6: `check_gate`
-
-| Property | Value |
-|---|---|
-| Parameters | `gate` (string), `cwd` (optional string) |
-| Returns | Approval status (approved/pending/locked) |
-| When to use | At the **START** of each new pipeline phase, before doing any work |
-
-Returns `approved: true` if the gate has been approved in the active branch-scoped state file. Returns an error if the gate is `pending` or `locked`. In standalone mode (no active session), returns a soft advisory. Uses `cwd` to locate the project root.
-
----
-
-### Tool 7: `pipeline_approve`
-
-| Property | Value |
-|---|---|
-| Parameters | `gate` (string), `cwd` (optional string) |
-| Returns | Confirmation of approval |
-| When to use | When the human approves via `/squad:approve <gate>` or directly through the MCP tool |
-
-Updates the gate status to `approved` in the branch-scoped state file. Uses `cwd` to locate the project root.
-
----
-
-## 3. Agent Catalog
-
-### Squad Orchestrator (`squad`)
-- **Description:** Multi-agent pipeline management and full documentation sync
-- **Commands:** `run` (full pipeline), `full-sync` (document entire project), `approve` (approve pipeline gate)
-- **Triggers:** "run the squad", "build X end-to-end", "orchestrate", "full pipeline"
-
-### Product Owner (`po`)
-- **Description:** Requirements gathering, PRD generation, stakeholder interviews
-- **Commands:** `discovery` (transform ideas into PRDs), `interview` (interactive stakeholder grilling), `analyze` (business rule simulation), `docs` (document requirements), `squad-docs` (deep-dive project documentation of business flows)
-- **Triggers:** "gather requirements", "write a PRD", "product discovery", "interview me"
-
-### Architect (`architect`)
-- **Description:** Systems architecture, security auditing, design patterns
-- **Commands:** `create` (full lifecycle: investigate → plan → implement → review), `auditor` (patterns/security/perf audit), `analyze` (behavioral simulation), `docs` (Logseq sync), `squad-docs` (deep-dive documentation of ADRs and resilience policies)
-- **Triggers:** "design the system", "architect this", "audit the architecture"
-
-### Backend (`backend`)
-- **Description:** APIs, databases, server-side implementation
-- **Commands:** `create` (full lifecycle), `auditor` (backend-specific audit), `analyze` (API/data simulation), `review` (PR review), `docs` (Logseq sync), `squad-docs` (deep-dive documentation of routes and schemas)
-- **Triggers:** "implement the API", "build the backend", "review this PR (backend)"
-
-### Frontend (`frontend`)
-- **Description:** UI implementation, React/Angular/Vue
-- **Commands:** `create` (full lifecycle), `auditor` (UI audit), `analyze` (component/state simulation), `review` (PR review), `docs` (Logseq sync), `squad-docs` (deep-dive documentation of pages and UI state)
-- **Triggers:** "build the UI", "implement the frontend", "review this PR (frontend)"
-
-### Mobile (`mobile`)
-- **Description:** Flutter/iOS/Android mobile development
-- **Commands:** `create` (full lifecycle), `auditor` (mobile audit), `analyze` (widget/state simulation), `review` (PR review), `docs` (Logseq sync), `squad-docs` (deep-dive documentation of screens and local storage)
-- **Triggers:** "build the mobile app", "implement in Flutter", "review this PR (mobile)"
-
-### Compliance (`compliance`)
-- **Description:** Regulatory audits — GDPR, HIPAA, LGPD, SOC2
-- **Commands:** `master` (deep cross-referencing audit), `audit` (privacy audit)
-- **Triggers:** "run a compliance audit", "check GDPR", "audit for HIPAA"
-
-### Council (`council`)
-- **Description:** 5-perspective dialectical debate engine (PO + Researcher + Architect + Automata + Privacy Auditor)
-- **Commands:** `debate` (symmetrical design debate and synthesis)
-- **Triggers:** "debate this", "call the council", "multi-perspective review"
-
-### Researcher (`researcher`)
-- **Description:** Deep investigation and data-driven research
-- **Commands:** `report` (data-driven research task), `investigate` (deep-dive research), `docs` (Logseq sync), `squad-docs` (deep-dive documentation of external APIs and AI standards)
-- **Triggers:** "research X", "investigate Y", "write a report on Z"
-
-### Automata (`automata`)
-- **Description:** Workflow automation architect
-- **Commands:** `plan` (research and design workflows), `create` (generate validated JSON workflows)
-- **Triggers:** "automate this workflow", "design an automation"
-
-### Decoder (`decoder`)
-- **Description:** Technical-to-business translator
-- **Commands:** `export` (translate tech docs to business language), `docs` (Logseq sync), `squad-docs` (deep-dive translation of tech specs to business spec exports)
-- **Triggers:** "translate this for stakeholders", "business export", "make this non-technical"
-
-
-### Quicky (`quicky`)
-- **Description:** Rapid, lightweight fix agent for small tweaks
-- **Commands:** `fix` (execute minor task, update docs, commit)
-- **Triggers:** "quick fix", "fix this typo", "add a log statement", "small tweak"
-
----
-
-## 4. Decision Flowchart
-
-Use this tree to select the right agent and command:
+### A. Decision Flowchart for LLMs
 
 ```
-Is it a small fix/typo?
-  └─ YES → quicky:fix
-
-Is it a full feature requiring multiple phases?
-  └─ YES → squad:run
-
-Is it a design/architecture question?
-  └─ YES → architect:create or architect:analyze
-
-Is it API/backend work?
-  └─ YES → backend:create or backend:analyze
-
-Is it UI work?
-  └─ YES → frontend:create or frontend:analyze
-
-Is it mobile work?
-  └─ YES → mobile:create or mobile:analyze
-
-Is it a PR review?
-  └─ YES → backend:review, frontend:review, or mobile:review (match domain)
-
-Is it requirements/PRD?
-  └─ YES → po:discovery or po:interview
-
-Is it a compliance audit?
-  └─ YES → compliance:master
-
-Is it a design debate needing multiple perspectives?
-  └─ YES → council:debate
-
-Is it a research/investigation task?
-  └─ YES → researcher:report or researcher:investigate
-
-Is it workflow automation?
-  └─ YES → automata:plan
-
-Is it translating tech docs to business language?
-  └─ YES → decoder:export
-
-Need to document the whole project?
-  └─ YES → squad:full-sync
+User Prompt / Goal Ingestion
+│
+├── 📋 Product Management & Requirements (No code)
+│   ├── Interactive interview to write a PRD for Jira/Azure Boards? ──> playbook: "product_discovery"
+│   └── Translate complex tech/API specs for business executives?   ──> playbook: "business_synthesis"
+│
+├── 🏛️ Architecture & Refinement Meetings
+│   ├── Confronting a backlog card with the codebase for task sizing?──> playbook: "technical_refinement"
+│   ├── Symmetrical debate over competing architecture options?     ──> playbook: "council_debate"
+│   ├── Auditing code quality, test suites, and technical debt?     ──> playbook: "codebase_health_audit"
+│   ├── Deep empirical research into a library or vendor trade-off? ──> playbook: "deep_research"
+│   └── Single-topic architectural consultation or advisory?        ──> playbook: "consultation"
+│
+├── 💻 Development & Engineering
+│   ├── Scaffolding a single isolated module, endpoint, or UI?      ──> playbook: "component_scaffold"
+│   ├── Reproducing and fixing a bug with automated test checks?    ──> playbook: "bug_fix"
+│   ├── Reviewing a Pull Request or git diff for quality/security?  ──> playbook: "pr_review"
+│   └── Designing an automation workflow (webhooks, n8n, DAGs)?     ──> playbook: "workflow_dev"
+│
+└── 🚀 Full-Cycle & Documentation
+    ├── End-to-end SDLC from PRD to production-ready Pull Request?  ──> playbook: "feature_dev"
+    └── Synchronizing Logseq knowledge graph and documentation?     ──> playbook: "full_sync"
 ```
+
+### B. Playbook Reference Catalog (14 Playbooks)
+
+| Playbook ID | Category | Target Role | When to Use | Steps | Gates |
+|---|---|---|---|---|---|
+| `product_discovery` | Requirements | Product Manager | Brainstorm, interview, clarify requirements & create a validated PRD for Azure Boards/Jira/Linear without code generation | 2 | `prd` |
+| `technical_refinement`| Architecture | Tech Lead | Confront a backlog ticket/card with existing codebase during refinement meetings to produce architectural feasibility and work breakdown | 2 | `plan` |
+| `component_scaffold` | Development | Developer | Quickly build a single isolated endpoint, service, or UI component with automated test verification | 2 | `execution` |
+| `feature_dev` | Full-Cycle | Squad Leader | End-to-end SDLC from PRD discovery, architecture design, compliance audit, coding, acceptance testing, to production pull request | 7 | `prd`, `discovery`, `plan`, `compliance`, `execution`, `acceptance` |
+| `bug_fix` | Development | Developer | Diagnose an issue, reproduce with a failing test, apply minimal-diff patch, and verify regression tests pass | 3 | `fix_verification` |
+| `council_debate` | Architecture | Tech Lead | Resolve a high-stakes architectural disagreement through a symmetrical 3-perspective debate (Thesis $\to$ Antithesis $\to$ Synthesized ADR) | 3 | `council_synthesis` |
+| `codebase_health_audit`| Architecture | Tech Lead | Audit whole-codebase technical debt, execute local test/linter runners, evaluate security boundaries, and produce prioritized remediation plan | 3 | `health_report` |
+| `deep_research` | Research | Researcher | Conduct deep empirical research, comparative technology benchmarking, or vendor/tooling trade-off evaluation with primary citations | 2 | `scope` |
+| `business_synthesis` | Requirements | Product Owner | Translate technical architecture, API schemas, or engineering specifications into executive summaries, business value impacts, and non-technical stakeholder documents | 2 | `stakeholder_review` |
+| `security_audit` | Security | Compliance Auditor | Perform a regulatory compliance audit (GDPR, LGPD, HIPAA, SOC2) and dependency vulnerability scan across the codebase | 2 | `audit_approval` |
+| `pr_review` | Quality | Reviewer | Conduct a thorough git diff code review for architectural patterns, test coverage, and regression risks before merging a PR | 2 | `review_signoff` |
+| `workflow_dev` | Automation | Automation Architect| Design and implement event-driven integration workflows (n8n, webhooks, asynchronous DAGs) with idempotency and retry resilience | 3 | `discovery`, `execution` |
+| `consultation` | Advisory | Advisor | Non-coding open-ended architectural consultation, technology advice, or exploring technical trade-offs | 1 | None |
+| `full_sync` | Documentation| Technical Writer | Synchronize all repository documentation, Logseq knowledge graph pages, symbol registry, and cognitive anchors | 2 | `sync_approval` |
 
 ---
 
-## 5. Command Aliases
+## 3. Sprint Rituals & Triggers
 
-The MCP server resolves these aliases automatically. Both the alias and the canonical command work:
-
-| Agent | Alias(es) | Canonical Command |
+| Sprint Ritual / Trigger | Recommended Playbook | Execution Behavior |
 |---|---|---|
-| squad | `create`, `discovery`, `plan` | `run` |
-| architect | `discovery`, `plan`, `run` | `create` |
-| backend | `discovery`, `plan`, `run` | `create` |
-| frontend | `discovery`, `plan`, `run` | `create` |
-| mobile | `discovery`, `plan`, `run` | `create` |
-| po | `create`, `run` | `discovery` |
-| automata | `discovery`, `run` | `plan` |
-| quicky | `run`, `create` | `fix` |
-| researcher | `run`, `create` → `report`; `discovery` | `report` / `investigate` |
-| compliance | `run`, `create` | `master` |
-| council | `run`, `create` | `debate` |
-| decoder | `run`, `create`, `synthesize` | `export` |
+| **Backlog Grooming** | `product_discovery` | PM is grilled by the PO lens (5-phase interview); outputs schema-compliant PRD ready for Azure Boards/Jira. |
+| **Technical Refinement** | `technical_refinement` | Tech Lead confronts PRD with existing code; inspects models/APIs and outputs an implementation plan & task breakdown. |
+| **Architectural Fork** | `council_debate` | Multi-perspective debate: Architect (Thesis) vs Security (Antithesis) $\to$ PO synthesizes balanced ADR. |
+| **Sprint Sprinting (Feature)** | `component_scaffold` or `feature_dev` | Dev implements either an isolated component (`component_scaffold`) or full 7-step pipeline (`feature_dev`). |
+| **Defect Triage** | `bug_fix` | Reproduces bug with a failing test, applies minimal patch, verifies tests pass, commits clean. |
+| **PR Review / CI** | `pr_review` | Inspects git diff, verifies test coverage, flags regressions or anti-patterns. |
+| **Tech Debt Sprint** | `codebase_health_audit` | Scans dependencies, runs all linters, evaluates security boundaries, outputs prioritized remediation plan. |
 
 ---
 
-## 6. Common Mistakes to Avoid
+## 4. Native V3 Playbook MCP Tools
 
-1. **Do NOT call `call_agent_command` without understanding which agent fits the task.** Call `list_agents` first if unsure.
-2. **Do NOT continue after `request_approval` returns.** It is a **HARD STOP**. The pipeline must halt until the human approves.
-3. **Do NOT treat the returned prompt as informational.** It IS the agent. Adopt its persona, follow its instructions, and execute its task.
-4. **Do NOT forget to call `check_gate` at the start of each pipeline phase.** This is the structural enforcement mechanism.
-5. **Do NOT use slash command syntax in Claude Code, AntiGravity, or other MCP clients.** Use the MCP tool `call_agent_command` instead. Slash commands (e.g., `/architect:create`) are for direct Gemini CLI use only.
-6. **Do NOT skip `pipeline_start` when running a Squad pipeline.** Gates will not exist without it, and `request_approval` / `check_gate` will operate in degraded standalone mode.
+### `playbook_list`
+*Parameters:* None  
+*Returns:* JSON array of all 14 playbooks with `id`, `name`, `category`, `role`, `when_to_use`, `description`, `stepCount`, and `gates`.  
+*When to use:* Call this **FIRST** if you need to discover available playbooks dynamically.
+
+### `playbook_start`
+*Parameters:* `playbook` (string, required), `goal` (string, required), `cwd` (string, optional)  
+*Returns:* Session ID, initial step metadata, locked approval gates, and state file path.  
+*When to use:* Call at the start of any structured workflow.
+
+### `playbook_step`
+*Parameters:* `cwd` (string, optional)  
+*Returns:* The compiled step prompt containing the active Cognitive Lens, authorized Toolbox capabilities, reference standards, and prior step artifacts.  
+*When to use:* Call at each step to receive your exact instructions and mindset.
+
+### `playbook_run_checks`
+*Parameters:* `cwd` (string, optional)  
+*Returns:* Output of configured hard checks (test suites, linters, static analyzers).  
+*When to use:* Call before advancing to verify machine exit-codes locally.
+
+### `playbook_advance`
+*Parameters:* `cwd` (string, optional)  
+*Returns:* Advanced step confirmation, or halts with error if hard checks failed or a human gate is locked/pending.  
+*When to use:* Call when active step artifacts are created to transition the state machine.
+
+### `playbook_status`
+*Parameters:* `cwd` (string, optional)  
+*Returns:* Session status, active step, completed step history, and gate states.  
+*When to use:* Inspect workflow progress and history at any time.
+
+---
+
+## 5. Concrete Invocation Examples
+
+### Example 1: Product Manager running Discovery
+```json
+// 1. Start the playbook
+playbook_start({
+  "playbook": "product_discovery",
+  "goal": "Single Sign-On (SSO) with Okta and Google Workspace"
+})
+
+// 2. Read Step 1 instructions (PO interview lens + 5-phase drill)
+playbook_step()
+
+// 3. User & agent conduct interview, log stored in docs/pages/...-elicitation-log.md
+// 4. Advance to Step 2
+playbook_advance()
+
+// 5. Read Step 2 instructions (PRD formulation)
+playbook_step()
+
+// 6. Draft docs/pages/...-prd.md
+// 7. Request approval for 'prd' gate via /squad:approve prd or pipeline_approve
+// 8. Advance to complete
+playbook_advance()
+```
+
+### Example 2: Tech Lead conducting Refinement Meeting
+```json
+// 1. Start the playbook
+playbook_start({
+  "playbook": "technical_refinement",
+  "goal": "Refine Okta SSO Azure Card against backend authentication architecture"
+})
+
+// 2. Read Step 1 instructions (Inspect models, middleware, schemas)
+playbook_step()
+
+// 3. Advance to Step 2 (Implementation Plan & Work Breakdown)
+playbook_advance()
+playbook_step()
+
+// 4. Formulate docs/pages/...-implementation-plan.md, approve 'plan' gate, advance to complete
+playbook_advance()
+```

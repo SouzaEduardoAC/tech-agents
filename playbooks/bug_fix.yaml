@@ -1,5 +1,8 @@
 id: bug_fix
 name: Rapid Bug Fix & Regression Avoidance Pipeline
+category: Development
+role: Developer
+when_to_use: Diagnose an issue, reproduce with a failing test, apply a minimal-diff patch, and verify regression tests pass
 description: Targeted minimal-diff bug fix workflow with mandatory reproduction and automated regression test verification.
 default_gates:
   - fix_verification

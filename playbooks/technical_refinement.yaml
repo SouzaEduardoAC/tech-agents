@@ -1,5 +1,8 @@
 id: technical_refinement
 name: Technical Refinement & Implementation Planning
+category: Architecture
+role: Tech Lead
+when_to_use: Confront a backlog ticket/card with the existing codebase during refinement meetings to produce an architectural feasibility report and work breakdown
 description: Technical refinement workflow for Tech Leads and Architects confronting product requirements / backlog cards with codebase reality to produce an architecture specification, task breakdown, and technical risk assessment.
 default_gates:
   - plan

@@ -1,5 +1,8 @@
 id: full_sync
 name: Full Codebase Documentation Sync Pipeline
+category: Documentation
+role: Technical Writer
+when_to_use: Synchronize all repository documentation, Logseq knowledge graph pages, symbol registry, and cognitive anchors
 description: Comprehensive documentation synchronization updating Logseq graph, feature registry, and technical specifications.
 default_gates:
   - sync_approval

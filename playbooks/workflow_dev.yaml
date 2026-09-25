@@ -1,5 +1,8 @@
 id: workflow_dev
 name: Event-Driven Workflow Automation Pipeline
+category: Automation
+role: Automation Architect
+when_to_use: Design and implement event-driven integration workflows (n8n, webhooks, asynchronous DAGs) with idempotency and retry resilience
 description: End-to-end automation workflow engineering covering payload discovery, integration DAG implementation, and defensive failure recovery verification.
 default_gates:
   - discovery

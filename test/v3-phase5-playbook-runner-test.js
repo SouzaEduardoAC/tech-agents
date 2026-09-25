@@ -22,7 +22,10 @@ async function runTests() {
   const featureDev = playbooks.find((p) => p.id === "feature_dev");
   assert.ok(featureDev, "feature_dev playbook missing from list");
   assert.strictEqual(featureDev.stepCount, 7);
-  console.log(`✅ PASS listPlaybooks returns ${playbooks.length} playbooks including feature_dev`);
+  assert.ok(featureDev.category, "feature_dev missing category");
+  assert.ok(featureDev.role, "feature_dev missing role");
+  assert.ok(featureDev.when_to_use, "feature_dev missing when_to_use");
+  console.log(`✅ PASS listPlaybooks returns ${playbooks.length} playbooks with full role/when_to_use metadata`);
 
   // 2. Test startPlaybook in isolated temp dir
   const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "playbook-runner-test-"));

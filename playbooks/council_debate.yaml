@@ -1,5 +1,8 @@
 id: council_debate
 name: Multi-Perspective Dialectical Debate Pipeline
+category: Architecture
+role: Tech Lead
+when_to_use: Resolve a high-stakes architectural disagreement or design choice through a symmetrical 3-perspective debate (Thesis -> Antithesis -> Synthesized ADR)
 description: Symmetrical debate between architectural innovation and compliance/security constraints, synthesized by product strategy into an Architecture Decision Record (ADR).
 default_gates:
   - council_synthesis
