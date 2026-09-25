@@ -1,0 +1,26 @@
+id: business_synthesis
+name: Technical to Business Synthesis Pipeline
+description: Translates technical architectures, API specs, database schemas, and engineering designs into executive summaries and stakeholder business requirements under the Product Owner lens.
+default_gates:
+  - stakeholder_review
+
+steps:
+  - id: technical_ingestion
+    name: Technical Spec Ingestion & Capability Mapping
+    lens: lenses/po.md
+    toolbox:
+      - fs_read
+      - analysis
+    output_artifact: docs/pages/{{args}}-technical-mapping.md
+    gate: null
+
+  - id: executive_translation
+    name: Executive Summary & Stakeholder Requirements Synthesis
+    lens: lenses/po.md
+    toolbox:
+      - fs_read
+      - fs_write
+    input_artifacts:
+      - docs/pages/{{args}}-technical-mapping.md
+    output_artifact: docs/pages/{{args}}-business-synthesis.md
+    gate: stakeholder_review

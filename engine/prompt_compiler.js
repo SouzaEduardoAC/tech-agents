@@ -397,7 +397,6 @@ export async function compileLegacyCommandPrompt({ agent, command, taskArgs = ""
     mobile: { discovery: "create", plan: "create", run: "create" },
     po: { create: "discovery", run: "discovery" },
     automata: { discovery: "plan", run: "plan" },
-    forge: { run: "create" },
     quicky: { run: "fix", create: "fix" },
     researcher: { run: "report", create: "report", discovery: "investigate" },
     compliance: { run: "master", create: "master" },

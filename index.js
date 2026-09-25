@@ -65,7 +65,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           "Activate a specialized agent and run one of its commands with a task description.",
           "Use this whenever the user asks to: 'call the council', 'have the architect design X',",
           "'run the backend agent', 'ask the squad to build X', 'get compliance to audit Y',",
-          "'let the researcher investigate Z', 'use the PO for discovery', 'have forge create an agent',",
+          "'let the researcher investigate Z', 'use the PO for discovery', 'have automata automate a workflow',",
           "'get quicky to fix this', 'have the decoder translate this spec', or any similar delegation to a named agent.",
           "The assembled prompt returned by this tool IS the agent — adopt its persona and execute its instructions directly.",
           "Call list_agents first if you are unsure of the exact agent name or available commands.",
@@ -73,7 +73,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         inputSchema: {
           type: "object",
           properties: {
-            agent: { type: "string", description: "The agent name (e.g., architect, backend, squad, council, po, compliance, researcher, forge, automata, decoder, quicky, frontend, mobile)." },
+            agent: { type: "string", description: "The agent name (e.g., architect, backend, squad, council, po, compliance, researcher, automata, decoder, quicky, frontend, mobile)." },
             command: { type: "string", description: "The command name. Common defaults: 'run' (squad), 'create' (architect/backend/frontend/mobile), 'debate' (council), 'discovery' (po), 'master' (compliance), 'report' (researcher), 'fix' (quicky), 'export' (decoder). Call list_agents to see all available commands." },
             args: { type: "string", description: "The full task description, goal, or user request to pass to the agent. Be specific — this becomes the agent's primary objective." },
           },
@@ -91,7 +91,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         inputSchema: {
           type: "object",
           properties: {
-            agent: { type: "string", description: "The agent name (e.g., architect, backend, squad, council, po, compliance, researcher, forge, automata, decoder, quicky, frontend, mobile)." },
+            agent: { type: "string", description: "The agent name (e.g., architect, backend, squad, council, po, compliance, researcher, automata, decoder, quicky, frontend, mobile)." },
             command: { type: "string", description: "The command name. Common defaults: 'run' (squad), 'create' (architect/backend/frontend/mobile), 'debate' (council), 'discovery' (po), 'master' (compliance), 'report' (researcher), 'fix' (quicky), 'export' (decoder). Call list_agents to see all available commands." },
             args: { type: "string", description: "The full task description, goal, or user request to pass to the agent. Be specific — this becomes the agent's primary objective." },
           },

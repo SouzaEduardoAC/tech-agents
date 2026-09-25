@@ -19,6 +19,8 @@ async function runTests() {
     "qa.md",
     "quicky.md",
     "council.md",
+    "automata.md",
+    "researcher.md",
   ];
 
   for (const lensFile of expectedLenses) {

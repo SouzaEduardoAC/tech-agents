@@ -1,0 +1,43 @@
+id: workflow_dev
+name: Event-Driven Workflow Automation Pipeline
+description: End-to-end automation workflow engineering covering payload discovery, integration DAG implementation, and defensive failure recovery verification.
+default_gates:
+  - discovery
+  - execution
+
+steps:
+  - id: payload_discovery
+    name: Payload Discovery & Auth Modeling
+    lens: lenses/automata.md
+    toolbox:
+      - fs_read
+      - search_web
+      - fs_write
+    standards:
+      - knowledge/auth_standard.md
+    output_artifact: docs/pages/{{args}}-payload-spec.md
+    gate: discovery
+
+  - id: dag_implementation
+    name: Workflow DAG & Transformation Logic
+    lens: lenses/automata.md
+    toolbox:
+      - fs_read
+      - fs_write
+    input_artifacts:
+      - docs/pages/{{args}}-payload-spec.md
+    output_artifact: workflows/{{args}}.json
+    gate: execution
+
+  - id: resilience_verification
+    name: Failure Recovery & Error Path Verification
+    lens: lenses/qa.md
+    toolbox:
+      - verification
+      - fs_read
+    standards:
+      - knowledge/testing_standard.md
+    hard_checks:
+      - auto_detect: true
+        fallback: npm test
+    gate: null

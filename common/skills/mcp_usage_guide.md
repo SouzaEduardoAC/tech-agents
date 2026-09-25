@@ -145,11 +145,6 @@ Updates the gate status to `approved` in the branch-scoped state file. Uses `cwd
 - **Commands:** `report` (data-driven research task), `investigate` (deep-dive research), `docs` (Logseq sync), `squad-docs` (deep-dive documentation of external APIs and AI standards)
 - **Triggers:** "research X", "investigate Y", "write a report on Z"
 
-### Forge (`forge`)
-- **Description:** Meta-agent designer — creates, audits, and upgrades other agents
-- **Commands:** `create` (scaffold new agent), `discovery` (interactive agent design), `auditor` (audit existing agent), `upgrade` (upgrade agent), `docs` (Logseq sync), `squad-docs` (deep-dive documentation of registries and triple-anchors)
-- **Triggers:** "create a new agent", "audit this agent", "upgrade the backend agent"
-
 ### Automata (`automata`)
 - **Description:** Workflow automation architect
 - **Commands:** `plan` (research and design workflows), `create` (generate validated JSON workflows)
@@ -206,9 +201,6 @@ Is it a design debate needing multiple perspectives?
 Is it a research/investigation task?
   └─ YES → researcher:report or researcher:investigate
 
-Is it about creating/modifying an agent?
-  └─ YES → forge:create or forge:upgrade
-
 Is it workflow automation?
   └─ YES → automata:plan
 
@@ -234,7 +226,6 @@ The MCP server resolves these aliases automatically. Both the alias and the cano
 | mobile | `discovery`, `plan`, `run` | `create` |
 | po | `create`, `run` | `discovery` |
 | automata | `discovery`, `run` | `plan` |
-| forge | `run` | `create` |
 | quicky | `run`, `create` | `fix` |
 | researcher | `run`, `create` → `report`; `discovery` | `report` / `investigate` |
 | compliance | `run`, `create` | `master` |

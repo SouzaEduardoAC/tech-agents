@@ -122,6 +122,9 @@ git pull && npm install
    Finite State Machine definitions that enforce exact SDLC steps, input/output artifacts, applicable standards, scoped toolboxes, and human approval gates.
    * `feature_dev`: Full cycle engineering from PRD discovery to clean pull request (7 steps).
    * `bug_fix`: Targeted reproduction, patch application, and regression test verification (3 steps).
+   * `workflow_dev`: Event-driven automation workflow design, payload mapping, and failure recovery (3 steps).
+   * `deep_research`: Problem space framing, comparative empirical benchmarking, and executive research synthesis (2 steps).
+   * `business_synthesis`: Technical architecture, API spec, and data schema translation into stakeholder requirements under the PO lens (2 steps).
    * `security_audit`: Threat modeling and regulatory compliance audit (2 steps).
    * `pr_review`: Diff-based static code review and automated SonarQube evaluation (2 steps).
    * `consultation`: Conversational, non-coding architecture debate and tension synthesis (1 step).
@@ -129,7 +132,7 @@ git pull && npm install
 
 2. **Cognitive Lenses (`lenses/*.md`)**:
    Hyper-concise professional stances ($\le 4$ sentences, $\le 80$ words) replacing verbose persona roleplay and eliminating up to 70% of LLM prompt bloat while sharpening domain focus.
-   * `architect.md`, `backend.md`, `frontend.md`, `mobile.md`, `compliance.md`, `po.md`, `qa.md`, `quicky.md`, `council.md`.
+   * `architect.md`, `backend.md`, `frontend.md`, `mobile.md`, `compliance.md`, `po.md`, `qa.md`, `quicky.md`, `council.md`, `automata.md`, `researcher.md`.
 
 3. **Scoped Toolboxes (`engine/toolboxes.js`)**:
    Enforces the principle of least privilege per step:
@@ -232,13 +235,12 @@ We maintain a "Zero Trust" model for code and documentation integrity.
 
 ## 🤖 Core Agents
 - **[[Squad Orchestrator]]**: PM / Chief Orchestrator.
-- **[[Product Owner]]**: PO / Requirements Gateway.
+- **[[Product Owner]]**: PO / Requirements Gateway & Business Synthesis.
 - **[[Architect]]**: Systems Lead / Security Auditor.
 - **[[Backend]]**, **[[Frontend]]**, **[[Mobile]]**: Implementation specialists.
 - **[[Compliance]]**: Regulatory & Risk Auditor.
-- **[[Researcher]]**: Strategic Analyst.
-- **[[Automata]]**: Automation Architect.
+- **[[Researcher]]**: Strategic Analyst & Deep Empirical Research.
+- **[[Automata]]**: Workflow Automation Architect.
 - **[[Decoder]]**: Technical specification-to-business translator.
-- **[[Forge]]**: Specialized meta-agent to design, scaffold, audit, and upgrade other agents (#MetaAgent).
 - **[[Quicky]]**: Specialist for quick fixes, small tweaks, and isolated tasks maintaining documentation integrity.
 - **[[Council]]**: Symmetrical multi-perspective debate and design synthesis engine.

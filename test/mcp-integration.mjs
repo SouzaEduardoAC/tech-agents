@@ -48,10 +48,6 @@ const TEST_MATRIX = [
   ["compliance", "audit",     "Audit the data retention policy against HIPAA requirements"],
   ["council",    "debate",    "Should we use a microservices or monolith architecture for this project?"],
   ["decoder",    "export",    "Translate the gRPC technical specification into a business summary for stakeholders"],
-  ["forge",      "create",    "Design a new DevOps specialist agent with CI/CD expertise"],
-  ["forge",      "discovery", "Audit the current agent hub architecture for gaps and improvement opportunities"],
-  ["forge",      "auditor",   "Audit the Quicky agent against the agent standards protocol"],
-  ["forge",      "upgrade",   "Upgrade the Researcher agent to add a synthesis skill"],
   ["frontend",   "create",    "Build a React dashboard for real-time analytics using TypeScript"],
   ["frontend",   "auditor",   "Audit the Lighthouse performance and accessibility score of the landing page"],
   ["frontend",   "docs",      "Document the component library API for the design system"],
@@ -73,7 +69,6 @@ const TEST_MATRIX = [
   ["architect",  "squad-docs", "Document the API design for the authentication service"],
   ["backend",    "squad-docs", "Document the backend code architecture and API endpoints"],
   ["decoder",    "squad-docs", "Translate technical documentation to a business specification for squad docs"],
-  ["forge",      "squad-docs", "Document the registry mapping for the squad agents"],
   ["frontend",   "squad-docs", "Document the design system components and React endpoints"],
   ["mobile",     "squad-docs", "Document the mobile widgets and Flutter structure"],
   ["squad",      "run",       "Build a full-stack authentication system: design, backend, and frontend"],
@@ -183,10 +178,6 @@ const CONTENT_FINGERPRINTS = {
   "compliance:audit":    ["GDPR", "compliance"],
   "council:debate":      ["Dialectical", "Council Compromise"],
   "decoder:export":      ["business", "export"],
-  "forge:create":        ["agent", "forge"],
-  "forge:discovery":     ["agent", "audit"],
-  "forge:auditor":       ["agent", "audit"],
-  "forge:upgrade":       ["agent", "upgrade"],
   "frontend:create":     ["component", "frontend"],
   "frontend:auditor":    ["performance", "accessibility"],
   "frontend:docs":       ["documentation"],
@@ -208,7 +199,6 @@ const CONTENT_FINGERPRINTS = {
   "architect:squad-docs": ["squad", "documentation"],
   "backend:squad-docs": ["squad", "documentation"],
   "decoder:squad-docs": ["squad", "documentation"],
-  "forge:squad-docs": ["squad", "documentation"],
   "frontend:squad-docs": ["squad", "documentation"],
   "mobile:squad-docs": ["squad", "documentation"],
   "squad:run":           ["squad", "orchestrat"],
@@ -317,7 +307,7 @@ async function runTests() {
     } else {
       agents = (text.match(/^- \w+/gm) ?? []).map((l) => l.replace("- ", "").split(" ")[0]);
     }
-    if (agents.length !== 13) throw new Error(`Expected 13 agents, got ${agents.length}: ${agents.join(", ")}`);
+    if (agents.length !== 12) throw new Error(`Expected 12 agents, got ${agents.length}: ${agents.join(", ")}`);
     console.log(ok(`list_agents — ${agents.length} agents: ${agents.join(", ")}`));
     results.passed++;
   } catch (e) {

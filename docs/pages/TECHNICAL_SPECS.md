@@ -155,10 +155,10 @@
 		- **Purpose:** Replaces static prompt-compiler persona roleplay with a deterministic SDLC execution engine. Separates execution into four orthogonal, decoupled primitives: Playbooks, Cognitive Lenses, Toolboxes, and Deterministic Checks & Gates. (ref: `V3_ARCHITECTURE_SPEC.md`, `[[v3-architecture-spec]]`)
 		- **Primitive 1: Declarative Playbooks (`playbooks/*.yaml`):**
 			- State machine DAG definitions governing execution order, required input artifacts, target output artifacts, applicable standards, active toolboxes, and human gate keys.
-			- Core Playbooks: `feature_dev.yaml` (7 steps), `bug_fix.yaml` (3 steps), `security_audit.yaml` (2 steps), `pr_review.yaml` (2 steps), `consultation.yaml` (1 step), `full_sync.yaml` (2 steps).
+			- Core Playbooks: `feature_dev.yaml` (7 steps), `bug_fix.yaml` (3 steps), `workflow_dev.yaml` (3 steps), `deep_research.yaml` (2 steps), `business_synthesis.yaml` (2 steps), `security_audit.yaml` (2 steps), `pr_review.yaml` (2 steps), `consultation.yaml` (1 step), `full_sync.yaml` (2 steps).
 		- **Primitive 2: Cognitive Lenses (`lenses/*.md`):**
 			- Hyper-focused professional stances ($\le 4$ sentences, $\le 80$ words) that eliminate prompt noise and focus the model on domain trade-offs.
-			- 9 Lenses: `architect.md`, `backend.md`, `frontend.md`, `mobile.md`, `compliance.md`, `po.md`, `qa.md`, `quicky.md`, `council.md`.
+			- 11 Lenses: `architect.md`, `backend.md`, `frontend.md`, `mobile.md`, `compliance.md`, `po.md`, `qa.md`, `quicky.md`, `council.md`, `automata.md`, `researcher.md`.
 		- **Primitive 3: Scoped Toolboxes (`engine/toolboxes.js`):**
 			- Enforces the principle of least privilege per step.
 			- Capabilities: `fs_read`, `fs_write`, `git`, `verification`, `analysis`, `search_web`.

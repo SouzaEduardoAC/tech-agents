@@ -50,7 +50,7 @@ playbook_status()
 call_agent_command(agent="architect", command="create", args="Your goal here")
 call_agent_command(agent="po", command="discovery", args="Feature name")
 call_agent_command(agent="council", command="debate", args="User request here")
-call_agent_command(agent="forge", command="create", args="New Agent Spec")
+call_agent_command(agent="automata", command="plan", args="Automate webhook integration")
 call_agent_command(agent="squad", command="run", args="High-level project goal")
 call_agent_command(agent="squad", command="full-sync", args="Sync codebase documentation")
 ```
@@ -74,7 +74,6 @@ The project documentation is managed as a knowledge graph in `docs/pages/`.
 - [[Researcher]]: Deep information synthesis.
 - [[Automata]]: Workflow #Automation architect.
 - [[Decoder]]: Technical documentation-to-business translator.
-- [[Forge]]: Specialized meta-agent to design, scaffold, audit, and upgrade other agents.
 - [[Quicky]]: Specialist for quick fixes, small tweaks, and isolated tasks maintaining documentation integrity.
 - [[Council]]: Symmetrical multi-perspective debate and design synthesis engine.
 

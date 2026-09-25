@@ -23,7 +23,6 @@ The project documentation is managed as a knowledge graph in `docs/pages/`.
 - [[Researcher]]: Deep information synthesis.
 - [[Automata]]: Workflow #Automation architect.
 - [[Decoder]]: Technical documentation-to-business translator.
-- [[Forge]]: Specialized meta-agent to design, scaffold, audit, and upgrade other agents (#MetaAgent).
 - [[Quicky]]: Specialist for quick fixes, small tweaks, and isolated tasks maintaining documentation integrity.
 - [[Council]]: Symmetrical multi-perspective debate and design synthesis engine.
 

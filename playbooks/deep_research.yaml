@@ -1,0 +1,28 @@
+id: deep_research
+name: Deep Technology Research & Synthesis Pipeline
+description: Empirical research pipeline covering problem framing, comparative benchmarking, architectural trade-off evaluation, and executive synthesis.
+default_gates:
+  - scope
+
+steps:
+  - id: scope_definition
+    name: Problem Space Framing & Hypothesis Scoping
+    lens: lenses/researcher.md
+    toolbox:
+      - fs_read
+      - search_web
+      - fs_write
+    output_artifact: docs/pages/{{args}}-research-scope.md
+    gate: scope
+
+  - id: synthesis_and_reporting
+    name: Empirical Benchmarking & Synthesis Report
+    lens: lenses/researcher.md
+    toolbox:
+      - search_web
+      - fs_read
+      - fs_write
+    input_artifacts:
+      - docs/pages/{{args}}-research-scope.md
+    output_artifact: docs/pages/{{args}}-research-report.md
+    gate: null

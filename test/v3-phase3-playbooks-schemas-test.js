@@ -16,6 +16,9 @@ async function runTests() {
     "pr_review.yaml",
     "consultation.yaml",
     "full_sync.yaml",
+    "workflow_dev.yaml",
+    "deep_research.yaml",
+    "business_synthesis.yaml",
   ];
 
   for (const pbFile of expectedPlaybooks) {

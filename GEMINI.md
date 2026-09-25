@@ -20,7 +20,7 @@ The following namespaces are dynamically available via `tech-agents serve` (`lis
 - `/backend:*`, `/frontend:*`, `/mobile:*`: Core implementation.
 - `/compliance:*`: Audit and regulation.
 - `/decoder:*`: Technical specification-to-business translator.
-- `/forge:*`: Meta-agent design, creation, and auditing.
+- `/automata:*`: Workflow automation design and generation.
 - `/quicky:*`: Quick fixes, minor tweaks, and isolated code changes.
 - `/council:*`: Symmetrical multi-perspective design debate and synthesis.
 
@@ -33,8 +33,8 @@ The following namespaces are dynamically available via `tech-agents serve` (`lis
 - [[Researcher]]: Deep information synthesis.
 - [[Automata]]: Workflow #Automation architect.
 - [[Decoder]]: Technical documentation-to-business translator.
-- [[Forge]]: Meta-agent design, creation, and auditing.
 - [[Quicky]]: Specialist for quick fixes, small tweaks, and isolated tasks maintaining documentation integrity.
+- [[Council]]: Symmetrical multi-perspective debate and design synthesis engine.
 ## 🏗️ V3 Hybrid Architecture
 - **Agentic Engineering Harness**: Transitioned from v2 prompt-compiler / persona cosplay into a deterministic execution engine built on 4 primitives:
   - **Playbooks** (`playbooks/*.yaml`): Finite state machine DAGs defining exact SDLC steps, input/output artifacts, and gates.

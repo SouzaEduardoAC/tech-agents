@@ -6,7 +6,7 @@ import toml from "toml";
 const AGENTS_ROOT = path.resolve(import.meta.dirname, "..");
 const AGENT_DIRS = [
   "po", "architect", "backend", "frontend", "mobile", 
-  "squad", "compliance", "council", "decoder", "forge", 
+  "squad", "compliance", "council", "decoder", 
   "quicky", "researcher", "automata"
 ];
 
@@ -17,7 +17,7 @@ async function runValidation() {
   console.log("  Agent Hub Command Prompt Consistency Validator");
   console.log("======================================================\n");
 
-  const tomlPattern = path.join(AGENTS_ROOT, "*(po|architect|backend|frontend|mobile|squad|compliance|council|decoder|forge|quicky|researcher|automata)", "commands", "**", "*.toml").replace(/\\/g, "/");
+  const tomlPattern = path.join(AGENTS_ROOT, "*(po|architect|backend|frontend|mobile|squad|compliance|council|decoder|quicky|researcher|automata)", "commands", "**", "*.toml").replace(/\\/g, "/");
   const tomlFiles = await glob(tomlPattern);
 
   console.log(`Found ${tomlFiles.length} command TOML files to validate.\n`);
