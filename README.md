@@ -125,6 +125,8 @@ git pull && npm install
    * `workflow_dev`: Event-driven automation workflow design, payload mapping, and failure recovery (3 steps).
    * `deep_research`: Problem space framing, comparative empirical benchmarking, and executive research synthesis (2 steps).
    * `business_synthesis`: Technical architecture, API spec, and data schema translation into stakeholder requirements under the PO lens (2 steps).
+   * `council_debate`: Symmetrical dialectical debate between architectural design and security constraints into a synthesized ADR (3 steps).
+   * `codebase_health_audit`: Multi-layer diagnostic health scan (static analysis, linters, security boundary checks, and remediation plan) (3 steps).
    * `security_audit`: Threat modeling and regulatory compliance audit (2 steps).
    * `pr_review`: Diff-based static code review and automated SonarQube evaluation (2 steps).
    * `consultation`: Conversational, non-coding architecture debate and tension synthesis (1 step).

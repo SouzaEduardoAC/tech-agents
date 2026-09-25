@@ -72,6 +72,8 @@ async function runTests() {
     "auth_standard.md",
     "git_standard.md",
     "testing_standard.md",
+    "product_interview.md",
+    "gatekeeping.md",
     "licensing.md",
     "gdpr.md",
     "hipaa.md",

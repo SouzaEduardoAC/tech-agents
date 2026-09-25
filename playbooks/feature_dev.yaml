@@ -18,6 +18,8 @@ steps:
       - search_web
       - fs_write
     standards:
+      - knowledge/product_interview.md
+      - knowledge/gatekeeping.md
       - knowledge/testing_standard.md
     output_artifact: docs/pages/{{args}}-prd.md
     soft_checks:

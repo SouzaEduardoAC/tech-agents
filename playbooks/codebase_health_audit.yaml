@@ -1,0 +1,45 @@
+id: codebase_health_audit
+name: Codebase Health & Technical Debt Audit Pipeline
+description: Multi-layer diagnostic pipeline running local static analysis, test suites, security boundary scans, and dependency auditing to produce a prioritized remediation report.
+default_gates:
+  - health_report
+
+steps:
+  - id: static_analysis
+    name: Code Quality & Static Analysis (Architect)
+    lens: lenses/architect.md
+    toolbox:
+      - fs_read
+      - verification
+      - fs_write
+    standards:
+      - knowledge/testing_standard.md
+    hard_checks:
+      - detect:test
+      - detect:lint
+    output_artifact: docs/pages/health-static-analysis.md
+
+  - id: security_compliance
+    name: Security & Dependency Vulnerability Scan (Compliance)
+    lens: lenses/compliance.md
+    toolbox:
+      - fs_read
+      - analysis
+      - fs_write
+    standards:
+      - knowledge/licensing.md
+      - knowledge/soc2.md
+      - knowledge/gdpr.md
+    output_artifact: docs/pages/health-security-audit.md
+
+  - id: remediation_plan
+    name: Prioritized Tech Debt & Remediation Plan (QA)
+    lens: lenses/qa.md
+    toolbox:
+      - fs_read
+      - fs_write
+    input_artifacts:
+      - docs/pages/health-static-analysis.md
+      - docs/pages/health-security-audit.md
+    output_artifact: docs/pages/codebase-health-report.md
+    gate: health_report

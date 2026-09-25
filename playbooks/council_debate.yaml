@@ -1,0 +1,47 @@
+id: council_debate
+name: Multi-Perspective Dialectical Debate Pipeline
+description: Symmetrical debate between architectural innovation and compliance/security constraints, synthesized by product strategy into an Architecture Decision Record (ADR).
+default_gates:
+  - council_synthesis
+
+steps:
+  - id: thesis
+    name: Architectural Thesis & Technical Rationale (Architect)
+    lens: lenses/architect.md
+    toolbox:
+      - fs_read
+      - analysis
+      - fs_write
+    standards:
+      - knowledge/auth_standard.md
+    output_artifact: docs/pages/{{args}}-debate-thesis.md
+
+  - id: antithesis
+    name: Critical Antithesis & Risk Audit (Compliance)
+    lens: lenses/compliance.md
+    toolbox:
+      - fs_read
+      - analysis
+      - fs_write
+    standards:
+      - knowledge/regulations.md
+      - knowledge/soc2.md
+      - knowledge/gdpr.md
+    input_artifacts:
+      - docs/pages/{{args}}-debate-thesis.md
+    output_artifact: docs/pages/{{args}}-debate-antithesis.md
+
+  - id: synthesis
+    name: Strategic Synthesis & ADR Formulation (PO & Council)
+    lens: lenses/council.md
+    toolbox:
+      - fs_read
+      - analysis
+      - fs_write
+    input_artifacts:
+      - docs/pages/{{args}}-debate-thesis.md
+      - docs/pages/{{args}}-debate-antithesis.md
+    output_artifact: docs/pages/{{args}}-adr.md
+    soft_checks:
+      - checks/schemas/adr_schema.json
+    gate: council_synthesis
