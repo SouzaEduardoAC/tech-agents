@@ -1,0 +1,35 @@
+id: product_discovery
+name: Product Discovery & PRD Formulation
+description: Interactive requirements elicitation and rigorous PRD formulation for Product Managers without code generation. Prepares validated user stories and acceptance criteria for backlog tracking (Azure Boards, Jira, Linear).
+default_gates:
+  - prd
+
+steps:
+  - id: elicitation_interview
+    name: Interactive Elicitation & Grill Protocol (PO)
+    lens: lenses/po.md
+    toolbox:
+      - fs_read
+      - search_web
+      - fs_write
+    standards:
+      - knowledge/product_interview.md
+      - knowledge/gatekeeping.md
+    output_artifact: docs/pages/{{args}}-elicitation-log.md
+
+  - id: prd_formulation
+    name: Formal PRD Formulation & Acceptance Definition (PO)
+    lens: lenses/po.md
+    toolbox:
+      - fs_read
+      - fs_write
+    standards:
+      - knowledge/product_interview.md
+      - knowledge/gatekeeping.md
+      - knowledge/testing_standard.md
+    input_artifacts:
+      - docs/pages/{{args}}-elicitation-log.md
+    output_artifact: docs/pages/{{args}}-prd.md
+    soft_checks:
+      - checks/schemas/prd_schema.json
+    gate: prd

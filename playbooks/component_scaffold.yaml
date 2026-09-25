@@ -1,0 +1,35 @@
+id: component_scaffold
+name: Rapid Component & Module Scaffolding
+description: Fast-path engineering pipeline for implementing a single isolated module, API endpoint, or UI component directly with automated test verification.
+default_gates:
+  - execution
+
+steps:
+  - id: spec
+    name: Component Specification & Interface Contract (Architect)
+    lens: lenses/architect.md
+    toolbox:
+      - fs_read
+      - analysis
+      - fs_write
+    standards:
+      - knowledge/testing_standard.md
+    output_artifact: docs/pages/{{args}}-spec.md
+
+  - id: implement_and_test
+    name: Implementation & Test Verification (Backend/Frontend)
+    lens: lenses/backend.md
+    toolbox:
+      - fs_read
+      - fs_write
+      - git
+      - verification
+    standards:
+      - knowledge/testing_standard.md
+      - knowledge/git_standard.md
+    hard_checks:
+      - detect:test
+      - detect:lint
+    input_artifacts:
+      - docs/pages/{{args}}-spec.md
+    gate: execution

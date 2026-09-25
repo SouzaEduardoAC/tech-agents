@@ -22,7 +22,9 @@
 	- [[Researcher]] - Strategic Analyst.
 	- [[Automata]] - Automation Architect.
 	- [[Decoder]] - Technical specification-to-business translator.
-	- [[Forge]] - Meta-Architect (scaffolds, audits, and upgrades other agents).
+	- [[Quicky]] - Fast bug fix and triage specialist.
+	- [[Council]] - Dialectical multi-perspective debate engine.
+	- [[Forge]] - *[DEPRECATED]* Meta-Architect (superseded by V3 Playbooks & Lenses).
 - # Use Cases
 	- [[Standardized Pipeline]] - Engineering lifecycle.
 	- [[PRD Generation]] - Requirements.

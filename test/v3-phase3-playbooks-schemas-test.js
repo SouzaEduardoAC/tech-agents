@@ -21,6 +21,9 @@ async function runTests() {
     "business_synthesis.yaml",
     "council_debate.yaml",
     "codebase_health_audit.yaml",
+    "product_discovery.yaml",
+    "technical_refinement.yaml",
+    "component_scaffold.yaml",
   ];
 
   for (const pbFile of expectedPlaybooks) {

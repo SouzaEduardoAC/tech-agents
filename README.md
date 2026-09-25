@@ -121,6 +121,9 @@ git pull && npm install
 1. **Declarative Playbooks (`playbooks/*.yaml`)**:
    Finite State Machine definitions that enforce exact SDLC steps, input/output artifacts, applicable standards, scoped toolboxes, and human approval gates.
    * `feature_dev`: Full cycle engineering from PRD discovery to clean pull request (7 steps).
+   * `product_discovery`: Interactive requirements elicitation and formal PRD formulation for Product Managers without code generation (2 steps).
+   * `technical_refinement`: Technical feasibility analysis and granular implementation planning for Tech Leads in refinement meetings (2 steps).
+   * `component_scaffold`: Rapid specification and test-verified implementation of isolated components or API endpoints (2 steps).
    * `bug_fix`: Targeted reproduction, patch application, and regression test verification (3 steps).
    * `workflow_dev`: Event-driven automation workflow design, payload mapping, and failure recovery (3 steps).
    * `deep_research`: Problem space framing, comparative empirical benchmarking, and executive research synthesis (2 steps).

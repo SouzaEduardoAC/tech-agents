@@ -1,0 +1,35 @@
+id: technical_refinement
+name: Technical Refinement & Implementation Planning
+description: Technical refinement workflow for Tech Leads and Architects confronting product requirements / backlog cards with codebase reality to produce an architecture specification, task breakdown, and technical risk assessment.
+default_gates:
+  - plan
+
+steps:
+  - id: codebase_feasibility
+    name: Codebase Feasibility & Architectural Impact (Architect)
+    lens: lenses/architect.md
+    toolbox:
+      - fs_read
+      - analysis
+      - fs_write
+    standards:
+      - knowledge/auth_standard.md
+      - knowledge/testing_standard.md
+    output_artifact: docs/pages/{{args}}-feasibility.md
+
+  - id: implementation_plan
+    name: Granular Work Breakdown & Technical Plan (Architect)
+    lens: lenses/architect.md
+    toolbox:
+      - fs_read
+      - analysis
+      - fs_write
+    standards:
+      - knowledge/auth_standard.md
+      - knowledge/testing_standard.md
+    input_artifacts:
+      - docs/pages/{{args}}-feasibility.md
+    output_artifact: docs/pages/{{args}}-implementation-plan.md
+    soft_checks:
+      - checks/schemas/adr_schema.json
+    gate: plan
