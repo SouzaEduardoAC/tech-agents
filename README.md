@@ -84,45 +84,119 @@ git pull && npm install
 
 ---
 
+## 🏗️ V3 Hybrid Architecture: Agentic Engineering Harness
+
+`@souzaeduardoac/tech-agents` v3 transitions from a prompt-compiler / persona-cosplay model into a deterministic, production-grade **Agentic Engineering Harness** designed for Gemini CLI, AntiGravity, Codex, and Claude Code.
+
+### The 4 Primitives
+
+```
+┌────────────────────────────────────────────────────────┐
+│             PLAYBOOK (State Machine DAG)               │
+│               playbooks/feature_dev.yaml               │
+│                                                        │
+│  ┌──────────────┐     ┌──────────────┐                 │
+│  │ Step 1 (PO)  │ ──> │Step 2 (Arch) │ ──> ...         │
+│  └──────┬───────┘     └──────┬───────┘                 │
+└─────────┼────────────────────┼─────────────────────────┘
+          │                    │
+          ▼                    ▼
+┌──────────────────┐ ┌──────────────────┐
+│  COGNITIVE LENS  │ │     TOOLBOX      │
+│  (≤4 sentences)  │ │ (Scoped Perms)   │
+│  lenses/po.md    │ │ [fs_read, write] │
+└──────────────────┘ └──────────────────┘
+          │
+          ▼
+┌────────────────────────────────────────────────────────┐
+│               DETERMINISTIC CHECKS & GATES             │
+│                                                        │
+│  • Hard Checks: Local CLI commands (tests, linters)   │
+│  • Soft Checks: JSON Schema artifact validation        │
+│  • Human Gates: .squad-state-[branch].json approval    │
+│    (Physically blocks progression if locked/failed)    │
+└────────────────────────────────────────────────────────┘
+```
+
+1. **Declarative Playbooks (`playbooks/*.yaml`)**:
+   Finite State Machine definitions that enforce exact SDLC steps, input/output artifacts, applicable standards, scoped toolboxes, and human approval gates.
+   * `feature_dev`: Full cycle engineering from PRD discovery to clean pull request (7 steps).
+   * `bug_fix`: Targeted reproduction, patch application, and regression test verification (3 steps).
+   * `security_audit`: Threat modeling and regulatory compliance audit (2 steps).
+   * `pr_review`: Diff-based static code review and automated SonarQube evaluation (2 steps).
+   * `consultation`: Conversational, non-coding architecture debate and tension synthesis (1 step).
+   * `full_sync`: Exhaustive Logseq graph and documentation synchronization (2 steps).
+
+2. **Cognitive Lenses (`lenses/*.md`)**:
+   Hyper-concise professional stances ($\le 4$ sentences, $\le 80$ words) replacing verbose persona roleplay and eliminating up to 70% of LLM prompt bloat while sharpening domain focus.
+   * `architect.md`, `backend.md`, `frontend.md`, `mobile.md`, `compliance.md`, `po.md`, `qa.md`, `quicky.md`, `council.md`.
+
+3. **Scoped Toolboxes (`engine/toolboxes.js`)**:
+   Enforces the principle of least privilege per step:
+   * `fs_read`: Read-only inspection (`view_file`, `list_dir`, `find_by_name`, `grep_search`).
+   * `fs_write`: Targeted modification (`write_to_file`, `replace_file_content`).
+   * `git`: Branching, staging, Conventional Commits, diff inspection, PR creation.
+   * `verification`: Local test runner and linter execution (`npm test`, `pytest`, `cargo test`, etc.).
+   * `analysis`: AST inspection and static code analysis.
+   * `search_web`: External API and documentation retrieval.
+
+4. **Deterministic Hard & Soft Checks (`checks/`)**:
+   * **Hard Checks**: Local terminal command execution with timeout protection (`child_process.spawn`). Step advancement is **physically refused** if any test runner, linter, or git status check fails with a non-zero exit code.
+   * **Soft Checks**: JSON Schema validation (`ajv`) for generated artifacts (PRD, ADR, Audit report, Acceptance report).
+   * **Approval Gates**: Structural MCP-enforced gates (`prd`, `plan`, `compliance`, `execution`, `acceptance`) in `.squad-state-[branch].json` that prevent LLMs from self-approving milestone transitions.
+
+---
+
 ## 🎮 How to Call Agents (Usage per LLM Environment)
 
-Depending on your active LLM interface, calling and orchestrating the agents is standardized via MCP tool calls:
+### Native V3 Playbook MCP Tools
+The harness exposes 6 native MCP tools for state-machine driven SDLC orchestration:
 
-### 1. Codex App/CLI, Gemini App/CLI & Claude Code (MCP)
-Agents are executed dynamically via MCP tools (`list_agents`, `call_agent_command`, `get_agent_prompt`, `run_agent_loop`). Simply speak to your assistant in natural language or call commands via MCP:
-*   **Format**: `/[agent]:[command] [your goal]`
-*   **Key Examples**:
-    *   **Squad Orchestrator**: `/squad:run "Implement JWT authentication flow"`
-    *   **Quicky (Quick Fixes)**: `/quicky:fix "Fix the type mismatch on line 42 in api.ts"`
-    *   **Architect (Design/Docs)**: `/architect:create "Design a resilient connection pool"` or `/architect:docs "Sync the Logseq graph with recent migrations"`
-    *   **Product Owner (Discovery/PO Interview)**: `/po:interview "A new service to parse PDFs"`
-    *   **Council (Design Debate & Synthesis)**: `/council:debate "Implement real-time location and telemetry-based pricing"`
+| V3 Tool | Description | Input Arguments |
+|---------|-------------|-----------------|
+| `playbook_list` | Lists all available SDLC playbooks. | `{}` |
+| `playbook_start` | Initializes a playbook session, locks gates, and sets active step. | `{ playbook: string, goal: string, cwd?: string }` |
+| `playbook_step` | Fetches active step context, compiled prompt, lens, and scoped tools. | `{ cwd?: string }` |
+| `playbook_run_checks` | Executes active step hard checks locally (test suites, linters, git status). | `{ cwd?: string }` |
+| `playbook_advance` | Validates hard checks and gates, advancing to the next step. | `{ cwd?: string }` |
+| `playbook_status` | Inspects current session state, active step, history, and gate states. | `{ cwd?: string }` |
 
-### 2. Claude Code (Model Context Protocol / MCP)
-Claude Code communicates with the Hub using **MCP tool calls**. Since Claude is an agentic assistant, you do **not** need to write raw code or command syntax in the chat. You simply speak to Claude in natural language, and Claude will autonomously invoke the correct Hub tool.
-*   **Natural Conversational Prompts (Recommended)**:
-    *   *"Hey Claude, call squad to build the user dashboard page."*
-    *   *"Claude, ask quicky to fix the label on the summary page."*
-    *   *"Ask the architect to design a CQRS pattern for payments."*
-*   **Under-the-Hood Tool Contract** (How Claude executes it behind the scenes):
-    *   Format: `call_agent_command(agent="[agent-name]", command="[command]", args="[your goal]")`
-    *   Example: `call_agent_command(agent="quicky", command="fix", args="Fix the summary label mismatch")`
+#### V3 Quickstart Flow
+```javascript
+// 1. Start a feature development playbook
+playbook_start({ playbook: "feature_dev", goal: "Implement multi-tenant OAuth2 login" });
 
-*   **SSO/Token-based Loop Execution (MCP Sampling)**:
-    In enterprise or token-based SSO environments (like AntiGravity or Codex) where local API keys are unavailable, you can run agents inside a server-managed execution loop using the client's own LLM session:
-    *   *Natural Conversational Prompt*: *"Hey assistant, run the quicky loop to fix the label mismatch."*
-    *   *Under-the-Hood Tool Contract*: `run_agent_loop(agent="quicky", command="fix", args="Fix the label mismatch")`
-    *   *Behavior*: The server manages conversation history, pins the system prompt (preventing Codex persona drift), intercepts local tool actions (filesystem, terminal commands) formatted as XML tags (`<read_file>`, `<write_file>`, `<run_command>`, `<task_complete>`), executes them on the host, and feeds the outputs back into the loop.
+// 2. Inspect active step instructions & cognitive lens
+playbook_step();
 
-*   **Available MCP Tools**:
-    *   `list_agents`: Lists all available specialized agents and their commands.
-    *   `call_agent_command`: Activates a specialized agent command, returning the raw compiled prompt (prompt injection fallback).
-    *   `run_agent_loop`: Executes a server-side multi-turn agent loop via client LLM sampling (SSO-compatible).
-    *   `get_agent_prompt`: Retrieves the persona, skills, and knowledge for a specific agent.
-    *   `pipeline_start`: Initializes a new pipeline session and locks all gates in `.squad-state-[branch].json`.
-    *   `request_approval`: Sets a gate status to `pending` and pauses the pipeline for human sign-off.
-    *   `check_gate`: Checks if a specific pipeline gate is approved before starting the next phase.
-    *   `pipeline_approve`: Approves a specific pipeline gate to unblock the next phase.
+// 3. Complete step work, then request human sign-off on the gate
+request_approval({ gate: "prd", summary: "PRD completed with 3 Gherkin scenarios" });
+
+// 4. Human approves the gate in chat or via tool
+pipeline_approve({ gate: "prd" });
+
+// 5. Advance to next step (checks & gates verified automatically)
+playbook_advance();
+
+// 6. Check overall session progress
+playbook_status();
+```
+
+---
+
+### Backward Compatibility (V2 Legacy MCP Tools)
+All legacy v2 MCP commands and tools remain **100% backward-compatible**:
+
+| Legacy Tool | Description |
+|-------------|-------------|
+| `list_agents` | Lists all specialized agents and returns the complete MCP Usage Guide. |
+| `call_agent_command` | Calls legacy agent commands (`/squad:run`, `/architect:create`, `/backend:create`, etc.). |
+| `get_agent_prompt` | Returns assembled persona, skills, and knowledge for an agent. |
+| `run_agent_loop` | Executes server-managed multi-turn loop via MCP client LLM sampling. |
+| `pipeline_start` | Starts legacy squad pipeline and locks gates. |
+| `request_approval` | Signals phase completion and sets gate to `pending`. |
+| `check_gate` | Verifies gate is `approved` before starting next phase. |
+| `pipeline_approve` | Approves a specific pipeline gate to unblock the next phase. |
 
 ### 3. Cursor & Codex IDEs (System Rules & Persona Linking)
 For Cursor, VS Code, or other IDEs using context files (like `.cursorrules` or custom system instructions), you link the agent's core identity file directly into your workspace.

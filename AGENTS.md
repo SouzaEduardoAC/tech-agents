@@ -27,6 +27,15 @@ The project documentation is managed as a knowledge graph in `docs/pages/`.
 - [[Quicky]]: Specialist for quick fixes, small tweaks, and isolated tasks maintaining documentation integrity.
 - [[Council]]: Symmetrical multi-perspective debate and design synthesis engine.
 
+## 🏗️ V3 Hybrid Architecture
+- **Agentic Engineering Harness**: Transitioned from v2 prompt-compiler / persona cosplay into a deterministic execution engine built on 4 primitives:
+  - **Playbooks** (`playbooks/*.yaml`): Finite state machine DAGs defining exact SDLC steps, input/output artifacts, and gates.
+  - **Cognitive Lenses** (`lenses/*.md`): Scoped 2-4 sentence professional stances replacing verbose persona BIOS bloat.
+  - **Scoped Toolboxes** (`engine/toolboxes.js`): Principle of least privilege capability sets (`fs_read`, `fs_write`, `git`, `verification`, `analysis`, `search_web`).
+  - **Deterministic Checks & Gates** (`checks/`, `engine/check_runner.js`): Machine-enforced local test/lint exit-code execution and approval gates.
+- **Native V3 MCP Tools**: `playbook_list`, `playbook_start`, `playbook_step`, `playbook_run_checks`, `playbook_advance`, `playbook_status`.
+- **100% Backward Compatibility**: All legacy v2 commands and tools (`call_agent_command`, `pipeline_start`, `request_approval`, `check_gate`, `pipeline_approve`, `list_agents`) are fully preserved.
+
 ## 🛠 Active Work & Tasks
 - DONE: Verify path normalization across all agents. (ref: [[code-dna]])
 - DONE: Implement prompt late-binding deduplication and heuristic relevance filtering (#AMD compiler optimization). (ref: [[TECHNICAL_SPECS]])
@@ -41,6 +50,7 @@ The project documentation is managed as a knowledge graph in `docs/pages/`.
 - DONE: Implement server-side managed execution loop via MCP Sampling (`run_agent_loop` tool), supporting local XML action execution (filesystem, terminal commands) and fallback logic. (ref: `index.js`, `test/mcp-sampling-test.js`, `[[TECHNICAL_SPECS]]`)
 - DONE: Align package name to `@souzaeduardoac/tech-agents` and update global MCP configurations to use `npx serve`. (ref: `package.json`, `bin/tech-agents.js`)
 - DONE: Implement Phase 5 Product Acceptance & Requirement Validation in Squad pipeline and PO agent (`/po:validate`, `/po:squad-validate`, `acceptance_validation.md`, `acceptance` gate). (ref: `po/commands/po/squad-validate.toml`, `squad/commands/squad/run.toml`, `[[TECHNICAL_SPECS]]`)
+- DONE: Implement V3 Hybrid Architecture: Declarative Playbooks, Cognitive Lenses, Scoped Toolboxes, and Deterministic Local Hard/Soft Checks with full MCP integration and E2E verification. (ref: `V3_ARCHITECTURE_SPEC.md`, `engine/`, `playbooks/`, `lenses/`, `checks/`, `[[TECHNICAL_SPECS]]`)
 - TODO: Implement automated AST-sync for [[Mobile]] widget trees.
 
-#AMD #UniversalHub #AgenticFramework #Logseq
+#AMD #UniversalHub #AgenticFramework #Logseq #V3Hybrid

@@ -151,3 +151,26 @@
 		- **Manifest-First Extraction Pattern:** Participating agents must scan the codebase and print a structured list (manifest) of all discovered entities before generating documentation, preventing omissions.
 		- **Per-Entity File Iteration:** For every entity in the manifest, the agent must generate a dedicated Logseq page in `docs/pages/` using the matching template from `common/templates/logseq/` (e.g., `business_flow_page.md`, `technical_endpoint.md`, `technical_data_model.md`).
 		- **Cross-Linking & Registry Integration:** General summary files (e.g. `BUSINESS_FLOW.md`, `TECHNICAL_SPECS.md`) are rewritten to act as indexed list nodes linking to these generated deep-dive pages. All new pages are recorded in the global registry `docs/pages/registry.md`.
+	- ## V3 Hybrid Architecture: Agentic Engineering Harness (v2026)
+		- **Purpose:** Replaces static prompt-compiler persona roleplay with a deterministic SDLC execution engine. Separates execution into four orthogonal, decoupled primitives: Playbooks, Cognitive Lenses, Toolboxes, and Deterministic Checks & Gates. (ref: `V3_ARCHITECTURE_SPEC.md`, `[[v3-architecture-spec]]`)
+		- **Primitive 1: Declarative Playbooks (`playbooks/*.yaml`):**
+			- State machine DAG definitions governing execution order, required input artifacts, target output artifacts, applicable standards, active toolboxes, and human gate keys.
+			- Core Playbooks: `feature_dev.yaml` (7 steps), `bug_fix.yaml` (3 steps), `security_audit.yaml` (2 steps), `pr_review.yaml` (2 steps), `consultation.yaml` (1 step), `full_sync.yaml` (2 steps).
+		- **Primitive 2: Cognitive Lenses (`lenses/*.md`):**
+			- Hyper-focused professional stances ($\le 4$ sentences, $\le 80$ words) that eliminate prompt noise and focus the model on domain trade-offs.
+			- 9 Lenses: `architect.md`, `backend.md`, `frontend.md`, `mobile.md`, `compliance.md`, `po.md`, `qa.md`, `quicky.md`, `council.md`.
+		- **Primitive 3: Scoped Toolboxes (`engine/toolboxes.js`):**
+			- Enforces the principle of least privilege per step.
+			- Capabilities: `fs_read`, `fs_write`, `git`, `verification`, `analysis`, `search_web`.
+		- **Primitive 4: Deterministic Hard & Soft Checks (`checks/`, `engine/check_runner.js`):**
+			- **Hard Checks:** Local command execution via `child_process.spawn` with timeout protection. Advances only if exit code is 0. Automatically sniffs workspace for `npm test`, `pytest`, `cargo test`, `go test`, etc.
+			- **Soft Checks:** JSON Schema validation (`ajv`) of structured output artifacts (`prd_schema.json`, `adr_schema.json`, `audit_schema.json`, `acceptance_schema.json`).
+			- **Human Approval Gates:** Hardware-like pause at `.squad-state-[branch].json` until explicitly approved via `pipeline_approve` or `/squad:approve`.
+		- **Native V3 MCP Tools (ref: `index.js`):**
+			- `playbook_list`: Enumerates all available playbooks and their step counts.
+			- `playbook_start`: Initializes a playbook session, locks default gates, and sets active step index to 0.
+			- `playbook_step`: Assembles the current step's compiled prompt (Lens + input artifacts + standards + scoped toolbox).
+			- `playbook_run_checks`: Runs the step's configured hard checks and returns pass/fail diagnostics.
+			- `playbook_advance`: Validates that hard checks passed and that human gates are approved; then advances step index and records history.
+			- `playbook_status`: Returns structured JSON metadata of the active session, history, and gate states.
+		- **Backward Compatibility:** All legacy v2 commands and tools (`call_agent_command`, `pipeline_start`, `request_approval`, `check_gate`, `pipeline_approve`, `list_agents`) remain 100% operational.
