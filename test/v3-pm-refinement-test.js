@@ -44,7 +44,9 @@ async function runTests() {
     assert.strictEqual(pmSession.active_step.id, "elicitation_interview");
     const pmStep1 = await getActiveStep(tempDir);
     assert.strictEqual(pmStep1.step.id, "elicitation_interview");
-    assert.ok(pmStep1.compiledPrompt.includes("Standard: Product Elicitation & Interview Protocol"));
+    assert.ok(pmStep1.compiledPrompt.includes("Standard: product_interview.md"));
+    assert.ok(pmStep1.compiledPrompt.includes("stitch"));
+    console.log("✅ product_discovery compiled prompt includes stitch peer MCP toolbox");
 
     // Advance elicitation -> prd_formulation
     const pmAdv1 = await advanceStep(tempDir);
@@ -82,6 +84,10 @@ async function runTests() {
     assert.strictEqual(techSession.active_step.id, "codebase_feasibility");
     const tStep1 = await getActiveStep(tempDir);
     assert.strictEqual(tStep1.step.id, "codebase_feasibility");
+    assert.ok(tStep1.compiledPrompt.includes("Standard: anti_hallucination.md"));
+    assert.ok(tStep1.compiledPrompt.includes("context7"));
+    assert.ok(tStep1.compiledPrompt.includes("Context7 Documentation Directive"));
+    console.log("✅ technical_refinement compiled prompt includes context7 toolbox & anti_hallucination standard");
 
     // Advance feasibility -> implementation_plan
     const tAdv1 = await advanceStep(tempDir);

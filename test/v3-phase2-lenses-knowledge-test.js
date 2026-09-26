@@ -69,6 +69,7 @@ async function runTests() {
 
   // Verify centralized knowledge files
   const expectedKnowledge = [
+    "anti_hallucination.md",
     "auth_standard.md",
     "git_standard.md",
     "testing_standard.md",

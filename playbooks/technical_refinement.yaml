@@ -14,8 +14,10 @@ steps:
     toolbox:
       - fs_read
       - analysis
+      - context7
       - fs_write
     standards:
+      - knowledge/anti_hallucination.md
       - knowledge/auth_standard.md
       - knowledge/testing_standard.md
     output_artifact: docs/pages/{{args}}-feasibility.md
@@ -26,8 +28,10 @@ steps:
     toolbox:
       - fs_read
       - analysis
+      - context7
       - fs_write
     standards:
+      - knowledge/anti_hallucination.md
       - knowledge/auth_standard.md
       - knowledge/testing_standard.md
     input_artifacts:

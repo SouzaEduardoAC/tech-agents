@@ -14,7 +14,10 @@ steps:
     toolbox:
       - fs_read
       - search_web
+      - context7
       - fs_write
+    standards:
+      - knowledge/anti_hallucination.md
     output_artifact: docs/pages/{{args}}-research-scope.md
     gate: scope
 

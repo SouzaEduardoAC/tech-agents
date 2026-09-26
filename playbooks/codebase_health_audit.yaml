@@ -14,6 +14,7 @@ steps:
     toolbox:
       - fs_read
       - verification
+      - sonarqube
       - fs_write
     standards:
       - knowledge/testing_standard.md

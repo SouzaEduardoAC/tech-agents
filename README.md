@@ -147,6 +147,10 @@ git pull && npm install
    * `verification`: Local test runner and linter execution (`npm test`, `pytest`, `cargo test`, etc.).
    * `analysis`: AST inspection and static code analysis.
    * `search_web`: External API and documentation retrieval.
+   * `context7` *(Peer MCP)*: Live dependency documentation and API contracts (`resolve-library-id`, `query-docs`).
+   * `stitch` *(Peer MCP)*: UI design tokens, screen extraction, and component specs (`get_screen`, `list_screens`, `get_project`).
+   * `playwright` *(Peer MCP)*: Automated browser interaction and visual regression testing (`browser_navigate`, `browser_snapshot`).
+   * `sonarqube` *(Peer MCP)*: Code quality metrics, security hotspots, and quality gates (`quality_gate`, `issues`, `measures_component`).
 
 4. **Deterministic Hard & Soft Checks (`checks/`)**:
    * **Hard Checks**: Local terminal command execution with timeout protection (`child_process.spawn`). Step advancement is **physically refused** if any test runner, linter, or git status check fails with a non-zero exit code.

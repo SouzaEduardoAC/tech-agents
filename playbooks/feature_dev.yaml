@@ -19,6 +19,7 @@ steps:
     toolbox:
       - fs_read
       - search_web
+      - stitch
       - fs_write
     standards:
       - knowledge/product_interview.md
@@ -35,7 +36,10 @@ steps:
     toolbox:
       - fs_read
       - analysis
+      - context7
       - fs_write
+    standards:
+      - knowledge/anti_hallucination.md
     input_artifacts:
       - docs/pages/{{args}}-prd.md
     output_artifact: docs/pages/{{args}}-analysis.md
@@ -47,8 +51,10 @@ steps:
     toolbox:
       - fs_read
       - analysis
+      - context7
       - fs_write
     standards:
+      - knowledge/anti_hallucination.md
       - knowledge/auth_standard.md
     input_artifacts:
       - docs/pages/{{args}}-prd.md
@@ -84,6 +90,8 @@ steps:
       - fs_write
       - verification
       - git
+      - stitch
+      - playwright
     standards:
       - knowledge/testing_standard.md
       - knowledge/git_standard.md
@@ -101,6 +109,7 @@ steps:
     toolbox:
       - fs_read
       - verification
+      - playwright
       - fs_write
     input_artifacts:
       - docs/pages/{{args}}-prd.md
@@ -115,6 +124,7 @@ steps:
     toolbox:
       - git
       - fs_read
+      - sonarqube
     standards:
       - knowledge/git_standard.md
     hard_checks:

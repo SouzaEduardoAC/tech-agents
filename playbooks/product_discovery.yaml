@@ -14,6 +14,7 @@ steps:
     toolbox:
       - fs_read
       - search_web
+      - stitch
       - fs_write
     standards:
       - knowledge/product_interview.md
@@ -25,6 +26,7 @@ steps:
     lens: lenses/po.md
     toolbox:
       - fs_read
+      - stitch
       - fs_write
     standards:
       - knowledge/product_interview.md

@@ -34,6 +34,26 @@ export const TOOLBOXES = {
     description: "External documentation, library API search, and research retriever.",
     readOnly: true,
   },
+  context7: {
+    name: "Context7 Documentation & API Contracts (Peer MCP)",
+    description: "Query live dependency documentation and API contracts via Context7 MCP (resolve-library-id, query-docs). Authorized during research and architecture phases.",
+    readOnly: true,
+  },
+  stitch: {
+    name: "Google Stitch UI Design & Tokens (Peer MCP)",
+    description: "Extract design tokens, UI screens, and frontend component specs via Google Stitch MCP (get_screen, list_screens, list_projects, get_project).",
+    readOnly: true,
+  },
+  playwright: {
+    name: "Playwright E2E Browser Testing (Peer MCP)",
+    description: "Automated browser interaction, screenshot capture, and visual regression testing via Playwright MCP (browser_navigate, browser_snapshot, browser_click).",
+    readOnly: false,
+  },
+  sonarqube: {
+    name: "SonarQube Code Quality & Security (Peer MCP)",
+    description: "Code quality metrics, security hotspots, and quality gate evaluation via SonarQube MCP (quality_gate, issues, measures_component).",
+    readOnly: true,
+  },
 };
 
 export function listToolboxes() {

@@ -22,6 +22,7 @@ steps:
     toolbox:
       - fs_read
       - verification
+      - sonarqube
     standards:
       - knowledge/testing_standard.md
       - knowledge/git_standard.md

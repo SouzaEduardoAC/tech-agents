@@ -14,8 +14,10 @@ steps:
     toolbox:
       - fs_read
       - analysis
+      - context7
       - fs_write
     standards:
+      - knowledge/anti_hallucination.md
       - knowledge/testing_standard.md
     output_artifact: docs/pages/{{args}}-spec.md
 
@@ -27,6 +29,7 @@ steps:
       - fs_write
       - git
       - verification
+      - stitch
     standards:
       - knowledge/testing_standard.md
       - knowledge/git_standard.md
