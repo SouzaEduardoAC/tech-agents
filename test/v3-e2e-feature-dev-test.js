@@ -93,6 +93,7 @@ async function run() {
         arguments: {
           playbook: "feature_dev",
           goal: "Build OAuth2 Multi-Tenant SSO",
+          feature: "oauth-sso",
           cwd: tempDir,
         },
       },
@@ -101,7 +102,7 @@ async function run() {
     assert(startRes.result.content[0].text.includes("Full Cycle Feature Development Pipeline"));
     console.log("✅ Playbook feature_dev started (7 steps registered)");
 
-    // Step 1: discovery (gate: prd)
+    // Step 1: discovery (gate: prd, soft_checks: prd_schema.json)
     const step1Res = await sendRequest(proc, {
       jsonrpc: "2.0",
       id: nextId(),
@@ -151,6 +152,21 @@ async function run() {
       params: { name: "pipeline_approve", arguments: { gate: "prd", cwd: tempDir } },
     });
 
+    // Write compliant mock PRD artifact for soft check
+    await fs.ensureDir(path.join(tempDir, "docs", "pages"));
+    const prdData = {
+      feature_name: "OAuth2 Multi-Tenant SSO",
+      problem_statement: "Enterprise customers require single sign-on across tenants.",
+      user_stories: ["As an admin I want to configure tenant identity providers."],
+      acceptance_criteria: [{ scenario: "SSO Login", given: "on login page", when: "authenticates", then: "authorized" }],
+      moscow_prioritization: { must_have: ["SAML 2.0", "OIDC"] },
+      edge_cases: ["Revoked tenant keys"],
+    };
+    await fs.writeFile(
+      path.join(tempDir, "docs", "pages", "oauth-sso-prd.md"),
+      `---\n${JSON.stringify(prdData, null, 2)}\n---\n# PRD Content`
+    );
+
     // Advance to Step 2
     const adv1Success = await sendRequest(proc, {
       jsonrpc: "2.0",
@@ -185,7 +201,7 @@ async function run() {
     assert(adv2Success.result.content[0].text.includes("Advanced to step 3/7: architecture"));
     console.log("✅ Step 2 advanced to Step 3 (architecture)");
 
-    // Step 3: architecture (gate: plan)
+    // Step 3: architecture (gate: plan, soft_checks: adr_schema.json)
     await sendRequest(proc, {
       jsonrpc: "2.0",
       id: nextId(),
@@ -198,6 +214,24 @@ async function run() {
       method: "tools/call",
       params: { name: "pipeline_approve", arguments: { gate: "plan", cwd: tempDir } },
     });
+
+    // Write compliant ADR artifact
+    const adrData = {
+      title: "ADR: OAuth2 Multi-Tenant SSO Architecture",
+      status: "ACCEPTED",
+      context: "Multi-tenant enterprise requirements demand robust isolated identity provider mapping.",
+      decision: "Implement isolated tenant auth adapters with stateless signed JWT verification middleware.",
+      consequences: {
+        positive: ["Strict tenant isolation", "Stateless verification"],
+        negative: ["Key rotation orchestration complexity"],
+      },
+      rollback_strategy: "Revert to single-tenant legacy provider configuration via env flag.",
+    };
+    await fs.writeFile(
+      path.join(tempDir, "docs", "pages", "oauth-sso-architecture.md"),
+      `---\n${JSON.stringify(adrData, null, 2)}\n---\n# Architecture Decision Record`
+    );
+
     const adv3Success = await sendRequest(proc, {
       jsonrpc: "2.0",
       id: nextId(),
@@ -208,7 +242,7 @@ async function run() {
     assert(adv3Success.result.content[0].text.includes("Advanced to step 4/7: compliance"));
     console.log("✅ Step 3 advanced to Step 4 (compliance)");
 
-    // Step 4: compliance (gate: compliance)
+    // Step 4: compliance (gate: compliance, soft_checks: audit_schema.json)
     await sendRequest(proc, {
       jsonrpc: "2.0",
       id: nextId(),
@@ -221,6 +255,27 @@ async function run() {
       method: "tools/call",
       params: { name: "pipeline_approve", arguments: { gate: "compliance", cwd: tempDir } },
     });
+
+    // Write compliant Audit artifact
+    const auditData = {
+      target_scope: "OAuth2 Multi-Tenant Authentication",
+      regulations_evaluated: ["GDPR", "SOC2 Type II"],
+      threat_surface: ["Token hijacking", "Tenant impersonation"],
+      findings: [
+        {
+          severity: "INFORMATIONAL",
+          category: "Token Storage",
+          description: "Tokens stored in memory only",
+          remediation: "Ensure HTTPS-only transport",
+        },
+      ],
+      overall_verdict: "PASSED",
+    };
+    await fs.writeFile(
+      path.join(tempDir, "docs", "pages", "oauth-sso-audit.md"),
+      `---\n${JSON.stringify(auditData, null, 2)}\n---\n# Compliance Audit Report`
+    );
+
     const adv4Success = await sendRequest(proc, {
       jsonrpc: "2.0",
       id: nextId(),
@@ -289,7 +344,7 @@ async function run() {
     assert(adv5Success.result.content[0].text.includes("Advanced to step 6/7: acceptance"));
     console.log("✅ Step 5 advanced to Step 6 (acceptance)");
 
-    // Step 6: acceptance (gate: acceptance)
+    // Step 6: acceptance (gate: acceptance, soft_checks: acceptance_schema.json)
     await sendRequest(proc, {
       jsonrpc: "2.0",
       id: nextId(),
@@ -302,6 +357,28 @@ async function run() {
       method: "tools/call",
       params: { name: "pipeline_approve", arguments: { gate: "acceptance", cwd: tempDir } },
     });
+
+    // Write compliant Acceptance artifact
+    const acceptanceData = {
+      feature_name: "OAuth2 Multi-Tenant SSO",
+      evaluated_scenarios: [
+        {
+          scenario: "Successful Login",
+          criteria_met: true,
+          evidence: "Automated test passed",
+        },
+      ],
+      moscow_compliance: {
+        must_have_percent: 100,
+        should_have_percent: 100,
+      },
+      verdict: "ACCEPT",
+    };
+    await fs.writeFile(
+      path.join(tempDir, "docs", "pages", "oauth-sso-acceptance.md"),
+      `---\n${JSON.stringify(acceptanceData, null, 2)}\n---\n# Acceptance Report`
+    );
+
     const adv6Success = await sendRequest(proc, {
       jsonrpc: "2.0",
       id: nextId(),
@@ -314,7 +391,7 @@ async function run() {
 
     // Step 7: pull_request (gate: null, hard_checks: git status --porcelain)
     // Make sure git working directory is clean
-    execSync("git add package.json && git commit -m 'test: update test script'", { cwd: tempDir, stdio: "ignore" });
+    execSync("git add . && git commit -m 'test: update test script and docs'", { cwd: tempDir, stdio: "ignore" });
 
     const adv7Success = await sendRequest(proc, {
       jsonrpc: "2.0",

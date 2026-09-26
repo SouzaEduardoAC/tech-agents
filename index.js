@@ -196,6 +196,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           properties: {
             playbook: { type: "string", description: "The playbook identifier (e.g. feature_dev, bug_fix, security_audit, pr_review, consultation, full_sync)." },
             goal: { type: "string", description: "The high-level goal or task to execute." },
+            feature: { type: "string", description: "Optional feature name or slug (e.g., 'oauth-sso'). Defaults to kebab-case slug derived from goal." },
             cwd: { type: "string", description: "Optional workspace root directory." },
           },
           required: ["playbook", "goal"],
@@ -691,11 +692,11 @@ ${knowledge}
     }
 
     if (name === "playbook_start") {
-      const { playbook, goal, cwd } = args;
+      const { playbook, goal, cwd, feature } = args;
       if (!playbook || !goal) {
         throw new Error("playbook_start requires 'playbook' and 'goal'.");
       }
-      const result = await startPlaybook({ playbookId: playbook, goal, cwd });
+      const result = await startPlaybook({ playbookId: playbook, goal, cwd, feature });
       return {
         content: [{
           type: "text",
@@ -703,6 +704,7 @@ ${knowledge}
             `✅ Playbook '${result.playbook_name || result.playbook_id}' started.`,
             `Session ID: ${result.session_id}`,
             `Goal: ${goal}`,
+            `Feature Slug: ${result.feature}`,
             `Total steps: ${result.total_steps}`,
             `Active step: 1/${result.total_steps} (${result.active_step?.id || "none"}) - ${result.active_step?.name || ""}`,
             `State file: ${result.statePath}`,

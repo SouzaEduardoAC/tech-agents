@@ -38,6 +38,7 @@ async function runTests() {
     const pmSession = await startPlaybook({
       playbookId: "product_discovery",
       goal: "Single Sign-On (SSO) with Okta and Google Workspace for Enterprise customers",
+      feature: "enterprise-sso",
       cwd: tempDir,
     });
 
@@ -67,6 +68,31 @@ async function runTests() {
     });
     await approveGate({ gate: "prd", cwd: tempDir });
 
+    // Mock compliant PRD artifact for soft check
+    await fs.ensureDir(path.join(tempDir, "docs", "pages"));
+    const prdData = {
+      feature_name: "Enterprise Single Sign-On",
+      problem_statement: "Enterprise customers require Okta and Google Workspace SSO integration for workforce access.",
+      user_stories: ["As an employee, I want to log in using my corporate Okta credentials."],
+      acceptance_criteria: [
+        {
+          scenario: "Successful Okta Login",
+          given: "User is on the login page",
+          when: "User clicks Okta SSO and authenticates",
+          then: "User receives a signed session JWT and enters the dashboard",
+        },
+      ],
+      moscow_prioritization: {
+        must_have: ["Okta SAML 2.0 integration", "JWT session issuance"],
+        should_have: ["Google Workspace OAuth2"],
+      },
+      edge_cases: ["SAML assertion expiration handling", "Revoked employee account handling"],
+    };
+    await fs.writeFile(
+      path.join(tempDir, "docs", "pages", "enterprise-sso-prd.md"),
+      `---\n${JSON.stringify(prdData, null, 2)}\n---\n# Enterprise SSO PRD`
+    );
+
     const pmFinal = await advanceStep(tempDir);
     assert.strictEqual(pmFinal.completed, true);
     console.log("✅ product_discovery completed successfully across all steps");
@@ -78,6 +104,7 @@ async function runTests() {
     const techSession = await startPlaybook({
       playbookId: "technical_refinement",
       goal: "Refine SSO feature card from Azure Boards against current auth architecture",
+      feature: "auth-sso",
       cwd: tempDir,
     });
 
@@ -107,6 +134,23 @@ async function runTests() {
       cwd: tempDir,
     });
     await approveGate({ gate: "plan", cwd: tempDir });
+
+    // Mock compliant ADR artifact for soft check
+    const adrData = {
+      title: "ADR: Refinement Implementation Plan for Auth SSO",
+      status: "ACCEPTED",
+      context: "Refinement meeting analyzed Okta SSO requirements against the existing auth module and database.",
+      decision: "Implement Okta middleware with stateless JWT validation and store provider metadata in DB.",
+      consequences: {
+        positive: ["Stateless auth", "Clean interface boundary"],
+        negative: ["Additional token verification latency"],
+      },
+      rollback_strategy: "Revert to local username/password authentication middleware flag.",
+    };
+    await fs.writeFile(
+      path.join(tempDir, "docs", "pages", "auth-sso-implementation-plan.md"),
+      `---\n${JSON.stringify(adrData, null, 2)}\n---\n# Implementation Plan`
+    );
 
     const tFinal = await advanceStep(tempDir);
     assert.strictEqual(tFinal.completed, true);

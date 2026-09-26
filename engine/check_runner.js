@@ -1,6 +1,10 @@
 import { exec } from "child_process";
 import fs from "fs-extra";
 import path from "path";
+import yaml from "yaml";
+import { fileURLToPath } from "url";
+
+const AGENTS_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 /**
  * Executes a shell command locally with timeout protection and captures exit code, stdout, and stderr.
@@ -218,5 +222,129 @@ export function validateSchema(data, schema) {
   return {
     valid: errors.length === 0,
     errors,
+  };
+}
+
+/**
+ * Extracts structured key-value data from an artifact's Markdown, YAML frontmatter, or code blocks.
+ */
+export function extractStructuredData(rawContent) {
+  if (!rawContent || typeof rawContent !== "string") return {};
+
+  // 1. Check for YAML frontmatter
+  const fmMatch = rawContent.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (fmMatch) {
+    try {
+      const parsed = yaml.parse(fmMatch[1]);
+      if (parsed && typeof parsed === "object") return parsed;
+    } catch (e) {}
+  }
+
+  // 2. Check for JSON code block
+  const jsonMatch = rawContent.match(/```json\r?\n([\s\S]*?)\r?\n```/i);
+  if (jsonMatch) {
+    try {
+      const parsed = JSON.parse(jsonMatch[1]);
+      if (parsed && typeof parsed === "object") return parsed;
+    } catch (e) {}
+  }
+
+  // 3. Check for YAML code block
+  const yamlMatch = rawContent.match(/```ya?ml\r?\n([\s\S]*?)\r?\n```/i);
+  if (yamlMatch) {
+    try {
+      const parsed = yaml.parse(yamlMatch[1]);
+      if (parsed && typeof parsed === "object") return parsed;
+    } catch (e) {}
+  }
+
+  // 4. Fallback: Parse Markdown headings into an object
+  const headings = {};
+  const lines = rawContent.split(/\r?\n/);
+  let currentKey = null;
+  let currentText = [];
+
+  for (const line of lines) {
+    const headingMatch = line.match(/^#{1,4}\s+(.+)$/);
+    if (headingMatch) {
+      if (currentKey) {
+        headings[currentKey] = currentText.join("\n").trim();
+      }
+      currentKey = headingMatch[1].toLowerCase().replace(/[^\w\s]/g, "").trim().replace(/\s+/g, "_");
+      currentText = [];
+    } else if (currentKey) {
+      currentText.push(line);
+    }
+  }
+  if (currentKey) {
+    headings[currentKey] = currentText.join("\n").trim();
+  }
+
+  return headings;
+}
+
+/**
+ * Runs soft checks (JSON Schema validation) against an output artifact file.
+ */
+export async function runSoftChecks(stepSoftChecks = [], outputArtifactPath, options = {}) {
+  const { projectRoot = process.cwd() } = options;
+
+  if (!stepSoftChecks || stepSoftChecks.length === 0) {
+    return { pass: true, message: "No soft checks configured for this step." };
+  }
+
+  if (!outputArtifactPath) {
+    return { pass: true, message: "No output artifact path specified for soft checks." };
+  }
+
+  const fullPath = path.isAbsolute(outputArtifactPath)
+    ? outputArtifactPath
+    : path.join(projectRoot, outputArtifactPath);
+
+  if (!(await fs.pathExists(fullPath))) {
+    return {
+      pass: false,
+      artifactPath: outputArtifactPath,
+      errorMessage: [
+        `❌ SOFT CHECK FAILED: Required output artifact does not exist on disk: \`${outputArtifactPath}\``,
+        `Directive: You must generate and write the required artifact before advancing this step.`,
+      ].join("\n"),
+    };
+  }
+
+  const rawContent = await fs.readFile(fullPath, "utf-8");
+  const data = extractStructuredData(rawContent);
+
+  for (const schemaRef of stepSoftChecks) {
+    let fullSchemaPath = path.isAbsolute(schemaRef)
+      ? schemaRef
+      : path.join(AGENTS_ROOT, schemaRef);
+
+    if (!(await fs.pathExists(fullSchemaPath))) {
+      continue;
+    }
+
+    const schema = await fs.readJson(fullSchemaPath);
+    const res = validateSchema(data, schema);
+    if (!res.valid) {
+      return {
+        pass: false,
+        artifactPath: outputArtifactPath,
+        schema: path.basename(schemaRef),
+        errors: res.errors,
+        errorMessage: [
+          `❌ SOFT CHECK FAILED: Artifact \`${outputArtifactPath}\` does not satisfy schema \`${path.basename(schemaRef)}\`.`,
+          `Violations:`,
+          ...res.errors.map((err) => `  - ${err}`),
+          `Directive: Update the artifact to provide all required fields matching the schema specification.`,
+        ].join("\n"),
+      };
+    }
+  }
+
+  return {
+    pass: true,
+    artifactPath: outputArtifactPath,
+    message: `All soft checks passed for \`${outputArtifactPath}\`.`,
   };
 }

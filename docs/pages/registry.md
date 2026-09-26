@@ -183,5 +183,11 @@
 			- status:: [DONE]
 			- ref:: [[TECHNICAL_SPECS]], `engine/toolboxes.js`, `knowledge/anti_hallucination.md`, `playbooks/`
 			- summary:: Integrated host-level external MCP servers into V3 Scoped Toolboxes and declarative playbooks: (1) Added first-class peer MCP toolboxes in `engine/toolboxes.js` (`context7`, `stitch`, `playwright`, `sonarqube`) with explicit action instructions and boundary enforcement; (2) Bound `knowledge/anti_hallucination.md` (Context7 Planning Directive) and peer toolboxes to relevant steps in `feature_dev`, `technical_refinement`, `component_scaffold`, `deep_research`, `product_discovery`, `pr_review`, and `codebase_health_audit`; (3) Enforced anti-hallucination discipline ensuring Context7 is queried for live verified docs during analysis/architecture/research while keeping code generation steps zero-latency; (4) Updated test suites and documentation.
+		- ## Feature: V3 Hardening — Feature Slugs, Soft Checks & Polyglot Test/Lint Scripts (2026-09-26)
+			- status:: [DONE]
+			- ref:: [[TECHNICAL_SPECS]], `engine/check_runner.js`, `engine/playbook_runner.js`, `engine/prompt_compiler.js`, `engine/state_manager.js`, `checks/hard/standard_test.sh`, `checks/hard/standard_lint.sh`
+			- summary:: Hardened the V3 engine against blind spots and parity gaps: (1) Added feature slugging and variable interpolation (`{{args}}`, `{{feature}}`, `{{goal}}`) in step prompts and artifact paths; (2) Enriched prompt assembly with step descriptions, output artifact directives, gate notices, and dynamic stack knowledge; (3) Added deterministic soft checks and JSON schema validation in check runner and playbook runner; (4) Added standalone polyglot test and lint runner scripts (`checks/hard/standard_test.sh`, `checks/hard/standard_lint.sh`) supporting Node, Rust, Go, Python, Flutter/Dart, Java/Kotlin, and .NET. Tested with 16 test suites passing 100%.
+
+
 
 

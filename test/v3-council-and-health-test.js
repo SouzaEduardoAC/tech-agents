@@ -38,6 +38,7 @@ async function runTests() {
     const councilSession = await startPlaybook({
       playbookId: "council_debate",
       goal: "Event-driven architecture vs monolithic service for order processing",
+      feature: "order-processing",
       cwd: tempDir,
     });
 
@@ -73,11 +74,22 @@ async function runTests() {
     });
     await approveGate({ gate: "council_synthesis", cwd: tempDir });
 
-    // Mock ADR artifact
+    // Mock compliant ADR artifact
     await fs.ensureDir(path.join(tempDir, "docs", "pages"));
+    const adrData = {
+      title: "ADR: Event-driven architecture vs monolithic service",
+      status: "ACCEPTED",
+      context: "The system needs to process asynchronous orders with high throughput and low blast radius.",
+      decision: "Adopt an event-driven architecture using pub/sub queues and idempotent consumers.",
+      consequences: {
+        positive: ["Independent service scaling", "Failure isolation"],
+        negative: ["Eventual consistency complexity"],
+      },
+      rollback_strategy: "Feature flag allows falling back to synchronous monolithic route.",
+    };
     await fs.writeFile(
       path.join(tempDir, "docs", "pages", "order-processing-adr.md"),
-      "# ADR: Event-driven architecture"
+      `---\n${JSON.stringify(adrData, null, 2)}\n---\n# ADR: Event-driven architecture`
     );
 
     // Advance to complete

@@ -309,6 +309,24 @@ export async function getDynamicKnowledge(taskArgs = "", agent = "", customCwd) 
 }
 
 /**
+ * Interpolates variables like {{args}}, {{feature}}, {{goal}} into strings or arrays of strings.
+ */
+export function interpolateVariables(target, vars = {}) {
+  if (Array.isArray(target)) {
+    return target.map((item) => interpolateVariables(item, vars));
+  }
+  if (typeof target !== "string") return target;
+  let res = target;
+  for (const [k, v] of Object.entries(vars)) {
+    if (v !== undefined && v !== null) {
+      const regex = new RegExp(`\\{\\{${k}\\}\\}`, "g");
+      res = res.replace(regex, v);
+    }
+  }
+  return res;
+}
+
+/**
  * Compiles a V3 Playbook step prompt.
  * Assembles Task + Lens + Input Artifacts + Standards + Toolbox constraints.
  */
@@ -316,22 +334,38 @@ export async function compileStepPrompt({
   playbookId,
   stepId,
   stepName,
+  stepDescription = "",
+  lensName = "",
   goal,
+  feature = "feature",
   lensContent,
   inputArtifacts = [],
+  outputArtifact = null,
+  gate = null,
   standards = [],
   toolbox = [],
   customCwd,
 }) {
   const { projectRoot } = await resolveStateFilePath(customCwd);
   const insideHub = await isInsideHub(projectRoot);
+  const vars = { args: feature, feature, goal };
 
   const header = `### V3 PLAYBOOK STEP EXECUTION
 [Playbook: ${playbookId.toUpperCase()} | Step: ${stepId.toUpperCase()} - ${stepName}]
 Goal: ${goal}
+Feature: ${feature}
 
 --------------------------------------------------------------------------------
 `;
+
+  // Step Objectives
+  let descriptionSection = "";
+  if (stepDescription && stepDescription.trim()) {
+    descriptionSection = `## Step Objectives & Instructions
+${stepDescription.trim()}
+
+`;
+  }
 
   // 1. Cognitive Lens (The Mindset)
   const lensSection = `## Cognitive Lens (Professional Mindset & Directives)
@@ -339,11 +373,38 @@ ${lensContent.trim()}
 
 `;
 
-  // 2. Input Artifacts
+  // 2. Required Output Artifact
+  let outputArtifactSection = "";
+  if (outputArtifact) {
+    const resolvedOutput = interpolateVariables(outputArtifact, vars);
+    outputArtifactSection = `## Required Output Artifact
+You MUST produce and write the completed step output to:
+\`${resolvedOutput}\`
+Ensure the file is created with comprehensive, high-fidelity content before concluding this step.
+
+`;
+  }
+
+  // 3. Human Approval Gate Directive
+  let gateSection = "";
+  if (gate) {
+    const resolvedOutput = outputArtifact ? interpolateVariables(outputArtifact, vars) : "";
+    gateSection = `## Mandatory Human Approval Checkpoint
+⚠️ **GATE REQUIRED:** Advancing past this step is physically blocked by human approval gate: \`${gate}\`.
+Upon creating the required artifact, you MUST:
+1. Stop further autonomous actions.
+2. Call \`request_approval(gate="${gate}"${resolvedOutput ? `, artifact_path="${resolvedOutput}"` : ""}, summary="<brief summary of changes>")\`.
+3. Await human approval (\`/squad:approve ${gate}\` or \`pipeline_approve\`) before attempting to advance the step.
+
+`;
+  }
+
+  // 4. Input Artifacts
   let artifactsContent = "";
-  if (inputArtifacts.length > 0) {
+  const resolvedInputArtifacts = interpolateVariables(inputArtifacts, vars);
+  if (resolvedInputArtifacts.length > 0) {
     artifactsContent = `## Prior Step Artifacts & Context\n`;
-    for (const artPath of inputArtifacts) {
+    for (const artPath of resolvedInputArtifacts) {
       const fullArtPath = path.isAbsolute(artPath) ? artPath : path.join(projectRoot, artPath);
       if (await fs.pathExists(fullArtPath)) {
         const text = await fs.readFile(fullArtPath, "utf-8");
@@ -354,7 +415,7 @@ ${lensContent.trim()}
     }
   }
 
-  // 3. Standards & Knowledge
+  // 5. Standards & Knowledge
   let standardsContent = "";
   if (standards.length > 0) {
     standardsContent = `## Reference Standards\n`;
@@ -367,7 +428,16 @@ ${lensContent.trim()}
     }
   }
 
-  // 4. Toolbox Permissions
+  // 6. Dynamic Stack Standards (Architect, Backend, Frontend, Mobile)
+  let dynamicKnowledgeContent = "";
+  if (["architect", "backend", "frontend", "mobile"].includes(lensName)) {
+    const dynamicStack = await getDynamicKnowledge(goal, lensName, customCwd);
+    if (dynamicStack && dynamicStack.trim()) {
+      dynamicKnowledgeContent = `## Dynamic Project Stack Guidance\n${dynamicStack.trim()}\n\n`;
+    }
+  }
+
+  // 7. Toolbox Permissions
   const toolboxSection = `## Active Toolbox Permissions
 You are authorized to use tools in the following categories for this step:
 ${toolbox.map((t) => `- \`${t}\``).join("\n")}
@@ -375,14 +445,14 @@ Ensure you adhere strictly to the principle of least privilege.
 
 `;
 
-  // 5. Hub Compliance Mandate if inside Hub
+  // 8. Hub Compliance Mandate if inside Hub
   let compliance = "";
   if (insideHub) {
     compliance = `\n\n${await getComplianceMandate(projectRoot)}`;
   }
 
-  const prompt = `${header}${lensSection}${artifactsContent}${standardsContent}${toolboxSection}${compliance}`;
-  return resolveProbes(prompt);
+  const prompt = `${header}${descriptionSection}${lensSection}${outputArtifactSection}${gateSection}${artifactsContent}${standardsContent}${dynamicKnowledgeContent}${toolboxSection}${compliance}`;
+  return resolveProbes(interpolateVariables(prompt, vars));
 }
 
 /**

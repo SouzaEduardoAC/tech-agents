@@ -99,9 +99,25 @@ export async function getComplianceMandate(projectRoot) {
 }
 
 /**
+ * Converts a text string into a clean kebab-case slug for filenames and branch identifiers.
+ */
+export function slugify(text) {
+  if (!text) return "feature";
+  return (
+    text
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, "")
+      .trim()
+      .replace(/[\s_-]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 40) || "feature"
+  );
+}
+
+/**
  * Initialize a new pipeline session with locked gates.
  */
-export async function initPipelineSession({ goal, gates = [], cwd, playbookId = null }) {
+export async function initPipelineSession({ goal, gates = [], cwd, playbookId = null, feature = null }) {
   if (!goal || !Array.isArray(gates)) {
     throw new Error("initPipelineSession requires 'goal' (string) and 'gates' (array).");
   }
@@ -109,6 +125,7 @@ export async function initPipelineSession({ goal, gates = [], cwd, playbookId = 
   const hash = crypto.createHash("sha256").update(goal).digest("hex").slice(0, 8);
   const session_id = `${Date.now()}-${hash}`;
   const initiated_at = new Date().toISOString();
+  const featureSlug = feature ? slugify(feature) : slugify(goal);
 
   const gatesObj = {};
   for (const key of gates) {
@@ -119,6 +136,7 @@ export async function initPipelineSession({ goal, gates = [], cwd, playbookId = 
     session_id,
     initiated_at,
     goal,
+    feature: featureSlug,
     playbook: playbookId,
     active_step: 0,
     gates: gatesObj,
@@ -144,7 +162,7 @@ export async function initPipelineSession({ goal, gates = [], cwd, playbookId = 
     }
   }
 
-  return { state, statePath, session_id, projectRoot };
+  return { state, statePath, session_id, projectRoot, feature: featureSlug };
 }
 
 /**
