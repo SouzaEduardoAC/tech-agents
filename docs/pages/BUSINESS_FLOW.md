@@ -7,7 +7,7 @@
 - # Global Business Rules
 	- **Rule 0: PRD-First**: No planning without a validated `[FEATURE]_PRD.md`.
 	- **Rule 1: Human Approval Gates**: Mandatory user sign-off at each transition.
-	- **Rule 2: Test-First Integrity**: Implementation incomplete until 100% test pass rate. (ref: `common/knowledge/testing_standard.md`)
-	- **Rule 3: Commercial License Guard**: Halt and request permission for paid dependencies. (ref: `common/knowledge/licensing.md`)
+	- **Rule 2: Test-First Integrity**: Implementation incomplete until 100% test pass rate. (ref: `knowledge/testing_standard.md`)
+	- **Rule 3: Commercial License Guard**: Halt and request permission for paid dependencies. (ref: `knowledge/licensing.md`)
 	- **Rule 5: Zero Context Dilution**: Use sequential persona handoffs. (ref: `index.js`)
 	- **Rule 6: Stack-Aware Intelligence**: Automatic KB adaptation to project stack. (ref: `index.js -> getDynamicKnowledge`)

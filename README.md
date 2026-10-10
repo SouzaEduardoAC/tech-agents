@@ -255,16 +255,14 @@ playbook_status();
 
 ---
 
-### Backward Compatibility (V2 Legacy MCP Tools)
-All legacy v2 MCP commands and tools remain **100% backward-compatible**:
+### Pure V3 Agentic Tools & Human Approval Gates
 
-| Legacy Tool | Description |
-|-------------|-------------|
-| `list_agents` | Lists all specialized agents and returns the complete MCP Usage Guide. |
-| `call_agent_command` | Calls legacy agent commands (`/squad:run`, `/architect:create`, `/backend:create`, etc.). |
-| `get_agent_prompt` | Returns assembled persona, skills, and knowledge for an agent. |
+| Tool | Description |
+|------|-------------|
+| `lens_prompt` | Stateless single-turn prompt compilation for any of the 11 Cognitive Lenses with dynamic stack knowledge. |
+| `list_agents` | Lists all available Playbooks, Cognitive Lenses, and returns the complete MCP Usage Guide. |
 | `run_agent_loop` | Executes server-managed multi-turn loop via MCP client LLM sampling. |
-| `pipeline_start` | Starts legacy squad pipeline and locks gates. |
+| `pipeline_start` | Initializes a pipeline session and locks approval gates in `.squad-state-[branch].json`. |
 | `request_approval` | Signals phase completion and sets gate to `pending`. |
 | `check_gate` | Verifies gate is `approved` before starting next phase. |
 | `pipeline_approve` | Approves a specific pipeline gate to unblock the next phase. |

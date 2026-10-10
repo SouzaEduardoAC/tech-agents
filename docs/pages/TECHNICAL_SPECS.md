@@ -29,13 +29,13 @@
 				- Injection guard:: Only injected when the search target matches analyze/simulate/trace/csv/json/hypothetical keywords. (ref: `common/skills/investigation.md`, `index.js → compileCommonSection`)
 			- **`mcp_usage_guide.md` — MCP Usage Guide**:
 				- Purpose:: Foundational guide instructing any client LLM on the 7 MCP tools, 13 agents, 42+ commands, trigger phrases, aliases, and flowchart logic.
-				- Behavior:: Statically linked via CLI (`link mcp <target>`) or dynamically served as the response of the `list_agents` tool, and always injected into the prompt of any running agent command as foundational baseline knowledge. (ref: `common/skills/mcp_usage_guide.md`, `index.js → compileCommonSection`)
+				- Behavior:: Statically linked via CLI (`link mcp <target>`) or dynamically served as the response of the `list_agents` tool, and always injected into the prompt of any running agent command as foundational baseline knowledge. (ref: `docs/mcp_usage_guide.md`, `index.js → compileCommonSection`)
 		- **Dynamic Stack Detection (The Heuristic Engine)**:
 			- Activated for: `architect`, `backend`, `frontend`, `mobile`.
 			- Sniffs the project directory (`process.cwd()`) and immediately nested subdirectories (Depth-1 monorepo scan) for marker files (e.g. `pom.xml`, `package.json`, `pubspec.yaml`, `go.mod`, `.csproj`) or keywords in `taskArgs`.
 			- Dynamically appends the relevant framework guides (e.g. `java.md`, `react.md`) to the context.
 			- **Multi-Stack Guard (On-Demand Mode)**: If multiple primary stacks are detected (e.g. Java in `module-auth/` + React in `module-frontend/`), the engine aborts pre-injection and outputs an `On-Demand Manifest` with module attribution. This forces the LLM to explicitly use `view_file` to read the correct stack context only when needed, avoiding cross-contamination and token bloat. (ref: `index.js -> getDynamicKnowledge`, `scanWorkspace`)
-			- **Exception — `review` Commands (Diff-Based Detection)**: The `backend:review`, `frontend:review`, and `mobile:review` commands operate against remote PR diffs, not local files. Stack detection for these commands bypasses `getDynamicKnowledge()` and instead runs **Phase 0.4** inside the prompt session: the agent scans changed file extensions and config markers from the acquired diff and calls `view_file` on the matching `common/stacks/*.md` reference. Detection is agent-scoped (backend → .NET/Java/Go; frontend → React/Angular/Vue/TS/JS; mobile → Flutter). Running from the project root is recommended to also load `AGENTS.md`/`CLAUDE.md`/`GEMINI.md` into context for project-specific supplementary hints. (ref: `common/skills/pr_review.md → Phase 0.4`)
+			- **Exception — `review` Commands (Diff-Based Detection)**: The `backend:review`, `frontend:review`, and `mobile:review` commands operate against remote PR diffs, not local files. Stack detection for these commands bypasses `getDynamicKnowledge()` and instead runs **Phase 0.4** inside the prompt session: the agent scans changed file extensions and config markers from the acquired diff and calls `view_file` on the matching `knowledge/stacks/*.md` reference. Detection is agent-scoped (backend → .NET/Java/Go; frontend → React/Angular/Vue/TS/JS; mobile → Flutter). Running from the project root is recommended to also load `AGENTS.md`/`CLAUDE.md`/`GEMINI.md` into context for project-specific supplementary hints. (ref: `common/skills/pr_review.md → Phase 0.4`)
 		- **Probe Resolution Logic (The !{cat} Pattern)**:
 			- Pattern:: `/!\{cat\s+([^\}]+)\}/g`
 			- Behavior:: Resolves paths relative to `AGENTS_ROOT` or `~/.gemini/agents`.
@@ -46,9 +46,9 @@
 			- Pointers: Features are indexed with mandatory `nodes:: [[Link]]` properties.
 			- Purpose: Enables on-demand stakeholder reporting without full graph crawls. (ref: `common/skills/logseq_knowledge.md -> Phase 4`)
 	- ## Data Standards & Guardrails
-		- **Testing Gate**: Mandates unit tests for business logic and regression tests for bug fixes. (ref: `common/knowledge/testing_standard.md`)
-		- **Licensing Gate**: Mandatory **HALT** and **ROI Logic** report for commercial dependencies. (ref: `common/knowledge/licensing.md`)
-		- **Git Gate**: Strictly follows Conventional Commits 1.0.0, mandating both a scope and a body for all commits. (ref: `common/knowledge/git_standard.md`)
+		- **Testing Gate**: Mandates unit tests for business logic and regression tests for bug fixes. (ref: `knowledge/testing_standard.md`)
+		- **Licensing Gate**: Mandatory **HALT** and **ROI Logic** report for commercial dependencies. (ref: `knowledge/licensing.md`)
+		- **Git Gate**: Strictly follows Conventional Commits 1.0.0, mandating both a scope and a body for all commits. (ref: `knowledge/git_standard.md`)
 	- ## MCP Ecosystem (The Probe Layer)
 		- ### Shipped with Agentic Hub
 			- The following MCPs are automatically configured during the `bootstrap` phase.
@@ -144,12 +144,12 @@
 			- **MoSCoW Audit:** Requires 100% compliance for all `Must Have` scope items.
 			- **Edge Case Resolution:** Inspects fallback logic against Section 7 edge cases in the PRD.
 		- **Feedback Reversal Loop:** If `REJECT` is emitted, the orchestrator reverts to Developer (Phase 4) with the remediation backlog; upon `ACCEPT`, gate `acceptance` is requested for human sign-off.
-		- (ref: `po/skills/acceptance_validation.md`, `po/templates/acceptance_report.md`, `po/commands/po/squad-validate.toml`)
+		- (ref: `po/skills/acceptance_validation.md`, `docs/templates/po/acceptance_report.md`, `po/commands/po/squad-validate.toml`)
 	- ## Full-Sync Deep Documentation Protocol (v2026)
 		- **Purpose:** Mandates that a project-wide documentation sync (`/squad:full-sync`) produces high-fidelity, use-case-by-use-case and component-by-component deep specifications, rather than shallow index pages.
 		- **Command Isolation:** Separate, dedicated `squad-docs` commands are created for each of the 8 participating agents (PO, Researcher, Architect, Backend, Frontend, Mobile, Forge, Decoder) to isolate full-sync documentation rules from normal development-time workflows.
 		- **Manifest-First Extraction Pattern:** Participating agents must scan the codebase and print a structured list (manifest) of all discovered entities before generating documentation, preventing omissions.
-		- **Per-Entity File Iteration:** For every entity in the manifest, the agent must generate a dedicated Logseq page in `docs/pages/` using the matching template from `common/templates/logseq/` (e.g., `business_flow_page.md`, `technical_endpoint.md`, `technical_data_model.md`).
+		- **Per-Entity File Iteration:** For every entity in the manifest, the agent must generate a dedicated Logseq page in `docs/pages/` using the matching template from `docs/templates/logseq/` (e.g., `business_flow_page.md`, `technical_endpoint.md`, `technical_data_model.md`).
 		- **Cross-Linking & Registry Integration:** General summary files (e.g. `BUSINESS_FLOW.md`, `TECHNICAL_SPECS.md`) are rewritten to act as indexed list nodes linking to these generated deep-dive pages. All new pages are recorded in the global registry `docs/pages/registry.md`.
 	- ## V3 Hybrid Architecture: Agentic Engineering Harness (v2026)
 		- **Purpose:** Replaces static prompt-compiler persona roleplay with a deterministic SDLC execution engine. Separates execution into four orthogonal, decoupled primitives: Playbooks, Cognitive Lenses, Toolboxes, and Deterministic Checks & Gates. (ref: `V3_ARCHITECTURE_SPEC.md`, `[[v3-architecture-spec]]`)

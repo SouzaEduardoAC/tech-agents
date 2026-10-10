@@ -23,12 +23,11 @@ mcp add tech-agents -- npx github:SouzaEduardoAC/tech-agents serve
 | `playbook_advance` | Validates hard checks and gates, advancing to the next step. |
 | `playbook_status` | Returns session progress, completed step history, and gate states. |
 
-### Legacy V2 MCP Tools (100% Backward-Compatible)
+### Pure V3 Agentic Tools & Human Approval Gates
 | Tool | Description |
 |------|-------------|
-| `list_agents` | Lists all available specialized agents and returns MCP Usage Guide. |
-| `call_agent_command` | Runs a specific command from an agent's library (e.g., `create`, `auditor`, `docs`). |
-| `get_agent_prompt` | Returns the full assembled persona, skills, and knowledge for an agent. |
+| `lens_prompt` | Stateless single-turn prompt compilation for any of the 11 Cognitive Lenses with dynamic stack knowledge. |
+| `list_agents` | Lists all available Playbooks, Cognitive Lenses, and returns the complete MCP Usage Guide. |
 | `run_agent_loop` | Runs a server-side managed execution loop via client LLM sampling. |
 | `pipeline_start` | Initializes a new pipeline session and locks all approval gates in `.squad-state-[branch].json`. |
 | `request_approval` | Signals phase completion and sets a gate to `pending`. Returns a hard STOP message. |
@@ -45,14 +44,11 @@ playbook_advance()
 playbook_status()
 ```
 
-### V2 Legacy Command Pattern
+### Stateless Single-Turn Lens Pattern
 ```
-call_agent_command(agent="architect", command="create", args="Your goal here")
-call_agent_command(agent="po", command="discovery", args="Feature name")
-call_agent_command(agent="council", command="debate", args="User request here")
-call_agent_command(agent="automata", command="plan", args="Automate webhook integration")
-call_agent_command(agent="squad", command="run", args="High-level project goal")
-call_agent_command(agent="squad", command="full-sync", args="Sync codebase documentation")
+lens_prompt(lens="architect", task="Review authentication schema for security boundaries")
+lens_prompt(lens="po", task="Draft user stories for OAuth2 flow")
+lens_prompt(lens="quicky", task="Fix path resolution bug in script")
 ```
 
 ## 🗺 Documentation Map (Logseq Graph)

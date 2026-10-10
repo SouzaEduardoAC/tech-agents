@@ -2,7 +2,6 @@ import fs from "fs-extra";
 import path from "path";
 import { glob } from "glob";
 import { fileURLToPath } from "url";
-import toml from "toml";
 import { resolveStateFilePath, isInsideHub, getComplianceMandate } from "./state_manager.js";
 
 const AGENTS_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -178,7 +177,7 @@ export async function getDynamicKnowledge(taskArgs = "", agent = "", customCwd) 
     const dotnetModule = findMarker((f) => f.endsWith(".csproj") || f.endsWith(".sln") || f === "global.json");
     const hasDotnetMention = taskArgsLower.includes("dotnet") || taskArgsLower.includes("c#");
     if (dotnetModule !== null || hasDotnetMention) {
-      const dotnetPath = path.join(AGENTS_ROOT, "common", "stacks", "dotnet.md");
+      const dotnetPath = path.join(AGENTS_ROOT, "knowledge", "stacks", "dotnet.md");
       if (await fs.pathExists(dotnetPath)) {
         detectedStacks.push({ name: ".NET", file: "dotnet.md", path: dotnetPath, module: dotnetModule ?? "" });
       }
@@ -187,7 +186,7 @@ export async function getDynamicKnowledge(taskArgs = "", agent = "", customCwd) 
     const javaModule = findMarker((f) => f === "pom.xml" || f === "build.gradle" || f === "build.gradle.kts" || f.endsWith(".java"));
     const hasJavaMention = taskArgsLower.includes("java") || taskArgsLower.includes("spring boot");
     if (javaModule !== null || hasJavaMention) {
-      const javaPath = path.join(AGENTS_ROOT, "common", "stacks", "java.md");
+      const javaPath = path.join(AGENTS_ROOT, "knowledge", "stacks", "java.md");
       if (await fs.pathExists(javaPath)) {
         detectedStacks.push({ name: "Java / Spring Boot", file: "java.md", path: javaPath, module: javaModule ?? "" });
       }
@@ -196,7 +195,7 @@ export async function getDynamicKnowledge(taskArgs = "", agent = "", customCwd) 
     const goModule = findMarker((f) => f === "go.mod" || f === "go.sum" || f.endsWith(".go"));
     const hasGoMention = taskArgsLower.includes("golang") || (taskArgsLower.includes("go ") && !taskArgsLower.includes("google")) || taskArgsLower === "go";
     if (goModule !== null || hasGoMention) {
-      const goPath = path.join(AGENTS_ROOT, "common", "stacks", "go.md");
+      const goPath = path.join(AGENTS_ROOT, "knowledge", "stacks", "go.md");
       if (await fs.pathExists(goPath)) {
         detectedStacks.push({ name: "Go (Golang)", file: "go.md", path: goPath, module: goModule ?? "" });
       }
@@ -225,7 +224,7 @@ export async function getDynamicKnowledge(taskArgs = "", agent = "", customCwd) 
       }
     }
     if (hasReactMention || reactModule !== null) {
-      const reactPath = path.join(AGENTS_ROOT, "common", "stacks", "react.md");
+      const reactPath = path.join(AGENTS_ROOT, "knowledge", "stacks", "react.md");
       if (await fs.pathExists(reactPath)) {
         detectedStacks.push({ name: "React", file: "react.md", path: reactPath, module: reactModule ?? "" });
       }
@@ -234,7 +233,7 @@ export async function getDynamicKnowledge(taskArgs = "", agent = "", customCwd) 
     const angularModule = findMarker((f) => f === "angular.json" || f === "nx.json");
     const hasAngularMention = taskArgsLower.includes("angular");
     if (angularModule !== null || hasAngularMention) {
-      const angularPath = path.join(AGENTS_ROOT, "common", "stacks", "angular.md");
+      const angularPath = path.join(AGENTS_ROOT, "knowledge", "stacks", "angular.md");
       if (await fs.pathExists(angularPath)) {
         detectedStacks.push({ name: "Angular", file: "angular.md", path: angularPath, module: angularModule ?? "" });
       }
@@ -243,7 +242,7 @@ export async function getDynamicKnowledge(taskArgs = "", agent = "", customCwd) 
     const vueModule = findMarker((f) => f.endsWith(".vue") || f === "vue.config.js");
     const hasVueMention = taskArgsLower.includes("vue");
     if (vueModule !== null || hasVueMention) {
-      const vuePath = path.join(AGENTS_ROOT, "common", "stacks", "vue.md");
+      const vuePath = path.join(AGENTS_ROOT, "knowledge", "stacks", "vue.md");
       if (await fs.pathExists(vuePath)) {
         detectedStacks.push({ name: "Vue", file: "vue.md", path: vuePath, module: vueModule ?? "" });
       }
@@ -252,7 +251,7 @@ export async function getDynamicKnowledge(taskArgs = "", agent = "", customCwd) 
     const tsModule = findMarker((f) => f === "tsconfig.json" || f.endsWith(".ts") || f.endsWith(".tsx"));
     const hasTsMention = taskArgsLower.includes("typescript") || taskArgsLower.includes(" ts ");
     if (tsModule !== null || hasTsMention) {
-      const tsPath = path.join(AGENTS_ROOT, "common", "stacks", "typescript.md");
+      const tsPath = path.join(AGENTS_ROOT, "knowledge", "stacks", "typescript.md");
       if (await fs.pathExists(tsPath)) {
         detectedStacks.push({ name: "TypeScript", file: "typescript.md", path: tsPath, module: tsModule ?? "" });
       }
@@ -261,7 +260,7 @@ export async function getDynamicKnowledge(taskArgs = "", agent = "", customCwd) 
     const jsModule = findMarker((f) => f.endsWith(".js") || f.endsWith(".mjs") || f.endsWith(".cjs"));
     const hasJsMention = taskArgsLower.includes("javascript") || taskArgsLower.includes(" js ");
     if (jsModule !== null || hasJsMention) {
-      const jsPath = path.join(AGENTS_ROOT, "common", "stacks", "javascript.md");
+      const jsPath = path.join(AGENTS_ROOT, "knowledge", "stacks", "javascript.md");
       if (await fs.pathExists(jsPath)) {
         detectedStacks.push({ name: "JavaScript", file: "javascript.md", path: jsPath, module: jsModule ?? "" });
       }
@@ -273,7 +272,7 @@ export async function getDynamicKnowledge(taskArgs = "", agent = "", customCwd) 
     const flutterModule = findMarker((f) => f === "pubspec.yaml" || f.endsWith(".dart"));
     const hasFlutterMention = taskArgsLower.includes("flutter") || taskArgsLower.includes("dart");
     if (flutterModule !== null || hasFlutterMention) {
-      const flutterPath = path.join(AGENTS_ROOT, "common", "stacks", "flutter.md");
+      const flutterPath = path.join(AGENTS_ROOT, "knowledge", "stacks", "flutter.md");
       if (await fs.pathExists(flutterPath)) {
         detectedStacks.push({ name: "Flutter / Dart", file: "flutter.md", path: flutterPath, module: flutterModule ?? "" });
       }
@@ -293,7 +292,7 @@ export async function getDynamicKnowledge(taskArgs = "", agent = "", customCwd) 
     manifest += `You MUST read the relevant reference file before working in each module or stack area:\n\n`;
     for (const stack of detectedStacks) {
       const location = stack.module ? ` → module: \`${stack.module}/\`` : ` → workspace root`;
-      manifest += `- **Stack:** ${stack.name}${location}\n  **Reference:** \`common/stacks/${stack.file}\`\n`;
+      manifest += `- **Stack:** ${stack.name}${location}\n  **Reference:** \`knowledge/stacks/${stack.file}\`\n`;
     }
     manifest += `\nBefore editing any file, call view_file on the matching reference to align with project standards.\n`;
     return manifest;
@@ -456,127 +455,47 @@ Ensure you adhere strictly to the principle of least privilege.
 }
 
 /**
- * Compiles a legacy v2 agent command prompt with complete backward-compatibility.
+ * Compiles a stateless V3 Cognitive Lens prompt for ad-hoc / single-turn tasks.
  */
-export async function compileLegacyCommandPrompt({ agent, command, taskArgs = "", customCwd }) {
-  const aliases = {
-    squad: { create: "run", discovery: "run", plan: "run" },
-    architect: { discovery: "create", plan: "create", run: "create" },
-    backend: { discovery: "create", plan: "create", run: "create" },
-    frontend: { discovery: "create", plan: "create", run: "create" },
-    mobile: { discovery: "create", plan: "create", run: "create" },
-    po: { create: "discovery", run: "discovery" },
-    automata: { discovery: "plan", run: "plan" },
-    quicky: { run: "fix", create: "fix" },
-    researcher: { run: "report", create: "report", discovery: "investigate" },
-    compliance: { run: "master", create: "master" },
-    council: { run: "debate", create: "debate" },
-    decoder: { run: "export", create: "export", synthesize: "export" },
-  };
-
-  let commandName = command;
-  if (aliases[agent] && aliases[agent][command]) {
-    commandName = aliases[agent][command];
-  }
-
+export async function compileLensPrompt({ lens, task, context = "", customCwd }) {
   const { projectRoot } = await resolveStateFilePath(customCwd);
-  const insideHub = await isInsideHub(projectRoot);
-
-  const tomlPath = path.join(AGENTS_ROOT, agent, "commands", agent, `${commandName}.toml`);
-  if (!(await fs.pathExists(tomlPath))) {
-    const cmdDir = path.join(AGENTS_ROOT, agent, "commands", agent);
-    let available = [];
-    if (await fs.pathExists(cmdDir)) {
-      const files = await fs.readdir(cmdDir);
-      available = files.filter((f) => f.endsWith(".toml")).map((f) => path.basename(f, ".toml"));
-    }
+  const lensPath = path.join(AGENTS_ROOT, "lenses", `${lens}.md`);
+  if (!(await fs.pathExists(lensPath))) {
+    const availableLenses = (await fs.readdir(path.join(AGENTS_ROOT, "lenses")))
+      .filter((f) => f.endsWith(".md"))
+      .map((f) => path.basename(f, ".md"));
     throw new Error(
-      `Command '${command}' for agent '${agent}' not found. Available commands for '${agent}': ${
-        available.join(", ") || "none"
-      }`
+      `Cognitive Lens '${lens}' not found. Available lenses: ${availableLenses.join(", ")}`
     );
   }
 
-  const tomlData = toml.parse(await fs.readFile(tomlPath, "utf-8"));
-  let prompt = tomlData.prompt || "";
+  const lensContent = await fs.readFile(lensPath, "utf-8");
 
-  const cattedBasenames = new Set();
-  const catMatches = prompt.matchAll(/!\{cat\s+([^\}]+)\}/g);
-  for (const match of catMatches) {
-    cattedBasenames.add(path.basename(match[1].trim()));
+  let dynamicStack = "";
+  if (["architect", "backend", "frontend", "mobile"].includes(lens)) {
+    dynamicStack = await getDynamicKnowledge(task, lens, customCwd);
   }
 
-  const searchTarget = `${commandName} ${tomlData.description || ""} ${taskArgs || ""}`.toLowerCase();
+  let prompt = `### V3 COGNITIVE LENS EXECUTION
+[Lens: ${lens.toUpperCase()} | Fast-Path Execution]
+Task: ${task}
 
-  // Try centralized knowledge first, fallback to common/knowledge
-  let commonKnowledgePath = path.join(AGENTS_ROOT, "knowledge");
-  if (!(await fs.pathExists(commonKnowledgePath))) {
-    commonKnowledgePath = path.join(AGENTS_ROOT, "common", "knowledge");
-  }
-  const commonKnowledge = await compileCommonSection(
-    commonKnowledgePath,
-    searchTarget,
-    cattedBasenames,
-    "knowledge"
-  ).catch(() => "");
+--------------------------------------------------------------------------------
+## Cognitive Lens (Professional Mindset & Directives)
+${lensContent.trim()}
 
-  const commonSkills = await compileCommonSection(
-    path.join(AGENTS_ROOT, "common", "skills"),
-    searchTarget,
-    cattedBasenames,
-    "skills"
-  ).catch(() => "");
+`;
 
-  let dynamicKnowledge = "";
-  if (["architect", "backend", "frontend", "mobile"].includes(agent)) {
-    dynamicKnowledge = await getDynamicKnowledge(taskArgs, agent, customCwd);
+  if (dynamicStack && dynamicStack.trim()) {
+    prompt += `## Dynamic Project Stack Guidance\n${dynamicStack.trim()}\n\n`;
   }
 
-  const readAgentDirDeduped = async (dirPath) => {
-    if (!(await fs.pathExists(dirPath))) return "";
-    const globPattern = path.join(dirPath, "*.md").replace(/\\/g, "/");
-    const files = await glob(globPattern);
-    let content = "";
-    for (const file of files) {
-      const basename = path.basename(file);
-      if (cattedBasenames.has(basename)) continue;
-      const fileContent = await fs.readFile(file, "utf-8");
-      content += `\n### File: ${basename}\n${fileContent}\n`;
-    }
-    return content;
-  };
-
-  const agentSkills = await readAgentDirDeduped(path.join(AGENTS_ROOT, agent, "skills")).catch(() => "");
-  const agentKnowledge = await readAgentDirDeduped(path.join(AGENTS_ROOT, agent, "knowledge")).catch(() => "");
-
-  const identityMeta = `### ACTIVE PERSONA CONTEXT
-You are currently executing the command '${commandName}' as the **${agent.toUpperCase()}** agent.
-To maintain transparency and multi-agent coordination, you MUST prefix your very first response line with a clean, prominent identity tag in the format:
-\`[Agent: ${agent.toUpperCase()} | Command: ${commandName.toUpperCase()}]\`
-
---------------------------------------------------------------------------------\n\n`;
-
-  let logseqWarning = "";
-  const hasPagesDir = await fs.pathExists(path.join(projectRoot, "docs", "pages"));
-  if (!hasPagesDir) {
-    logseqWarning = `⚠️ **WARNING: The 'docs/pages/' folder is missing in the active workspace. This project is NOT a Logseq knowledge graph. Do NOT write documentation in Logseq outliner format (nested bullets) or use [[links]] for new page references. Write standard, clean Markdown (.md) instead.**\n\n`;
+  if (context && context.trim()) {
+    prompt += `## Injected Task Context / Code\n\`\`\`\n${context.trim()}\n\`\`\`\n\n`;
   }
 
-  let externalAdaptation = "";
-  if (!insideHub && (commandName === "full-sync" || commandName === "docs")) {
-    externalAdaptation = `⚠️ **EXTERNAL WORKSPACE NOTICE:** You are executing this command within an external project (not the Agent Hub codebase).
-- **DO NOT** create, edit, or refer to the Hub-specific cognitive anchors: \`AGENTS.md\`, \`GEMINI.md\`, or \`CLAUDE.md\` at the project root.
-- Document this project's own architecture, code patterns, and files instead of the Hub's.
-- Write documentation using the format and path layout appropriate for this project (following standard Markdown if Logseq is missing).\n\n`;
-  }
+  prompt += `## Instructions
+Execute the task adhering strictly to the active Cognitive Lens stance and project stack guidelines above.`;
 
-  prompt = `${identityMeta}${logseqWarning}${externalAdaptation}# Common Standards\n${commonKnowledge}\n\n# Common Skills\n${commonSkills}\n\n# Dynamic Knowledge\n${dynamicKnowledge}\n\n# Agent Skills\n${agentSkills}\n\n# Agent Knowledge\n${agentKnowledge}\n\n${prompt}`;
-
-  if (insideHub) {
-    const complianceMandate = await getComplianceMandate(projectRoot);
-    prompt = `${prompt}\n\n${complianceMandate}`;
-  }
-
-  prompt = prompt.replace(/\{\{args\}\}/g, taskArgs);
-  return resolveProbes(prompt);
+  return prompt;
 }

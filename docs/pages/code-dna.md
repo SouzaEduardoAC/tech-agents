@@ -5,17 +5,17 @@
 
 - # Code DNA & Architectural Patterns
 	- ## Architectural Styles
-		- **Clean Architecture**: Strict separation of concerns. (ref: `architect/knowledge/patterns.md`)
-		- **SOLID**: Standard OO design principles. (ref: `architect/knowledge/patterns.md`)
+		- **Clean Architecture**: Strict separation of concerns. (ref: `knowledge/patterns.md`)
+		- **SOLID**: Standard OO design principles. (ref: `knowledge/patterns.md`)
 		- **Hub-and-Spoke Orchestration**: Centralized Agent Hub (`bin/tech-agents.js`) managing persona-specific command execution and knowledge injection.
 		- **Probe-Based Prompt Injection**: Use of `!{cat ...}` and `!{gemini mcp list}` for late-binding of documentation and capability context. (ref: `index.js -> resolveProbes`)
 	- ## Documentation DNA
 		- **Signal Preservation**: Documentation MUST capture Agent Identities, Commands, and Guardrails.
-		- **Depth-First Mandate**: Every documentation node MUST be meticulous and technically exhaustive. Superficial stubs are forbidden. (ref: `architect/knowledge/docs_standard.md`, `common/skills/squad_docs.md`)
+		- **Depth-First Mandate**: Every documentation node MUST be meticulous and technically exhaustive. Superficial stubs are forbidden. (ref: `knowledge/docs_standard.md`, `common/skills/squad_docs.md`)
 		- **Full-Sync Depth Protocol**: Project-wide full-syncs (`/squad:full-sync`) must isolate workflows using dedicated `squad-docs` commands, run a manifest-first scan, and generate detailed, template-compliant Logseq pages for every business flow, endpoint, and data model. (ref: `common/skills/squad_docs.md`, `squad/commands/squad/full-sync.toml`)
 		- **Graph Integrity**: "No Ghost Pages." All linked nodes must be initialized. (ref: `common/skills/logseq_knowledge.md`)
 	- ## Testing DNA
-		- **"Unverified Code is Debt"**: 100% logic coverage requirement. (ref: `common/knowledge/testing_standard.md`)
+		- **"Unverified Code is Debt"**: 100% logic coverage requirement. (ref: `knowledge/testing_standard.md`)
 		- **MCP Integration Coverage**: Full end-to-end stdio transport validation via `test/mcp-integration.mjs`, verifying agent prompt completeness (Content Fingerprints), Auto-Injection, and Depth-1 Workspace Scans. (ref: `test/mcp-integration.mjs`)
 	- ## Cross-Platform Path DNA
 		- **Platform-Agnostic Separators**: Always construct dynamic file/directory paths using the native `path` module (`path.join()`, `path.resolve()`, `path.normalize()`).

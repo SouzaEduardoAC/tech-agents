@@ -35,7 +35,7 @@
 		- ## Feature: Mandatory Commit Scope & Body standard (2026-07-09)
 			- status:: [DONE]
 			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]
-			- summary:: Modified the Conventional Commit guidelines in `common/knowledge/git_standard.md` to require both a scope and a body for all commits. Upgraded the code review validation protocols in `common/skills/base_reviewer.md` and `common/skills/pr_review.md` to verify mandatory commit scope and body compliance. (ref: `common/knowledge/git_standard.md`, `common/skills/base_reviewer.md`, `common/skills/pr_review.md`)
+			- summary:: Modified the Conventional Commit guidelines in `knowledge/git_standard.md` to require both a scope and a body for all commits. Upgraded the code review validation protocols in `common/skills/base_reviewer.md` and `common/skills/pr_review.md` to verify mandatory commit scope and body compliance. (ref: `knowledge/git_standard.md`, `common/skills/base_reviewer.md`, `common/skills/pr_review.md`)
 		- ## Bug Fix: MCP stdio Transport (2026-06-04)
 			- status:: [DONE]
 			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]
@@ -67,7 +67,7 @@
 		- ## Feature: MCP Usage Guide Skill (2026-06-29)
 			- status:: [DONE]
 			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]
-			- summary:: Added a comprehensive shared skill `common/skills/mcp_usage_guide.md` that teaches any LLM how to use the Agent Hub MCP server effectively. Covers all 7 MCP tools (list_agents, call_agent_command, get_agent_prompt, pipeline_start, request_approval, check_gate, pipeline_approve), the full 13-agent catalog with commands and trigger phrases, a decision flowchart for agent selection, command alias map, and common mistakes to avoid. `index.js` heuristic relevance filter updated to always inject this skill (foundational knowledge for all agents). (ref: `common/skills/mcp_usage_guide.md`, `index.js → compileCommonSection`)
+			- summary:: Added a comprehensive shared skill `docs/mcp_usage_guide.md` that teaches any LLM how to use the Agent Hub MCP server effectively. Covers all 7 MCP tools (list_agents, call_agent_command, get_agent_prompt, pipeline_start, request_approval, check_gate, pipeline_approve), the full 13-agent catalog with commands and trigger phrases, a decision flowchart for agent selection, command alias map, and common mistakes to avoid. `index.js` heuristic relevance filter updated to always inject this skill (foundational knowledge for all agents). (ref: `docs/mcp_usage_guide.md`, `index.js → compileCommonSection`)
 		- ## Feature: Remote Unversioned Agent Hub MCP Configuration (2026-07-06)
 			- status:: [DONE]
 			- ref:: [[TECHNICAL_SPECS]], [[code-dna]]
@@ -85,7 +85,7 @@
 		- nodes:: [[Product Owner]], [[prioritization-framework]], [[product-interview]], [[acceptance-validation]]
 		- ## Feature: Product Acceptance & Requirement Validation Phase (2026-08-24)
 			- status:: [DONE]
-			- ref:: [[Product Owner]], [[Squad Orchestrator]], [[TECHNICAL_SPECS]], `po/skills/acceptance_validation.md`, `po/templates/acceptance_report.md`, `po/commands/po/squad-validate.toml`, `po/commands/po/validate.toml`
+			- ref:: [[Product Owner]], [[Squad Orchestrator]], [[TECHNICAL_SPECS]], `po/skills/acceptance_validation.md`, `docs/templates/po/acceptance_report.md`, `po/commands/po/squad-validate.toml`, `po/commands/po/validate.toml`
 			- summary:: Integrated Phase 5 Product Acceptance & Requirement Validation into the Squad Orchestrator pipeline and created `/po:validate` and `/po:squad-validate` commands. The Product Owner now confronts committed feature code and test suites directly against the original PRD acceptance criteria (Given-When-Then), MoSCoW priorities, and edge cases, producing `docs/pages/[feature]-acceptance.md` and gating progression via the `acceptance` approval gate.
 	- ## Meta-Orchestration & Self-Evolution
 		- status:: [ACTIVE]
@@ -100,7 +100,7 @@
 		- ## Feature: Stack-Aware PR Review — Tech Stack Knowledge in Diff Review (2026-06-11)
 			- status:: [DONE]
 			- ref:: [[Backend]], [[Frontend]], [[Mobile]], [[TECHNICAL_SPECS]]
-			- summary:: Enhanced the `review` command on Backend, Frontend, and Mobile agents to detect the tech stack directly from the PR diff (Phase 0.4 in `common/skills/pr_review.md`). The agent scans changed file extensions and config markers (`.cs`/`.csproj` → .NET, `pom.xml`/`.java` → Java, `go.mod`/`.go` → Go, `pubspec.yaml`/`.dart` → Flutter, `angular.json` → Angular, `.tsx`/`.jsx` → React, `.vue` → Vue, `tsconfig.json`/`.ts` → TypeScript, `.js` → JavaScript), then calls `view_file` on the matching `common/stacks/*.md` reference before Phase 1. Stack detection is agent-scoped (backend detects .NET/Java/Go only; frontend detects React/Angular/Vue/TS/JS only; mobile detects Flutter only) to prevent cross-contamination. Hard Guardrail violations (NEVER/Forbidden entries in the stack reference) are automatically elevated to Critical/High severity with a stack-section citation in the finding. A `Prerequisites` section was added to the shared PR review protocol recommending execution from the project root directory so that `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` are loaded into context, enabling project-specific guardrails and supplementary stack hints alongside the diff-based detection. (ref: `common/skills/pr_review.md`, `backend/commands/backend/review.toml`, `frontend/commands/frontend/review.toml`, `mobile/commands/mobile/review.toml`)
+			- summary:: Enhanced the `review` command on Backend, Frontend, and Mobile agents to detect the tech stack directly from the PR diff (Phase 0.4 in `common/skills/pr_review.md`). The agent scans changed file extensions and config markers (`.cs`/`.csproj` → .NET, `pom.xml`/`.java` → Java, `go.mod`/`.go` → Go, `pubspec.yaml`/`.dart` → Flutter, `angular.json` → Angular, `.tsx`/`.jsx` → React, `.vue` → Vue, `tsconfig.json`/`.ts` → TypeScript, `.js` → JavaScript), then calls `view_file` on the matching `knowledge/stacks/*.md` reference before Phase 1. Stack detection is agent-scoped (backend detects .NET/Java/Go only; frontend detects React/Angular/Vue/TS/JS only; mobile detects Flutter only) to prevent cross-contamination. Hard Guardrail violations (NEVER/Forbidden entries in the stack reference) are automatically elevated to Critical/High severity with a stack-section citation in the finding. A `Prerequisites` section was added to the shared PR review protocol recommending execution from the project root directory so that `AGENTS.md`, `CLAUDE.md`, and `GEMINI.md` are loaded into context, enabling project-specific guardrails and supplementary stack hints alongside the diff-based detection. (ref: `common/skills/pr_review.md`, `backend/commands/backend/review.toml`, `frontend/commands/frontend/review.toml`, `mobile/commands/mobile/review.toml`)
 		- ## Feature: Optimize Squad Orchestration, Architect Plan, TDD, and Peer Review (2026-07-09)
 			- status:: [DONE]
 			- ref:: [[Squad Orchestrator]], [[Architect]], [[Backend]], [[Frontend]], [[Mobile]], [[TECHNICAL_SPECS]]

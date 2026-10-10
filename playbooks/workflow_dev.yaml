@@ -18,6 +18,7 @@ steps:
       - fs_write
     standards:
       - knowledge/auth_standard.md
+      - knowledge/n8n_core.md
     output_artifact: docs/pages/{{args}}-payload-spec.md
     gate: discovery
 

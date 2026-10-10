@@ -84,11 +84,30 @@ async function run() {
       "playbook_run_checks",
       "playbook_advance",
       "playbook_status",
+      "lens_prompt",
     ];
     for (const expected of expectedV3Tools) {
       assert(toolNames.includes(expected), `Missing expected v3 tool: ${expected}`);
     }
-    console.log("✅ All 6 native v3 playbook tools registered in tools/list");
+    console.log("✅ All native v3 tools (including lens_prompt) registered in tools/list");
+
+    // Test stateless lens_prompt tool
+    const lensRes = await sendRequest(proc, {
+      jsonrpc: "2.0",
+      id: nextId(),
+      method: "tools/call",
+      params: {
+        name: "lens_prompt",
+        arguments: {
+          lens: "backend",
+          task: "Review database connection pool settings",
+        },
+      },
+    });
+    assert(!lensRes.error && !lensRes.result.isError);
+    assert(lensRes.result.content[0].text.includes("### V3 COGNITIVE LENS EXECUTION"));
+    assert(lensRes.result.content[0].text.includes("Review database connection pool settings"));
+    console.log("✅ lens_prompt successfully compiled stateless cognitive stance prompt");
 
     // 3. playbook_list tool
     const listRes = await sendRequest(proc, {

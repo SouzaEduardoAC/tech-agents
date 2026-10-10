@@ -209,7 +209,7 @@ tech-agents/
 | **`squad/commands/squad/full-sync.toml`**| `playbooks/full_sync.yaml` | **CONVERT** | Convert into doc-sync workflow. |
 | **`architect/commands/architect/*.toml`**| Merged into `playbooks/` & `lenses/architect.md` | **CONVERT** | `create.toml` $\rightarrow$ `feature_dev.yaml` (Phase 2); `adhoc.toml` $\rightarrow$ `consultation.yaml`. |
 | **`architect/skills/*.md`** | `checks/schemas/` & `knowledge/` | **MIGRATE** | Checklists become soft check schemas; guidelines move to `knowledge/`. |
-| **`architect/knowledge/*.md`** | `knowledge/` | **MOVE** | Centralize domain knowledge. |
+| **`knowledge/*.md`** | `knowledge/` | **MOVE** | Centralize domain knowledge. |
 | **`backend/commands/backend/*.toml`** | Merged into `playbooks/` & `lenses/backend.md` | **CONVERT** | `create.toml` $\rightarrow$ `feature_dev.yaml` (Phase 4); `review.toml` $\rightarrow$ `pr_review.yaml`. |
 | **`backend/skills/*.md`** | `checks/` & `toolboxes/` | **MIGRATE** | Reviewer protocols become automated checks. |
 | **`frontend/` & `mobile/`** | `lenses/` & `knowledge/stacks/` | **MIGRATE** | Personas become `lenses/frontend.md` and `lenses/mobile.md`; stack guides move to `knowledge/stacks/`. |
@@ -217,10 +217,10 @@ tech-agents/
 | **`po/`** | `lenses/po.md` & `checks/schemas/` | **MIGRATE** | `acceptance_validation.md` becomes a soft check schema and verification step in `feature_dev.yaml`. |
 | **`quicky/`** | `lenses/quicky.md` & `playbooks/quick_fix.yaml` | **CONVERT** | Converted into rapid bug-fix playbook with automated regression test check. |
 | **`council/`** | `lenses/council.md` & `playbooks/debate.yaml` | **CONVERT** | Multi-perspective debate playbook with dialectic synthesis step. |
-| **`common/knowledge/*.md`** | `knowledge/*.md` | **KEEP** | Preserved completely: `git_standard.md`, `auth_standard.md`, `testing_standard.md`, `licensing.md`. |
+| **`knowledge/*.md`** | `knowledge/*.md` | **KEEP** | Preserved completely: `git_standard.md`, `auth_standard.md`, `testing_standard.md`, `licensing.md`. |
 | **`common/skills/pr_review.md`** | `playbooks/pr_review.yaml` | **CONVERT** | Converted into PR review playbook. |
 | **`common/skills/investigation.md`**| `playbooks/investigation.yaml` | **CONVERT** | Converted into read-only simulation playbook. |
-| **`common/skills/mcp_usage_guide.md`**| `docs/mcp_usage_guide.md` | **UPDATE** | Updated with v3 playbook mechanics, decision flowcharts, and backwards-compatible commands. |
+| **`docs/mcp_usage_guide.md`**| `docs/mcp_usage_guide.md` | **UPDATE** | Updated with v3 playbook mechanics, decision flowcharts, and backwards-compatible commands. |
 | **`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`**| Root anchors | **UPDATE** | Updated cognitive anchors to document v3 hybrid architecture. |
 
 ---

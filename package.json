@@ -1,7 +1,7 @@
 {
   "name": "@souzaeduardoac/tech-agents",
-  "version": "2.3.0",
-  "description": "Universal bridge for AI Agents (Gemini, Claude, Codex)",
+  "version": "3.0.0",
+  "description": "Universal Agentic Engineering Harness (Gemini, Claude, AntiGravity, Codex)",
   "type": "module",
   "main": "index.js",
   "bin": {
@@ -9,12 +9,12 @@
   },
   "scripts": {
     "start": "node bin/tech-agents.js",
-    "serve": "node bin/tech-agents.js serve"
+    "serve": "node bin/tech-agents.js serve",
+    "test": "node --test test/v3-*.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.1",
     "commander": "^12.0.0",
-    "toml": "^3.0.0",
     "glob": "^10.3.10",
     "fs-extra": "^11.2.0",
     "yaml": "^2.4.5"

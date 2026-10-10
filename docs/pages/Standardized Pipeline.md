@@ -22,7 +22,7 @@
 			- Inspect `package.json`, `*.csproj`, `requirements.txt`.
 			- **HALT**: If private/internal registries are detected, ask user for the configuration file (`.npmrc`, `nuget.config`, etc.).
 		- 5. **Execution & Testing**: Implement changes; write and run unit/integration tests.
-		- 6. **Verification**: 100% pass rate required. (ref: `common/knowledge/testing_standard.md`)
+		- 6. **Verification**: 100% pass rate required. (ref: `knowledge/testing_standard.md`)
 		- 7. **Gate 2 (Human Approval)**: Present final diff and review report. Structurally enforced via `request_approval(gate="audit")` + `check_gate(gate="audit")`. (ref: `index.js`)
 	- ## Phase 4: Reconciliation & Sync
 		- 1. **Plan Reconciliation**: Update `docs/pages/[feature]-plan.md` with final status (`[DONE]` or `[PARTIAL]`).

@@ -20,6 +20,8 @@ steps:
       - knowledge/anti_hallucination.md
       - knowledge/auth_standard.md
       - knowledge/testing_standard.md
+      - knowledge/bottlenecks.md
+      - knowledge/patterns.md
     output_artifact: docs/pages/{{args}}-feasibility.md
 
   - id: implementation_plan
@@ -34,6 +36,8 @@ steps:
       - knowledge/anti_hallucination.md
       - knowledge/auth_standard.md
       - knowledge/testing_standard.md
+      - knowledge/dependencies.md
+      - knowledge/roi_logic.md
     input_artifacts:
       - docs/pages/{{args}}-feasibility.md
     output_artifact: docs/pages/{{args}}-implementation-plan.md

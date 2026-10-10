@@ -8,9 +8,6 @@ import fs from "fs-extra";
 import path from "path";
 import { glob } from "glob";
 import { fileURLToPath } from "url";
-import toml from "toml";
-import { execSync } from "child_process";
-
 const AGENTS_ROOT = path.dirname(fileURLToPath(import.meta.url));
 import {
   resolveStateFilePath,
@@ -18,12 +15,9 @@ import {
   getComplianceMandate,
 } from "./engine/state_manager.js";
 import {
-  resolveProbes,
-  readMarkdownDir,
-  compileCommonSection,
   scanWorkspace,
   getDynamicKnowledge,
-  compileLegacyCommandPrompt,
+  compileLensPrompt,
   compileStepPrompt,
 } from "./engine/prompt_compiler.js";
 import {
@@ -56,57 +50,21 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     tools: [
       {
         name: "list_agents",
-        description: "List all available specialized agents, their registered commands, and retrieve the complete MCP Usage Guide & Decision Flowchart. Call this first to understand how to interact with the Agent Hub MCP server, select the correct agent, and avoid common orchestration mistakes.",
+        description: "List all available SDLC playbooks, cognitive lenses, and retrieve the complete MCP Usage Guide & Decision Flowchart.",
         inputSchema: { type: "object", properties: {} },
       },
       {
-        name: "call_agent_command",
-        description: [
-          "Activate a specialized agent and run one of its commands with a task description.",
-          "Use this whenever the user asks to: 'call the council', 'have the architect design X',",
-          "'run the backend agent', 'ask the squad to build X', 'get compliance to audit Y',",
-          "'let the researcher investigate Z', 'use the PO for discovery', 'have automata automate a workflow',",
-          "'get quicky to fix this', 'have the decoder translate this spec', or any similar delegation to a named agent.",
-          "The assembled prompt returned by this tool IS the agent — adopt its persona and execute its instructions directly.",
-          "Call list_agents first if you are unsure of the exact agent name or available commands.",
-        ].join(" "),
+        name: "lens_prompt",
+        description: "Retrieve a primed cognitive lens prompt for stateless, single-turn ad-hoc tasks or code reviews without starting a multi-step stateful playbook.",
         inputSchema: {
           type: "object",
           properties: {
-            agent: { type: "string", description: "The agent name (e.g., architect, backend, squad, council, po, compliance, researcher, automata, decoder, quicky, frontend, mobile)." },
-            command: { type: "string", description: "The command name. Common defaults: 'run' (squad), 'create' (architect/backend/frontend/mobile), 'debate' (council), 'discovery' (po), 'master' (compliance), 'report' (researcher), 'fix' (quicky), 'export' (decoder). Call list_agents to see all available commands." },
-            args: { type: "string", description: "The full task description, goal, or user request to pass to the agent. Be specific — this becomes the agent's primary objective." },
+            lens: { type: "string", description: "Name of the cognitive lens (e.g. architect, backend, frontend, mobile, compliance, po, qa, quicky, council, automata, researcher)." },
+            task: { type: "string", description: "The task, question, or review request to perform." },
+            context: { type: "string", description: "Optional code snippet, diff, or file contents to inject." },
+            cwd: { type: "string", description: "Optional workspace root directory." },
           },
-          required: ["agent", "command", "args"],
-        },
-      },
-      {
-        name: "run_agent_loop",
-        description: [
-          "Run a multi-turn agent execution loop on the server side using client LLM sampling.",
-          "Use this to execute agents in SSO or token-based environments where local API keys are unavailable.",
-          "The server manages prompt pinning and context loops directly to prevent persona drift.",
-          "If the client does not support sampling, it will return an error or advice to fall back.",
-        ].join(" "),
-        inputSchema: {
-          type: "object",
-          properties: {
-            agent: { type: "string", description: "The agent name (e.g., architect, backend, squad, council, po, compliance, researcher, automata, decoder, quicky, frontend, mobile)." },
-            command: { type: "string", description: "The command name. Common defaults: 'run' (squad), 'create' (architect/backend/frontend/mobile), 'debate' (council), 'discovery' (po), 'master' (compliance), 'report' (researcher), 'fix' (quicky), 'export' (decoder). Call list_agents to see all available commands." },
-            args: { type: "string", description: "The full task description, goal, or user request to pass to the agent. Be specific — this becomes the agent's primary objective." },
-          },
-          required: ["agent", "command", "args"],
-        },
-      },
-      {
-        name: "get_agent_prompt",
-        description: "Retrieve the full identity, persona, and knowledge base for a specific agent without executing a command. Use this to understand an agent's capabilities before calling call_agent_command, or to load an agent's persona into the current context.",
-        inputSchema: {
-          type: "object",
-          properties: {
-            agent: { type: "string", description: "The agent name (e.g., architect, backend, council)." },
-          },
-          required: ["agent"],
+          required: ["lens", "task"],
         },
       },
       {
@@ -251,41 +209,34 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
   try {
     if (name === "list_agents") {
-      const guidePath = path.join(AGENTS_ROOT, "common", "skills", "mcp_usage_guide.md");
+      const guidePath = path.join(AGENTS_ROOT, "docs", "mcp_usage_guide.md");
+      let guideContent = "";
       if (await fs.pathExists(guidePath)) {
-        const guideContent = await fs.readFile(guidePath, "utf-8");
-        return { content: [{ type: "text", text: guideContent }] };
+        guideContent = await fs.readFile(guidePath, "utf-8");
       }
 
-      const dirs = await fs.readdir(AGENTS_ROOT, { withFileTypes: true });
-      const agents = dirs
-        .filter((d) => d.isDirectory() && !d.name.startsWith(".") && !["node_modules", "bin", "docs", "common", "test"].includes(d.name))
-        .map((d) => d.name);
+      const playbooks = await listPlaybooks();
+      const lensFiles = (await fs.readdir(path.join(AGENTS_ROOT, "lenses")))
+        .filter((f) => f.endsWith(".md"))
+        .map((f) => path.basename(f, ".md"));
 
-      const agentDetails = [];
-      for (const agent of agents) {
-        const cmdDir = path.join(AGENTS_ROOT, agent, "commands", agent);
-        let commands = [];
-        if (await fs.pathExists(cmdDir)) {
-          const files = await fs.readdir(cmdDir);
-          commands = files
-            .filter((f) => f.endsWith(".toml"))
-            .map((f) => path.basename(f, ".toml"));
-        }
-        agentDetails.push(`${agent} (${commands.join(", ") || "no commands"})`);
-      }
-      return { content: [{ type: "text", text: `Available agents and their commands:\n` + agentDetails.map(ad => `- ${ad}`).join("\n") }] };
+      const summary =
+        `### V3 ARCHITECTURE: PLAYBOOKS & COGNITIVE LENSES\n\n` +
+        `**Available SDLC Playbooks:**\n` +
+        playbooks.map((p) => `- \`${p.id}\`: ${p.name} (${p.role}) - ${p.description}`).join("\n") +
+        `\n\n**Available Cognitive Lenses (for 'lens_prompt'):**\n` +
+        lensFiles.map((l) => `- \`${l}\``).join("\n") +
+        (guideContent ? `\n\n${guideContent}` : "");
+
+      return { content: [{ type: "text", text: summary }] };
     }
 
-    if (name === "call_agent_command") {
-      const { agent, command, args: taskArgs } = args;
-      const finalPrompt = await compileLegacyCommandPrompt({
-        agent,
-        command,
-        taskArgs,
-      });
+    if (name === "lens_prompt") {
+      const { lens, task, context, cwd } = args;
+      const finalPrompt = await compileLensPrompt({ lens, task, context, customCwd: cwd });
       return { content: [{ type: "text", text: finalPrompt }] };
     }
+
 
     if (name === "run_agent_loop") {
       const capabilities = server.getClientCapabilities();
@@ -293,17 +244,18 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       if (!supportsSampling) {
         throw new Error(
           "The connected client does not support the MCP sampling capability. " +
-          "Please fall back to standard prompt injection by calling call_agent_command instead, " +
-          "or use a client that supports sampling (like AntiGravity or Codex)."
+          "Please fall back to standard tool execution or use a client that supports sampling (like AntiGravity or Codex)."
         );
       }
 
-      const { agent, command, args: taskArgs } = args;
-      const { projectRoot } = await resolveStateFilePath();
-      const finalPrompt = await compileLegacyCommandPrompt({
-        agent,
-        command,
-        taskArgs,
+      const { lens, agent, task, args: taskArgs } = args;
+      const targetLens = lens || agent || "backend";
+      const taskDescription = task || taskArgs || "Execute requested SDLC task";
+      const { projectRoot } = await resolveStateFilePath(args.cwd);
+      const finalPrompt = await compileLensPrompt({
+        lens: targetLens,
+        task: taskDescription,
+        customCwd: args.cwd,
       });
 
       const parserInstructions = `
@@ -449,44 +401,6 @@ RULES:
       };
     }
 
-    if (name === "get_agent_prompt") {
-      const agent = args.agent;
-      const agentPath = path.join(AGENTS_ROOT, agent);
-      const persona = await fs.readFile(path.join(agentPath, "brain", "persona.md"), "utf-8").catch(() => "");
-      const skills = await readMarkdownDir(path.join(agentPath, "skills")).catch(() => "");
-      const knowledge = await readMarkdownDir(path.join(agentPath, "knowledge")).catch(() => "");
-      const cattedBasenames = new Set();
-      const searchTarget = `${agent} ${persona}`.toLowerCase();
-      const commonKnowledge = await compileCommonSection(path.join(AGENTS_ROOT, "common", "knowledge"), searchTarget, cattedBasenames, "knowledge").catch(() => "");
-      const commonSkills = await compileCommonSection(path.join(AGENTS_ROOT, "common", "skills"), searchTarget, cattedBasenames, "skills").catch(() => "");
-
-      // Inject Dynamic Knowledge for Architect/Backend/Frontend/Mobile
-      let dynamicKnowledge = "";
-      if (["architect", "backend", "frontend", "mobile"].includes(agent)) {
-        dynamicKnowledge = await getDynamicKnowledge("", agent);
-      }
-
-      const fullPrompt = `
-# Persona: ${agent}
-${persona}
-
-# Common Standards
-${commonKnowledge}
-
-# Common Skills
-${commonSkills}
-
-# Skills
-${skills}
-
-# Dynamic Knowledge Base
-${dynamicKnowledge}
-
-# Knowledge Base
-${knowledge}
-      `;
-      return { content: [{ type: "text", text: fullPrompt.trim() }] };
-    }
 
     if (name === "pipeline_start") {
       const { goal, gates, cwd } = args;

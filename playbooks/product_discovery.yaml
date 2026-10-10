@@ -19,6 +19,7 @@ steps:
     standards:
       - knowledge/product_interview.md
       - knowledge/gatekeeping.md
+      - knowledge/prioritization_framework.md
     output_artifact: docs/pages/{{args}}-elicitation-log.md
 
   - id: prd_formulation

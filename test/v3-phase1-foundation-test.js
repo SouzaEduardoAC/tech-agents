@@ -12,8 +12,7 @@ import {
 } from "../engine/state_manager.js";
 import {
   compileStepPrompt,
-  compileLegacyCommandPrompt,
-  resolveProbes,
+  compileLensPrompt,
 } from "../engine/prompt_compiler.js";
 
 async function runTests() {
@@ -103,15 +102,15 @@ steps:
   assert.ok(stepPrompt.includes("- `fs_read`"));
   console.log("✅ PASS compileStepPrompt produces targeted V3 step prompt");
 
-  // 4. Test compileLegacyCommandPrompt backward-compatibility
-  const legacyPrompt = await compileLegacyCommandPrompt({
-    agent: "quicky",
-    command: "fix",
-    taskArgs: "Fix null pointer in auth",
+  // 4. Test compileLensPrompt fast-path execution
+  const lensPrompt = await compileLensPrompt({
+    lens: "quicky",
+    task: "Fix null pointer in auth",
   });
-  assert.ok(legacyPrompt.includes("[Agent: QUICKY | Command: FIX]"));
-  assert.ok(legacyPrompt.includes("Fix null pointer in auth"));
-  console.log("✅ PASS compileLegacyCommandPrompt maintains 100% backward-compatibility for legacy commands");
+  assert.ok(lensPrompt.includes("### V3 COGNITIVE LENS EXECUTION"));
+  assert.ok(lensPrompt.includes("[Lens: QUICKY | Fast-Path Execution]"));
+  assert.ok(lensPrompt.includes("Fix null pointer in auth"));
+  console.log("✅ PASS compileLensPrompt produces fast-path cognitive stance prompt");
 
   console.log("\n───────────────────────────────────────────────────────");
   console.log("ALL V3 PHASE 1 TESTS PASSED SUCCESSFULLY!");

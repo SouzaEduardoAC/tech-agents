@@ -18,6 +18,8 @@ steps:
       - fs_write
     standards:
       - knowledge/testing_standard.md
+      - knowledge/bottlenecks.md
+      - knowledge/patterns.md
     hard_checks:
       - detect:test
       - detect:lint
@@ -34,6 +36,7 @@ steps:
       - knowledge/licensing.md
       - knowledge/soc2.md
       - knowledge/gdpr.md
+      - knowledge/dependencies.md
     output_artifact: docs/pages/health-security-audit.md
 
   - id: remediation_plan
@@ -42,6 +45,8 @@ steps:
     toolbox:
       - fs_read
       - fs_write
+    standards:
+      - knowledge/roi_logic.md
     input_artifacts:
       - docs/pages/health-static-analysis.md
       - docs/pages/health-security-audit.md
