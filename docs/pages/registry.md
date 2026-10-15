@@ -187,6 +187,11 @@
 			- status:: [DONE]
 			- ref:: [[TECHNICAL_SPECS]], `engine/check_runner.js`, `engine/playbook_runner.js`, `engine/prompt_compiler.js`, `engine/state_manager.js`, `checks/hard/standard_test.sh`, `checks/hard/standard_lint.sh`
 			- summary:: Hardened the V3 engine against blind spots and parity gaps: (1) Added feature slugging and variable interpolation (`{{args}}`, `{{feature}}`, `{{goal}}`) in step prompts and artifact paths; (2) Enriched prompt assembly with step descriptions, output artifact directives, gate notices, and dynamic stack knowledge; (3) Added deterministic soft checks and JSON schema validation in check runner and playbook runner; (4) Added standalone polyglot test and lint runner scripts (`checks/hard/standard_test.sh`, `checks/hard/standard_lint.sh`) supporting Node, Rust, Go, Python, Flutter/Dart, Java/Kotlin, and .NET. Tested with 16 test suites passing 100%.
+		- ## Bug Fix: Update PR Validation CI Workflow for Pure V3 Test Suite (2026-10-15)
+			- status:: [DONE]
+			- ref:: `.github/workflows/pr-validation.yml`, `package.json`, [[code-dna]]
+			- summary:: Updated `.github/workflows/pr-validation.yml` to execute `npm test` (`node --test test/v3-*.js`) instead of obsolete legacy v2 scripts (`test/validate-prompts.mjs` and `test/mcp-integration.mjs`), resolving CI job failures on PR #99.
+
 
 
 

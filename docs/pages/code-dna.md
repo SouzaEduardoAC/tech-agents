@@ -16,7 +16,7 @@
 		- **Graph Integrity**: "No Ghost Pages." All linked nodes must be initialized. (ref: `common/skills/logseq_knowledge.md`)
 	- ## Testing DNA
 		- **"Unverified Code is Debt"**: 100% logic coverage requirement. (ref: `knowledge/testing_standard.md`)
-		- **MCP Integration Coverage**: Full end-to-end stdio transport validation via `test/mcp-integration.mjs`, verifying agent prompt completeness (Content Fingerprints), Auto-Injection, and Depth-1 Workspace Scans. (ref: `test/mcp-integration.mjs`)
+		- **MCP Integration Coverage**: Full end-to-end stdio transport validation via `test/v3-phase6-mcp-integration-test.js`, verifying native V3 Playbook MCP tools (`playbook_*`, `lens_prompt`), stdio JSON-RPC framing, step advancement, and checks execution. (ref: `test/v3-phase6-mcp-integration-test.js`)
 	- ## Cross-Platform Path DNA
 		- **Platform-Agnostic Separators**: Always construct dynamic file/directory paths using the native `path` module (`path.join()`, `path.resolve()`, `path.normalize()`).
 		- **Safe Home Resolving**: Never use `process.env.HOME` directly as it crashes on Windows. Use Node's built-in `os.homedir()` for robust cross-platform home directory discovery.
