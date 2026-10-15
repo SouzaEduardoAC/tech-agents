@@ -1,5 +1,40 @@
 # Changelog
 
+## [3.0.0](https://github.com/SouzaEduardoAC/tech-agents/compare/v2.3.0...v3.0.0) (2026-10-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **v3:** Removed legacy v2 persona cosplay folders, TOML command prompts, and call_agent_command/get_agent_prompt tools. Transitioned completely to Pure V3 primitives: 14 declarative Playbooks, 11 Cognitive Lenses, Scoped Toolboxes, Deterministic Local Checks, and stateless lens_prompt MCP tool. All domain heuristics evacuated to knowledge/ and docs/templates/.
+* **engine:** Introduces V3 Agentic Engineering Harness with native playbook MCP tools and hard check verification. Automated major version bump to v3.0.0.
+* **v3:** Outlines major architectural transition from legacy TOML prompt templates to declarative playbooks, scoped toolboxes, and local hard check execution for v3.0.0.
+
+### Features
+
+* **checks:** implement phase 4 deterministic hard check engine ([f26ae48](https://github.com/SouzaEduardoAC/tech-agents/commit/f26ae484bf84c593cec70aa72f7a2bfb14be43f8))
+* **engine:** add variable interpolation, soft checks enforcement, and polyglot hard check scripts ([07a94ba](https://github.com/SouzaEduardoAC/tech-agents/commit/07a94ba9244540b1d22c3d419fba1e4000ccaf78))
+* **engine:** implement v3 hybrid playbooks and checks architecture ([e7359b5](https://github.com/SouzaEduardoAC/tech-agents/commit/e7359b57d749ac023d0cd7632e46f24aaa89befb))
+* **lenses,knowledge:** implement phase 2 cognitive lenses and centralize domain knowledge ([2a599d7](https://github.com/SouzaEduardoAC/tech-agents/commit/2a599d71fcb957fc51e40d545bd073eaa44269c5))
+* **mcp:** implement phase 6 native v3 playbook tools and handlers ([6e8989c](https://github.com/SouzaEduardoAC/tech-agents/commit/6e8989c87d565b151241a024339073c5b82fd44f))
+* **playbooks,checks:** implement phase 3 declarative playbooks and verification schemas ([999f4ad](https://github.com/SouzaEduardoAC/tech-agents/commit/999f4ad759dba23c3dcb9fabf8d179d59f8dfa0a))
+* **playbooks,lenses:** add council debate, health audit playbooks and deepen PO interview ([27d123f](https://github.com/SouzaEduardoAC/tech-agents/commit/27d123f636ed28857d4ca6d3b7462f70d643c592))
+* **playbooks,lenses:** expand v3 domain coverage and excise legacy forge ([25c9ffa](https://github.com/SouzaEduardoAC/tech-agents/commit/25c9ffa989f6412b4156d1beb16bc239c9e17bf8))
+* **playbooks:** add standalone PM discovery, technical refinement, and component scaffold playbooks ([0289259](https://github.com/SouzaEduardoAC/tech-agents/commit/0289259664f6b146f00e7a65e5cfde7a38fc7558))
+* **runner:** implement phase 5 playbook runner and state machine ([63de17f](https://github.com/SouzaEduardoAC/tech-agents/commit/63de17f31e4fa29544b57e2a78dac35dbb4e1b25))
+* **toolboxes:** add first-class peer MCP toolboxes and context7 integration ([346fcf3](https://github.com/SouzaEduardoAC/tech-agents/commit/346fcf3d89f88702c9cf6788913af4e007e1a411))
+* **v3-engine:** implement phase 1 foundation, state manager, and prompt compiler ([852f1f5](https://github.com/SouzaEduardoAC/tech-agents/commit/852f1f58dc4f8497bbab9628fe6749a37fad3419))
+* **v3:** decommission v2 legacy architecture and finalize pure v3 harness ([fa513fd](https://github.com/SouzaEduardoAC/tech-agents/commit/fa513fd63047d988ffa1fbd030655c93710e86ef))
+
+
+### Bug Fixes
+
+* **ci:** update PR validation workflow to run pure v3 test suite ([02c9f49](https://github.com/SouzaEduardoAC/tech-agents/commit/02c9f49b964db54a71afac3e8aa9e5a73c05717e))
+
+
+### Documentation
+
+* **v3:** specify v3 hybrid architecture with playbooks and checks ([1b997f9](https://github.com/SouzaEduardoAC/tech-agents/commit/1b997f9431b7eb025c30e093adf3144c5ba8a47f))
+
 ## [2.3.0](https://github.com/SouzaEduardoAC/tech-agents/compare/v2.2.0...v2.3.0) (2026-08-24)
 
 
