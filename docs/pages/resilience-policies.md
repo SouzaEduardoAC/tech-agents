@@ -5,10 +5,10 @@
 
 - # Stability & Resilience Protocols
 	- ## Distributed Systems Patterns
-		- **Circuit Breakers**: Prevent cascading failures. (ref: `architect/knowledge/bottlenecks.md`)
-		- **Bulkheads**: Resource isolation. (ref: `architect/knowledge/bottlenecks.md`)
-		- **Retry Patterns**: Exponential backoff with jitter. (ref: `architect/knowledge/bottlenecks.md`)
-		- **Timeouts**: Enforced on all I/O operations. (ref: `architect/knowledge/bottlenecks.md`)
+		- **Circuit Breakers**: Prevent cascading failures. (ref: `knowledge/bottlenecks.md`)
+		- **Bulkheads**: Resource isolation. (ref: `knowledge/bottlenecks.md`)
+		- **Retry Patterns**: Exponential backoff with jitter. (ref: `knowledge/bottlenecks.md`)
+		- **Timeouts**: Enforced on all I/O operations. (ref: `knowledge/bottlenecks.md`)
 	- ## Implementation Safeguards
 		- **Fail-safe Path Resolution**: Robust handling of relative and absolute paths in prompt probes. (ref: `index.js -> resolveProbes`)
 		- **Atomic File Access**: Leveraging `fs-extra` for predictable filesystem operations. (ref: `index.js`)

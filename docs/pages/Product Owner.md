@@ -16,8 +16,8 @@
 	- ## Gatekeeping Standards (Note vs. Halt)
 		- **Strategic Note**: For suboptimal patterns or design deviations; proceeds with velocity.
 		- **Halt Condition**: For logical incoherence, missing critical variables, or security risks; stops implementation.
-		- **Resolution Path**: Uses the **Clarification Template** to resolve blockers. (ref: `po/templates/clarification.md`)
-		- (ref: `po/knowledge/gatekeeping.md`)
+		- **Resolution Path**: Uses the **Clarification Template** to resolve blockers. (ref: `docs/templates/po/clarification.md`)
+		- (ref: `knowledge/gatekeeping.md`)
 	- ## Interactive Elicitation & PO Interview [NEW]
 		- **Command**: `/po:interview`
 		- **Protocol**: Standardized **5-Phase Elicitation Loop** (ref: `po/skills/product_interview.md`).
@@ -30,14 +30,14 @@
 	- ## Product Acceptance & Requirement Validation [NEW]
 		- **Commands**: `/po:validate`, `po:squad-validate`
 		- **Protocol**: Standardized **Product Acceptance Testing (PAT)** Protocol (ref: `po/skills/acceptance_validation.md`).
-		- **Outputs**: Generates `docs/pages/[feature]-acceptance.md` using `po/templates/acceptance_report.md`.
+		- **Outputs**: Generates `docs/pages/[feature]-acceptance.md` using `docs/templates/po/acceptance_report.md`.
 		- **Validation Checks**:
 			- Acceptance Criteria Matrix mapping all Given-When-Then scenarios to test coverage.
 			- MoSCoW Scope Fulfillment (100% verification of Must-Have requirements).
 			- Edge Case and boundary resolution auditing.
 			- Feedback Loop: Emits `REJECT` (reverts to Dev Phase 4) or `ACCEPT` (requests Gate `acceptance`).
 	- ## Prioritization & Business ROI Framework [NEW]
-		- **Standards**: Math-based prioritization and financial validation (ref: `po/knowledge/prioritization_framework.md`).
+		- **Standards**: Math-based prioritization and financial validation (ref: `knowledge/prioritization_framework.md`).
 		- **Heuristics**:
 			- **MoSCoW Tiers**: Must Have, Should Have, Could Have, Won't Have.
 			- **RICE Scoring**: $(Reach \times Impact \times Confidence) / Effort$. Effort scored on Fibonacci scale.

@@ -84,45 +84,188 @@ git pull && npm install
 
 ---
 
+## 🏗️ V3 Hybrid Architecture: Agentic Engineering Harness
+
+`@souzaeduardoac/tech-agents` v3 transitions from a prompt-compiler / persona-cosplay model into a deterministic, production-grade **Agentic Engineering Harness** designed for Gemini CLI, AntiGravity, Codex, and Claude Code.
+
+### The 4 Primitives
+
+```
+┌────────────────────────────────────────────────────────┐
+│             PLAYBOOK (State Machine DAG)               │
+│               playbooks/feature_dev.yaml               │
+│                                                        │
+│  ┌──────────────┐     ┌──────────────┐                 │
+│  │ Step 1 (PO)  │ ──> │Step 2 (Arch) │ ──> ...         │
+│  └──────┬───────┘     └──────┬───────┘                 │
+└─────────┼────────────────────┼─────────────────────────┘
+          │                    │
+          ▼                    ▼
+┌──────────────────┐ ┌──────────────────┐
+│  COGNITIVE LENS  │ │     TOOLBOX      │
+│  (≤4 sentences)  │ │ (Scoped Perms)   │
+│  lenses/po.md    │ │ [fs_read, write] │
+└──────────────────┘ └──────────────────┘
+          │
+          ▼
+┌────────────────────────────────────────────────────────┐
+│               DETERMINISTIC CHECKS & GATES             │
+│                                                        │
+│  • Hard Checks: Local CLI commands (tests, linters)   │
+│  • Soft Checks: JSON Schema artifact validation        │
+│  • Human Gates: .squad-state-[branch].json approval    │
+│    (Physically blocks progression if locked/failed)    │
+└────────────────────────────────────────────────────────┘
+```
+
+1. **Declarative Playbooks (`playbooks/*.yaml`)**:
+   Finite State Machine definitions that enforce exact SDLC steps, input/output artifacts, applicable standards, scoped toolboxes, and human approval gates.
+   * `feature_dev`: Full cycle engineering from PRD discovery to clean pull request (7 steps).
+   * `product_discovery`: Interactive requirements elicitation and formal PRD formulation for Product Managers without code generation (2 steps).
+   * `technical_refinement`: Technical feasibility analysis and granular implementation planning for Tech Leads in refinement meetings (2 steps).
+   * `component_scaffold`: Rapid specification and test-verified implementation of isolated components or API endpoints (2 steps).
+   * `bug_fix`: Targeted reproduction, patch application, and regression test verification (3 steps).
+   * `workflow_dev`: Event-driven automation workflow design, payload mapping, and failure recovery (3 steps).
+   * `deep_research`: Problem space framing, comparative empirical benchmarking, and executive research synthesis (2 steps).
+   * `business_synthesis`: Technical architecture, API spec, and data schema translation into stakeholder requirements under the PO lens (2 steps).
+   * `council_debate`: Symmetrical dialectical debate between architectural design and security constraints into a synthesized ADR (3 steps).
+   * `codebase_health_audit`: Multi-layer diagnostic health scan (static analysis, linters, security boundary checks, and remediation plan) (3 steps).
+   * `security_audit`: Threat modeling and regulatory compliance audit (2 steps).
+   * `pr_review`: Diff-based static code review and automated SonarQube evaluation (2 steps).
+   * `consultation`: Conversational, non-coding architecture debate and tension synthesis (1 step).
+   * `full_sync`: Exhaustive Logseq graph and documentation synchronization (2 steps).
+
+2. **Cognitive Lenses (`lenses/*.md`)**:
+   Hyper-concise professional stances ($\le 4$ sentences, $\le 80$ words) replacing verbose persona roleplay and eliminating up to 70% of LLM prompt bloat while sharpening domain focus.
+   * `architect.md`, `backend.md`, `frontend.md`, `mobile.md`, `compliance.md`, `po.md`, `qa.md`, `quicky.md`, `council.md`, `automata.md`, `researcher.md`.
+
+3. **Scoped Toolboxes (`engine/toolboxes.js`)**:
+   Enforces the principle of least privilege per step:
+   * `fs_read`: Read-only inspection (`view_file`, `list_dir`, `find_by_name`, `grep_search`).
+   * `fs_write`: Targeted modification (`write_to_file`, `replace_file_content`).
+   * `git`: Branching, staging, Conventional Commits, diff inspection, PR creation.
+   * `verification`: Local test runner and linter execution (`npm test`, `pytest`, `cargo test`, etc.).
+   * `analysis`: AST inspection and static code analysis.
+   * `search_web`: External API and documentation retrieval.
+   * `context7` *(Peer MCP)*: Live dependency documentation and API contracts (`resolve-library-id`, `query-docs`).
+   * `stitch` *(Peer MCP)*: UI design tokens, screen extraction, and component specs (`get_screen`, `list_screens`, `get_project`).
+   * `playwright` *(Peer MCP)*: Automated browser interaction and visual regression testing (`browser_navigate`, `browser_snapshot`).
+   * `sonarqube` *(Peer MCP)*: Code quality metrics, security hotspots, and quality gates (`quality_gate`, `issues`, `measures_component`).
+
+4. **Deterministic Hard & Soft Checks (`checks/`)**:
+   * **Hard Checks**: Local terminal command execution with timeout protection (`child_process.spawn`). Step advancement is **physically refused** if any test runner, linter, or git status check fails with a non-zero exit code.
+   * **Soft Checks**: JSON Schema validation (`ajv`) for generated artifacts (PRD, ADR, Audit report, Acceptance report).
+   * **Approval Gates**: Structural MCP-enforced gates (`prd`, `plan`, `compliance`, `execution`, `acceptance`) in `.squad-state-[branch].json` that prevent LLMs from self-approving milestone transitions.
+
+---
+
+## 📖 How to Use: Playbook Selection & Workflow Guide
+
+### Interaction Modes
+
+You can run `@souzaeduardoac/tech-agents` via two primary interaction models:
+
+1. **Deterministic State Machine (Recommended for Agents & MCP Clients)**:
+   Your client (AntiGravity, Gemini CLI, Claude Code, Codex) calls `playbook_start` with the selected playbook ID and goal. The workflow progresses step-by-step through `playbook_step`, automatically runs local tests via `playbook_run_checks`, and advances via `playbook_advance` when hard checks pass and human gates are approved.
+2. **Natural Language Prompting (Conversational)**:
+   Directly prompt the assistant in your chat UI:
+   * *"Run the `product_discovery` playbook for 'SSO login with Okta'"*
+   * *"Run the `technical_refinement` playbook on this Azure Boards backlog card"*
+   * *"Run `bug_fix` on the token expiration timeout issue"*
+
+---
+
+### Which Playbook to Call? (The Decision Matrix)
+
+#### A. Decision Flowchart
+
+```
+User Prompt / Goal Ingestion
+│
+├── 📋 Product Management & Requirements (No code)
+│   ├── Interactive interview to write a PRD for Jira/Azure Boards? ──> product_discovery
+│   └── Translate complex tech/API specs for business executives?   ──> business_synthesis
+│
+├── 🏛️ Architecture & Refinement Meetings
+│   ├── Confronting a backlog card with the codebase for task sizing?──> technical_refinement
+│   ├── Symmetrical debate over competing architecture options?     ──> council_debate
+│   ├── Auditing code quality, test suites, and technical debt?     ──> codebase_health_audit
+│   ├── Deep empirical research into a library or vendor trade-off? ──> deep_research
+│   └── Single-topic architectural consultation or advisory?        ──> consultation
+│
+├── 💻 Development & Engineering
+│   ├── Scaffolding a single isolated module, endpoint, or UI?      ──> component_scaffold
+│   ├── Reproducing and fixing a bug with automated test checks?    ──> bug_fix
+│   ├── Reviewing a Pull Request or git diff for quality/security?  ──> pr_review
+│   └── Designing an automation workflow (webhooks, n8n, DAGs)?     ──> workflow_dev
+│
+└── 🚀 Full-Cycle & Documentation
+    ├── End-to-end SDLC from PRD to production-ready Pull Request?  ──> feature_dev
+    └── Synchronizing Logseq knowledge graph and documentation?     ──> full_sync
+```
+
+#### B. Sprint Rituals & Triggers
+
+| Sprint Ritual / Trigger | Recommended Playbook | Execution Behavior |
+|---|---|---|
+| **Backlog Grooming** | `product_discovery` | PM is grilled by the PO lens (5-phase interview); outputs schema-compliant PRD ready for Azure Boards/Jira. |
+| **Technical Refinement** | `technical_refinement` | Tech Lead confronts PRD with existing code; inspects models/APIs and outputs an implementation plan & task breakdown. |
+| **Architectural Fork** | `council_debate` | Multi-perspective debate: Architect (Thesis) vs Security (Antithesis) $\to$ PO synthesizes balanced ADR. |
+| **Sprint Sprinting (Feature)** | `component_scaffold` or `feature_dev` | Dev implements either an isolated component (`component_scaffold`) or full 7-step pipeline (`feature_dev`). |
+| **Defect Triage** | `bug_fix` | Reproduces bug with a failing test, applies minimal patch, verifies tests pass, commits clean. |
+| **PR Review / CI** | `pr_review` | Inspects git diff, verifies test coverage, flags regressions or anti-patterns. |
+| **Tech Debt Sprint** | `codebase_health_audit` | Scans dependencies, runs all linters, evaluates security boundaries, outputs prioritized remediation plan. |
+
+---
+
 ## 🎮 How to Call Agents (Usage per LLM Environment)
 
-Depending on your active LLM interface, calling and orchestrating the agents is standardized via MCP tool calls:
+### Native V3 Playbook MCP Tools
+The harness exposes 6 native MCP tools for state-machine driven SDLC orchestration:
 
-### 1. Codex App/CLI, Gemini App/CLI & Claude Code (MCP)
-Agents are executed dynamically via MCP tools (`list_agents`, `call_agent_command`, `get_agent_prompt`, `run_agent_loop`). Simply speak to your assistant in natural language or call commands via MCP:
-*   **Format**: `/[agent]:[command] [your goal]`
-*   **Key Examples**:
-    *   **Squad Orchestrator**: `/squad:run "Implement JWT authentication flow"`
-    *   **Quicky (Quick Fixes)**: `/quicky:fix "Fix the type mismatch on line 42 in api.ts"`
-    *   **Architect (Design/Docs)**: `/architect:create "Design a resilient connection pool"` or `/architect:docs "Sync the Logseq graph with recent migrations"`
-    *   **Product Owner (Discovery/PO Interview)**: `/po:interview "A new service to parse PDFs"`
-    *   **Council (Design Debate & Synthesis)**: `/council:debate "Implement real-time location and telemetry-based pricing"`
+| V3 Tool | Description | Input Arguments |
+|---------|-------------|-----------------|
+| `playbook_list` | Lists all available SDLC playbooks. | `{}` |
+| `playbook_start` | Initializes a playbook session, locks gates, and sets active step. | `{ playbook: string, goal: string, cwd?: string }` |
+| `playbook_step` | Fetches active step context, compiled prompt, lens, and scoped tools. | `{ cwd?: string }` |
+| `playbook_run_checks` | Executes active step hard checks locally (test suites, linters, git status). | `{ cwd?: string }` |
+| `playbook_advance` | Validates hard checks and gates, advancing to the next step. | `{ cwd?: string }` |
+| `playbook_status` | Inspects current session state, active step, history, and gate states. | `{ cwd?: string }` |
 
-### 2. Claude Code (Model Context Protocol / MCP)
-Claude Code communicates with the Hub using **MCP tool calls**. Since Claude is an agentic assistant, you do **not** need to write raw code or command syntax in the chat. You simply speak to Claude in natural language, and Claude will autonomously invoke the correct Hub tool.
-*   **Natural Conversational Prompts (Recommended)**:
-    *   *"Hey Claude, call squad to build the user dashboard page."*
-    *   *"Claude, ask quicky to fix the label on the summary page."*
-    *   *"Ask the architect to design a CQRS pattern for payments."*
-*   **Under-the-Hood Tool Contract** (How Claude executes it behind the scenes):
-    *   Format: `call_agent_command(agent="[agent-name]", command="[command]", args="[your goal]")`
-    *   Example: `call_agent_command(agent="quicky", command="fix", args="Fix the summary label mismatch")`
+#### V3 Quickstart Flow
+```javascript
+// 1. Start a feature development playbook
+playbook_start({ playbook: "feature_dev", goal: "Implement multi-tenant OAuth2 login" });
 
-*   **SSO/Token-based Loop Execution (MCP Sampling)**:
-    In enterprise or token-based SSO environments (like AntiGravity or Codex) where local API keys are unavailable, you can run agents inside a server-managed execution loop using the client's own LLM session:
-    *   *Natural Conversational Prompt*: *"Hey assistant, run the quicky loop to fix the label mismatch."*
-    *   *Under-the-Hood Tool Contract*: `run_agent_loop(agent="quicky", command="fix", args="Fix the label mismatch")`
-    *   *Behavior*: The server manages conversation history, pins the system prompt (preventing Codex persona drift), intercepts local tool actions (filesystem, terminal commands) formatted as XML tags (`<read_file>`, `<write_file>`, `<run_command>`, `<task_complete>`), executes them on the host, and feeds the outputs back into the loop.
+// 2. Inspect active step instructions & cognitive lens
+playbook_step();
 
-*   **Available MCP Tools**:
-    *   `list_agents`: Lists all available specialized agents and their commands.
-    *   `call_agent_command`: Activates a specialized agent command, returning the raw compiled prompt (prompt injection fallback).
-    *   `run_agent_loop`: Executes a server-side multi-turn agent loop via client LLM sampling (SSO-compatible).
-    *   `get_agent_prompt`: Retrieves the persona, skills, and knowledge for a specific agent.
-    *   `pipeline_start`: Initializes a new pipeline session and locks all gates in `.squad-state-[branch].json`.
-    *   `request_approval`: Sets a gate status to `pending` and pauses the pipeline for human sign-off.
-    *   `check_gate`: Checks if a specific pipeline gate is approved before starting the next phase.
-    *   `pipeline_approve`: Approves a specific pipeline gate to unblock the next phase.
+// 3. Complete step work, then request human sign-off on the gate
+request_approval({ gate: "prd", summary: "PRD completed with 3 Gherkin scenarios" });
+
+// 4. Human approves the gate in chat or via tool
+pipeline_approve({ gate: "prd" });
+
+// 5. Advance to next step (checks & gates verified automatically)
+playbook_advance();
+
+// 6. Check overall session progress
+playbook_status();
+```
+
+---
+
+### Pure V3 Agentic Tools & Human Approval Gates
+
+| Tool | Description |
+|------|-------------|
+| `lens_prompt` | Stateless single-turn prompt compilation for any of the 11 Cognitive Lenses with dynamic stack knowledge. |
+| `list_agents` | Lists all available Playbooks, Cognitive Lenses, and returns the complete MCP Usage Guide. |
+| `run_agent_loop` | Executes server-managed multi-turn loop via MCP client LLM sampling. |
+| `pipeline_start` | Initializes a pipeline session and locks approval gates in `.squad-state-[branch].json`. |
+| `request_approval` | Signals phase completion and sets gate to `pending`. |
+| `check_gate` | Verifies gate is `approved` before starting next phase. |
+| `pipeline_approve` | Approves a specific pipeline gate to unblock the next phase. |
 
 ### 3. Cursor & Codex IDEs (System Rules & Persona Linking)
 For Cursor, VS Code, or other IDEs using context files (like `.cursorrules` or custom system instructions), you link the agent's core identity file directly into your workspace.
@@ -158,13 +301,12 @@ We maintain a "Zero Trust" model for code and documentation integrity.
 
 ## 🤖 Core Agents
 - **[[Squad Orchestrator]]**: PM / Chief Orchestrator.
-- **[[Product Owner]]**: PO / Requirements Gateway.
+- **[[Product Owner]]**: PO / Requirements Gateway & Business Synthesis.
 - **[[Architect]]**: Systems Lead / Security Auditor.
 - **[[Backend]]**, **[[Frontend]]**, **[[Mobile]]**: Implementation specialists.
 - **[[Compliance]]**: Regulatory & Risk Auditor.
-- **[[Researcher]]**: Strategic Analyst.
-- **[[Automata]]**: Automation Architect.
+- **[[Researcher]]**: Strategic Analyst & Deep Empirical Research.
+- **[[Automata]]**: Workflow Automation Architect.
 - **[[Decoder]]**: Technical specification-to-business translator.
-- **[[Forge]]**: Specialized meta-agent to design, scaffold, audit, and upgrade other agents (#MetaAgent).
 - **[[Quicky]]**: Specialist for quick fixes, small tweaks, and isolated tasks maintaining documentation integrity.
 - **[[Council]]**: Symmetrical multi-perspective debate and design synthesis engine.

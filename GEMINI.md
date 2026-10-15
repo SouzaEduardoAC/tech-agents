@@ -12,17 +12,11 @@ This repository is optimized for **Gemini CLI** and **Codex App/CLI**. It expose
 ## 📜 Documentation Protocol Integrity
 **CRITICAL MANDATE:** You MUST always respect and update the entire documentation protocol of all agents (such as journals, registry, and graphs) when modifying the repository, EVEN if you are not currently operating as the specific agent responsible for that domain. Code changes without corresponding protocol updates are strictly prohibited.
 
-## 🛠 Available Agent Namespaces
-The following namespaces are dynamically available via `tech-agents serve` (`list_agents`, `call_agent_command`):
-- `/squad:*`: Multi-agent pipeline orchestration and full documentation sync.
-- `/architect:*`: Systems design and auditing.
-- `/po:*`: Discovery and PRD generation.
-- `/backend:*`, `/frontend:*`, `/mobile:*`: Core implementation.
-- `/compliance:*`: Audit and regulation.
-- `/decoder:*`: Technical specification-to-business translator.
-- `/forge:*`: Meta-agent design, creation, and auditing.
-- `/quicky:*`: Quick fixes, minor tweaks, and isolated code changes.
-- `/council:*`: Symmetrical multi-perspective design debate and synthesis.
+## 🛠 Available V3 Primitives
+The following primitives are dynamically available via `tech-agents serve`:
+- **14 Deterministic Playbooks** (`playbook_list`, `playbook_start`): `feature_dev`, `product_discovery`, `technical_refinement`, `component_scaffold`, `bug_fix`, `council_debate`, `codebase_health_audit`, `deep_research`, `pr_review`, `workflow_dev`, `full_sync`, `consultation`, `business_synthesis`, `compliance_audit`.
+- **11 Cognitive Lenses** (`lens_prompt`, `list_agents`): `squad`, `architect`, `po`, `backend`, `frontend`, `mobile`, `compliance`, `researcher`, `automata`, `decoder`, `quicky`, `council`.
+- **Human Approval Gate Tools**: `pipeline_start`, `request_approval`, `check_gate`, `pipeline_approve`.
 
 ## 🤖 Specialized Agents
 - [[Squad Orchestrator]]: Multi-agent pipeline management.
@@ -33,9 +27,16 @@ The following namespaces are dynamically available via `tech-agents serve` (`lis
 - [[Researcher]]: Deep information synthesis.
 - [[Automata]]: Workflow #Automation architect.
 - [[Decoder]]: Technical documentation-to-business translator.
-- [[Forge]]: Meta-agent design, creation, and auditing.
 - [[Quicky]]: Specialist for quick fixes, small tweaks, and isolated tasks maintaining documentation integrity.
 - [[Council]]: Symmetrical multi-perspective debate and design synthesis engine.
+## 🏗️ V3 Pure Architecture (v3.0.0)
+- **Agentic Engineering Harness**: Fully transitioned from legacy v2 prompt-compiler / persona cosplay into a pure deterministic execution harness built on 4 primitives:
+  - **Playbooks** (`playbooks/*.yaml`): 14 finite state machine DAGs defining exact SDLC steps, input/output artifacts, and gates.
+  - **Cognitive Lenses** (`lenses/*.md`): 11 scoped 2-4 sentence professional stances replacing verbose persona BIOS bloat.
+  - **Scoped Toolboxes** (`engine/toolboxes.js`): Principle of least privilege capability sets (`fs_read`, `fs_write`, `git`, `verification`, `analysis`, `search_web`, `stitch`, `context7`).
+  - **Deterministic Checks & Gates** (`checks/`, `engine/check_runner.js`): Machine-enforced local test/lint exit-code execution and approval gates.
+- **Native V3 MCP Tools**: `playbook_list`, `playbook_start`, `playbook_step`, `playbook_run_checks`, `playbook_advance`, `playbook_status`, `lens_prompt`, `pipeline_start`, `request_approval`, `check_gate`, `pipeline_approve`, `list_agents`.
+
 ## 🛠 Active Work & Tasks
 - DONE: Verify path normalization across all agents. (ref: [[code-dna]])
 - DONE: Implement prompt late-binding deduplication and heuristic relevance filtering (#AMD compiler optimization). (ref: [[TECHNICAL_SPECS]])
@@ -47,9 +48,10 @@ The following namespaces are dynamically available via `tech-agents serve` (`lis
 - DONE: Implement cross-platform and stack-aware Pull Request reviews for implementation specialists (Backend, Frontend, Mobile). (ref: `common/skills/pr_review.md`, `[[registry]]`)
 - DONE: Implement structural MCP-level human approval gate system (`pipeline_start`, `request_approval`, `check_gate`, `pipeline_approve` tools + `/squad:approve` command) to make it physically impossible for LLM orchestrators to auto-approve pipeline phase transitions. (ref: `index.js`, `.squad-state-*.json`, `squad/commands/squad/approve.toml`, `[[TECHNICAL_SPECS]]`)
 - DONE: Implement MCP usage guide skill and serve it dynamically via list_agents tool. (ref: `common/skills/mcp_usage_guide.md`, `index.js`, `bin/tech-agents.js`, `[[TECHNICAL_SPECS]]`)
-- DONE: Implement server-side managed execution loop via MCP Sampling (`run_agent_loop` tool), supporting local XML action execution (filesystem, terminal commands) and fallback logic. (ref: `index.js`, `test/mcp-sampling-test.js`, `[[TECHNICAL_SPECS]]`)
 - DONE: Align package name to `@souzaeduardoac/tech-agents` and update global MCP configurations to use `npx serve`. (ref: `package.json`, `bin/tech-agents.js`)
 - DONE: Implement Phase 5 Product Acceptance & Requirement Validation in Squad pipeline and PO agent (`/po:validate`, `/po:squad-validate`, `acceptance_validation.md`, `acceptance` gate). (ref: `po/commands/po/squad-validate.toml`, `squad/commands/squad/run.toml`, `[[TECHNICAL_SPECS]]`)
+- DONE: Implement V3 Hybrid Architecture: Declarative Playbooks, Cognitive Lenses, Scoped Toolboxes, and Deterministic Local Hard/Soft Checks with full MCP integration and E2E verification. (ref: `V3_ARCHITECTURE_SPEC.md`, `engine/`, `playbooks/`, `lenses/`, `checks/`, `[[TECHNICAL_SPECS]]`)
+- DONE: Decommission legacy v2 architecture, centralize domain knowledge in `knowledge/` and `docs/templates/`, retarget engine paths to `knowledge/stacks/`, remove legacy agent folders and `toml` dependency, and introduce stateless `lens_prompt` MCP tool (v3.0.0). (ref: `docs/pages/pure-v3-migration-implementation-plan.md`, `index.js`, `engine/prompt_compiler.js`)
 - TODO: Implement automated AST-sync for [[Mobile]] widget trees.
 
-#AMD #GeminiCLI #AgenticFramework #Logseq
+#AMD #GeminiCLI #AgenticFramework #Logseq #PureV3

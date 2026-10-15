@@ -8,10 +8,11 @@
 - # Navigation
 	- [[TECHNICAL_SPECS]] - Core architecture and MCP details. (ref: `bin/tech-agents.js`)
 	- [[BUSINESS_FLOW]] - Value prop and business rules. (ref: `index.js`)
-	- [[code-dna]] - Architectural patterns and standards. (ref: `architect/knowledge/patterns.md`)
+	- [[code-dna]] - Architectural patterns and standards. (ref: `knowledge/patterns.md`)
 	- [[registry]] - Global Symbol Registry (The Project Genome).
 	- [[AI Interaction Standard]] - Global cognitive profile for LLM interfaces.
-	- [[resilience-policies]] - Stability and error handling. (ref: `architect/knowledge/bottlenecks.md`)
+	- [[resilience-policies]] - Stability and error handling. (ref: `knowledge/bottlenecks.md`)
+	- [[how-to-use]] - User guide, decision flowchart, and sprint rituals.
 	- [[visuals]] - Mermaid diagrams.
 - # Specialized Agents
 	- [[Squad Orchestrator]] - Squad Leader.
@@ -22,7 +23,9 @@
 	- [[Researcher]] - Strategic Analyst.
 	- [[Automata]] - Automation Architect.
 	- [[Decoder]] - Technical specification-to-business translator.
-	- [[Forge]] - Meta-Architect (scaffolds, audits, and upgrades other agents).
+	- [[Quicky]] - Fast bug fix and triage specialist.
+	- [[Council]] - Dialectical multi-perspective debate engine.
+	- [[Forge]] - *[DEPRECATED]* Meta-Architect (superseded by V3 Playbooks & Lenses).
 - # Use Cases
 	- [[Standardized Pipeline]] - Engineering lifecycle.
 	- [[PRD Generation]] - Requirements.

@@ -7,7 +7,7 @@
 	- ## Core Mandate
 		- Implementation of scalable, resilient server-side logic and data schemas.
 	- ## Engineering Standards
-		- **Test-First Integrity**: 100% pass rate for new and existing tests. (ref: `common/knowledge/testing_standard.md`)
+		- **Test-First Integrity**: 100% pass rate for new and existing tests. (ref: `knowledge/testing_standard.md`)
 		- **Conventional Commits**: Strictly adheres to the 1.0.0 standard for traceability.
 	- ## Primary Jobs
 		- **API & Service Implementation**: Building robust, type-safe endpoints.
@@ -25,6 +25,6 @@
 		- **`backend:docs`**: Sync backend logic with Logseq documentation. (ref: `backend/commands/backend/docs.toml`)
 		- **`backend:squad-docs`**: Deeply document every API route, database schema, and backend component in the active workspace. (ref: `backend/commands/backend/squad-docs.toml`)
 		- **`backend:analyze`**: Read-only behavioral simulation. Traces API payloads, data contracts, ORM queries, and business logic branches against real or hypothetical inputs. No artifacts, no implementation. (ref: `backend/commands/backend/analyze.toml`, `common/skills/investigation.md`)
-		- **`backend:review`**: **(External PR only — does NOT push changes.)** Structured, stack-aware code review against a GitHub, GitLab, or Azure DevOps pull request. Auto-detects platform from PR URL, acquires diff via MCP, detects backend stack from file extensions (.NET/Java/Go), self-loads the relevant `common/stacks/*.md` guardrails, and applies the full backend-specific review protocol. For in-squad local review (git diff + SonarQube + push on APPROVE), use `backend:squad-review`. (ref: `backend/commands/backend/review.toml`, `common/skills/pr_review.md`)
+		- **`backend:review`**: **(External PR only — does NOT push changes.)** Structured, stack-aware code review against a GitHub, GitLab, or Azure DevOps pull request. Auto-detects platform from PR URL, acquires diff via MCP, detects backend stack from file extensions (.NET/Java/Go), self-loads the relevant `knowledge/stacks/*.md` guardrails, and applies the full backend-specific review protocol. For in-squad local review (git diff + SonarQube + push on APPROVE), use `backend:squad-review`. (ref: `backend/commands/backend/review.toml`, `common/skills/pr_review.md`)
 		- **`backend:squad-create`**: Squad Flow implementation command (Phase 4). Reads approved PRD and Architecture ADR, runs TDD (tests first), asks human for branch name approval (suggests `feature/[feature]`), commits all code and docs to the confirmed branch, pushes the branch to origin, and notifies the orchestrator for peer review. Enforces that the developer run is treated as incomplete until docs are updated, branch name is proposed and confirmed, commit is created, and branch is pushed to origin. (ref: `backend/commands/backend/squad-create.toml`)
 		- **`backend:squad-review`**: Squad Flow peer review command (Phase 4.5). Reviews the committed branch using `git diff` + SonarQube MCP + test verification. Loads full `pr_review.md` protocol and backend-specific reviewer skill. On `APPROVE`: pushes to origin (`git push origin <branch>`). On `REQUEST CHANGES`: reports findings and halts; developer must fix and re-commit, then Phase 4.5 repeats. (ref: `backend/commands/backend/squad-review.toml`)

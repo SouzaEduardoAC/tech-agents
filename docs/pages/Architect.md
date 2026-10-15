@@ -9,7 +9,7 @@
 		- Operates under a **Zero Trust** model for unverified code.
 	- ## Primary Jobs
 		- **Structural Design**: Transforms PRD requirements into peer-reviewed implementation plans.
-		- **Stability Audit**: Inspects for N+1 queries, missing indexes, and connection pooling issues. (ref: `architect/knowledge/bottlenecks.md`)
+		- **Stability Audit**: Inspects for N+1 queries, missing indexes, and connection pooling issues. (ref: `knowledge/bottlenecks.md`)
 		- **Security Audit**: OWASP-aligned vulnerability scanning (SAST, Auth logic, Secret leaks).
 	- ## Design-Driven Architecture [Recommended]
 		- **Google Stitch Integration**:

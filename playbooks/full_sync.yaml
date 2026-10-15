@@ -1,0 +1,29 @@
+id: full_sync
+name: Full Codebase Documentation Sync Pipeline
+category: Documentation
+role: Technical Writer
+when_to_use: Synchronize all repository documentation, Logseq knowledge graph pages, symbol registry, and cognitive anchors
+description: Comprehensive documentation synchronization updating Logseq graph, feature registry, and technical specifications.
+default_gates:
+  - sync_approval
+
+steps:
+  - id: analyze_changes
+    name: Codebase Evolution Analysis
+    lens: lenses/architect.md
+    toolbox:
+      - fs_read
+      - git
+    gate: null
+
+  - id: sync_documentation
+    name: Logseq Graph & Registry Synchronization
+    lens: lenses/architect.md
+    toolbox:
+      - fs_read
+      - fs_write
+      - git
+    standards:
+      - knowledge/git_standard.md
+    output_artifact: docs/pages/registry.md
+    gate: sync_approval

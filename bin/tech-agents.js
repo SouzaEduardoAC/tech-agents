@@ -38,13 +38,13 @@ program
   .argument("<target>", "Target file path")
   .action(async (agent, target) => {
     const isMcp = agent.toLowerCase() === "mcp";
-    const targetName = isMcp ? "MCP usage guide" : `${agent} persona`;
+    const targetName = isMcp ? "MCP usage guide" : `${agent} cognitive lens`;
     const personaPath = isMcp
-      ? path.join(ROOT, "common", "skills", "mcp_usage_guide.md")
-      : path.join(ROOT, agent, "brain", "persona.md");
+      ? path.join(ROOT, "docs", "mcp_usage_guide.md")
+      : path.join(ROOT, "lenses", `${agent.toLowerCase()}.md`);
 
     if (!(await fs.pathExists(personaPath))) {
-      console.error(`Error: ${isMcp ? "MCP usage guide" : `Agent '${agent}'`} not found.`);
+      console.error(`Error: ${isMcp ? "MCP usage guide" : `Cognitive Lens '${agent}'`} not found.`);
       process.exit(1);
     }
     const absoluteTarget = path.resolve(process.cwd(), target);
